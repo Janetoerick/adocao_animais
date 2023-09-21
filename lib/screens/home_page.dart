@@ -1,4 +1,4 @@
-import 'package:adocao_animais/screens/abrigo_page.dart';
+import 'package:adocao_animais/screens/principal_page.dart';
 import 'package:adocao_animais/screens/animal_page.dart';
 import 'package:flutter/material.dart';
 
@@ -32,8 +32,8 @@ class _HomePageState extends State<HomePage> {
       body: PageView(
         controller: pc,
         children: [
+          PrincipalPage(),
           AnimalPage(),
-          AbrigoPage(),
         ],
         onPageChanged: setPaginaAtual,
       ),
@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
         currentIndex: paginaAtual,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'Abrigos'),
+          BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'Animais'),
         ],
         onTap: (pagina) {
           pc.animateToPage(pagina,
