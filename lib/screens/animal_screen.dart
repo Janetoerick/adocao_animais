@@ -15,9 +15,14 @@ class _AnimalPageState extends State<AnimalPage> {
   List<Animal> _animais = [
     Animal(
         id: 'l01',
+        novo: true,
         tipo: 'gato',
         nome: 'Felix o gato',
-        idade: 2,
+        sexo: 'Macho',
+        porte: 'Pequeno',
+        idade: '4 meses',
+        img:
+            'https://veterinariadavinci.com.br/blog/wp-content/uploads/2017/05/os-cuidados-com-filhotes-de-gatos.jpg',
         raca: 'falino',
         descricao: 'Branco om manchas pretas'),
   ];
@@ -28,7 +33,7 @@ class _AnimalPageState extends State<AnimalPage> {
         appBar: AppBar(
           title: Text("Animal page"),
           centerTitle: true,
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
         ),
         body: Padding(
           padding: EdgeInsets.all(10),
