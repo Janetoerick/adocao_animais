@@ -1,4 +1,4 @@
-import 'package:adocao_animais/screens/home_page.dart';
+import 'package:adocao_animais/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
       ),
       initialRoute: '/',
       routes: {
-        '/': (ctx) => const HomePage(),
+        '/': (ctx) => const TabsScreen(),
       },
     );
   }

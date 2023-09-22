@@ -1,21 +1,21 @@
-import 'package:adocao_animais/screens/principal_page.dart';
-import 'package:adocao_animais/screens/animal_page.dart';
+import 'package:adocao_animais/screens/animal_screen.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+import 'home_screen.dart';
+
+class TabsScreen extends StatefulWidget {
+  const TabsScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<TabsScreen> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<TabsScreen> {
   int paginaAtual = 0;
   late PageController pc;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     pc = PageController(initialPage: paginaAtual);
   }
@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
       body: PageView(
         controller: pc,
         children: [
-          PrincipalPage(),
+          HomeScreen(),
           AnimalPage(),
         ],
         onPageChanged: setPaginaAtual,

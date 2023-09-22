@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class AnimalPage extends StatelessWidget {
-  const AnimalPage({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Animal page"),
+        title: Text("Home page"),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.secondary,
       ),
