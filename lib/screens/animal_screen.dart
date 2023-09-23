@@ -77,9 +77,27 @@ class _AnimalPageState extends State<AnimalPage> {
               ),
               Expanded(
                   child: SizedBox(
-                child: filter_on
-                    ? ListaAnimais(_animais_filter)
-                    : ListaAnimais(_animais),
+                child: !filter_on
+                    ? ListaAnimais(_animais)
+                    : !_animais_filter.isEmpty
+                        ? ListaAnimais(_animais_filter)
+                        : Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Center(
+                              child: Container(
+                                child: Text(
+                                  "Não há esses animais registrados no momento...",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                ),
+                              ),
+                            ),
+                          ),
               ))
             ],
           ),
