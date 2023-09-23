@@ -9,6 +9,7 @@ class Animal {
   final String img;
   final String raca;
   final String descricao;
+  final String contato;
 
   const Animal({
     required this.id,
@@ -21,5 +22,6 @@ class Animal {
     required this.img,
     required this.raca,
     required this.descricao,
+    required this.contato,
   });
 }

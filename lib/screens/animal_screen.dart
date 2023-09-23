@@ -14,18 +14,45 @@ class AnimalPage extends StatefulWidget {
 class _AnimalPageState extends State<AnimalPage> {
   List<Animal> _animais = [
     Animal(
-        id: 'l01',
-        novo: true,
-        tipo: 'gato',
-        nome: 'Felix o gato',
-        sexo: 'Macho',
-        porte: 'Pequeno',
-        idade: '4 meses',
-        img:
-            'https://veterinariadavinci.com.br/blog/wp-content/uploads/2017/05/os-cuidados-com-filhotes-de-gatos.jpg',
-        raca: 'falino',
-        descricao: 'Branco om manchas pretas'),
+      id: 'l01',
+      novo: true,
+      tipo: 'Gato',
+      nome: 'Felix o gato',
+      sexo: 'Macho',
+      porte: 'Pequeno',
+      idade: '4 meses',
+      img:
+          'https://veterinariadavinci.com.br/blog/wp-content/uploads/2017/05/os-cuidados-com-filhotes-de-gatos.jpg',
+      raca: 'falino',
+      descricao: 'Branco om manchas pretas',
+      contato: '994412255',
+    ),
   ];
+
+  List<Animal> _animais_filter = [];
+  bool filter_on = false;
+
+  _openTaskFilterModal(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (_) {
+          return FiltroAnimais(_novo_filtro);
+        });
+  }
+
+  _novo_filtro(String tipo) {
+    filter_on = true;
+    _animais_filter = [];
+    setState(() {
+      if (tipo != '') {
+        _animais_filter.addAll(_animais.where((e) => e.tipo == tipo));
+      } else {
+        filter_on = false;
+      }
+    });
+
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +66,21 @@ class _AnimalPageState extends State<AnimalPage> {
           padding: EdgeInsets.all(10),
           child: Column(
             children: [
-              FiltroAnimais(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    onPressed: () => _openTaskFilterModal(context),
+                    icon: Icon(Icons.filter_list),
+                  )
+                ],
+              ),
               Expanded(
-                child: SizedBox(
-                  child: ListaAnimais(_animais),
-                ),
-              )
+                  child: SizedBox(
+                child: filter_on
+                    ? ListaAnimais(_animais_filter)
+                    : ListaAnimais(_animais),
+              ))
             ],
           ),
         ));
