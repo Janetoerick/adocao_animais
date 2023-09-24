@@ -48,7 +48,7 @@ class _AnimalPageState extends State<AnimalPage> {
       id: 'l03',
       novo: false,
       tipo: 'Gato',
-      nome: 'Antonio Gebedaia',
+      nome: 'Antônio Gebedaia',
       sexo: 'Macho',
       porte: 'Pequeno',
       idade: '1 ano',

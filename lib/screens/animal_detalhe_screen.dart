@@ -15,7 +15,12 @@ class AnimalDetalheScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.network(animal.img), // Foto do animal
+            Container(
+                alignment: Alignment.center,
+                child: Image.network(
+                  animal.img,
+                  fit: BoxFit.cover,
+                )), // Foto do animal
             Text('Tipo: ${animal.tipo}'),
             Text('Porte: ${animal.porte}'),
             Text('Sexo: ${animal.sexo}'),
