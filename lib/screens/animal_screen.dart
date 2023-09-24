@@ -26,6 +26,7 @@ class _AnimalPageState extends State<AnimalPage> {
       raca: 'falino',
       descricao: 'Branco om manchas pretas',
       contato: '994412255',
+      data_registro: DateTime.now(),
     ),
   ];
 
