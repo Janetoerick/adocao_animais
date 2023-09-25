@@ -1,10 +1,13 @@
 import 'package:adocao_animais/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:adocao_animais/models/usuario.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final Usuario? usuario;
+
+  const MyApp({Key? key, this.usuario}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -24,7 +27,8 @@ class _MyAppState extends State<MyApp> {
       ),
       initialRoute: '/',
       routes: {
-        '/': (ctx) => const TabsScreen(),
+        '/': (ctx) => TabsScreen(
+            usuario: widget.usuario), // Passe o usuário para TabsScreen
       },
     );
   }
