@@ -9,7 +9,7 @@ class Animal {
   final String img;
   final String raca;
   final String descricao;
-  final String contato;
+  final List<String> contato;
   final DateTime data_registro;
 
   const Animal({

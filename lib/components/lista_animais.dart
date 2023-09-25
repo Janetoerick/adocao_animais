@@ -7,6 +7,15 @@ class ListaAnimais extends StatelessWidget {
 
   const ListaAnimais(this.animais);
 
+  void _selectAnimal(BuildContext context, int index) {
+    Navigator.of(context)
+        .pushNamed(
+          '/detalhe_screen',
+          arguments: animais[index],
+        )
+        .then((value) => null);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -18,11 +27,12 @@ class ListaAnimais extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               // Navegação para a tela de detalhes do animal
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => AnimalDetalheScreen(animais[index]),
-                ),
-              );
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (context) => AnimalDetalheScreen(animais[index]),
+              //   ),
+              // );
+              _selectAnimal(context, index);
             },
             child: Container(
               height: 100,

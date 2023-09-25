@@ -2,33 +2,119 @@ import 'package:flutter/material.dart';
 import '../models/animal.dart';
 
 class AnimalDetalheScreen extends StatelessWidget {
-  final Animal animal;
-
-  AnimalDetalheScreen(this.animal);
+  // final Animal animal;
+  // AnimalDetalheScreen(this.animal);
+  final Function(Animal) saveAdotar;
+  final Function(Animal) isAdotado;
+  const AnimalDetalheScreen(this.saveAdotar, this.isAdotado);
 
   @override
   Widget build(BuildContext context) {
+    final animal = ModalRoute.of(context)?.settings.arguments as Animal;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(animal.nome), // Nome do animal como título da página
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-                alignment: Alignment.center,
-                child: Image.network(
-                  animal.img,
-                  fit: BoxFit.cover,
-                )), // Foto do animal
-            Text('Tipo: ${animal.tipo}'),
-            Text('Porte: ${animal.porte}'),
-            Text('Sexo: ${animal.sexo}'),
-            Text('Idade: ${animal.idade}'),
-            Text('Raça: ${animal.raca}'),
-            Text('Descrição: ${animal.descricao}'),
-          ],
-        ),
+      body: Column(
+        children: [
+          Flexible(
+            flex: 8,
+            child: Column(children: [
+              Stack(children: [
+                Container(
+                    color: Theme.of(context).colorScheme.secondary,
+                    alignment: Alignment.center,
+                    child: Image.network(
+                      animal.img,
+                      fit: BoxFit.cover,
+                      height: 200,
+                    )),
+                (animal.novo)
+                    ? Positioned(
+                        top: 10,
+                        left: 30,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
+                          width: 50,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Novo",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      )
+                    : Container()
+              ]), // Foto do animal
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Porte: ${animal.porte}',
+                            style: Theme.of(context).textTheme.headline6),
+                        Text('Sexo: ${animal.sexo}',
+                            style: Theme.of(context).textTheme.headline6),
+                        Text('Idade: ${animal.idade}',
+                            style: Theme.of(context).textTheme.headline6),
+                        Text('Raça: ${animal.raca}',
+                            style: Theme.of(context).textTheme.headline6),
+                        Text('Descrição: ${animal.descricao}',
+                            style: Theme.of(context).textTheme.headline6),
+                        Text('Contatos:',
+                            style: Theme.of(context).textTheme.headline6),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 25),
+                          child: ListView.builder(
+                            padding: EdgeInsets.only(top: 5),
+                            shrinkWrap: true,
+                            itemCount: animal.contato.length,
+                            itemBuilder: (context, index) {
+                              return Text(
+                                animal.contato[index],
+                                style: TextStyle(fontSize: 18),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ]),
+          ),
+          Flexible(
+            flex: 1,
+            child: ElevatedButton(
+              onPressed: isAdotado(animal)
+                  ? null
+                  : () {
+                      saveAdotar(animal);
+                      Navigator.of(context).pop();
+                    },
+              child: SizedBox(
+                width: 200,
+                height: 50,
+                child: Center(
+                  child: Text(
+                    "Adotar",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

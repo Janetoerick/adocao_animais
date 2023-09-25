@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../models/animal.dart';
+
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final List<Animal> favoriteAnimals;
+  const HomeScreen(this.favoriteAnimals);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

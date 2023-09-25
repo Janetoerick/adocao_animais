@@ -1,10 +1,13 @@
 import 'package:adocao_animais/screens/animal_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../models/animal.dart';
 import 'home_screen.dart';
 
 class TabsScreen extends StatefulWidget {
-  const TabsScreen({Key? key}) : super(key: key);
+  final List<Animal> AnimalsAdotados;
+
+  const TabsScreen(this.AnimalsAdotados);
 
   @override
   State<TabsScreen> createState() => _HomePageState();
@@ -32,7 +35,7 @@ class _HomePageState extends State<TabsScreen> {
       body: PageView(
         controller: pc,
         children: [
-          HomeScreen(),
+          HomeScreen(widget.AnimalsAdotados),
           AnimalPage(),
         ],
         onPageChanged: setPaginaAtual,
