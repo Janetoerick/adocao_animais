@@ -1,5 +1,6 @@
 import 'package:adocao_animais/components/filtro_animais.dart';
 import 'package:adocao_animais/components/lista_animais.dart';
+import 'package:adocao_animais/screens/animal_favorito_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../components/filter_view.dart';
@@ -115,6 +116,16 @@ class _AnimalPageState extends State<AnimalPage> {
               IconButton(
                 onPressed: () => _openTaskFilterModal(context),
                 icon: Icon(Icons.filter_list),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => TelaAnimaisFavoritados(_animais),
+                    ),
+                  );
+                },
+                icon: Icon(Icons.favorite), // Ícone de favoritos
               )
             ],
           ),

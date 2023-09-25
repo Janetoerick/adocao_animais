@@ -11,8 +11,9 @@ class Animal {
   final String descricao;
   final String contato;
   final DateTime data_registro;
+  bool isFavorito;
 
-  const Animal({
+  Animal({
     required this.id,
     required this.novo,
     required this.tipo,
@@ -25,5 +26,6 @@ class Animal {
     required this.descricao,
     required this.contato,
     required this.data_registro,
+    this.isFavorito = false,
   });
 }

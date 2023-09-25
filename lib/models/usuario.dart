@@ -70,7 +70,23 @@ class GerenciadorUsuarios {
   }
 
   // Método para adicionar um novo usuário
-  void cadastrarNovoUsuario(Usuario novoUsuario) {
+  void cadastrarNovoUsuario({
+    required String nome,
+    required String email,
+    required String telefone,
+    required String cpf,
+    required String login,
+    required String senha,
+  }) {
+    final novoUsuario = Usuario(
+      id: DateTime.now().toString(),
+      nome: nome,
+      email: email,
+      telefone: telefone,
+      cpf: cpf,
+      login: login,
+      senha: senha,
+    );
     _usuarios.add(novoUsuario);
   }
 }
