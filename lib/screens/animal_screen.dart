@@ -83,7 +83,7 @@ class _AnimalPageState extends State<AnimalPage> {
                         padding: const EdgeInsets.all(20),
                         child: Center(
                           child: DefaultView(
-                              'Não há esses animais registrados no momento...'),
+                              'Não há ${filter}s registrados no momento...'),
                         ),
                       ),
           ))
