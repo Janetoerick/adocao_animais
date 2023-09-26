@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 
 import 'package:adocao_animais/models/usuario.dart';
 import 'home_screen.dart';
+import '../models/adocao.dart';
+import '../models/animal.dart';
 
 class TabsScreen extends StatefulWidget {
   final Usuario? usuario;
-
-  const TabsScreen({Key? key, this.usuario}) : super(key: key);
+  final List<Adocao> adocoes;
+  final Function(Animal) onSubmit;
+  const TabsScreen(this.usuario,this.adocoes, this.onSubmit);
 
   @override
   State<TabsScreen> createState() => _HomePageState();
@@ -35,8 +38,7 @@ class _HomePageState extends State<TabsScreen> {
       body: PageView(
         controller: pc,
         children: [
-          HomeScreen(
-              usuario: widget.usuario), // Passe o usuário para HomeScreen
+          HomeScreen(widget.usuario, widget.adocoes, widget.onSubmit),
           AnimalPage(),
         ],
         onPageChanged: setPaginaAtual,
