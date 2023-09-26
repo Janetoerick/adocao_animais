@@ -49,7 +49,8 @@ class _HomePageState extends State<TabsScreen> {
         currentIndex: paginaAtual,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favoritos'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite), label: 'Favoritos'),
           BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'Animais'),
         ],
         onTap: (pagina) {
