@@ -8,7 +8,7 @@ class AnimalDetalheScreen extends StatefulWidget {
   final Function(Animal) saveAdotar;
   final Function(Animal) isAdotado;
   const AnimalDetalheScreen(this.saveAdotar, this.isAdotado);
-  
+
   @override
   State<AnimalDetalheScreen> createState() => _AnimalDetalheScreenState();
 }
@@ -39,13 +39,17 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
                         fit: BoxFit.cover,
                         height: 200,
                       )),
-                      FavoriteButton(
-                animal: animal,
-                onChanged: (bool isFavorito) {
-                  setState(() {
-                    animal.isFavorito = isFavorito;
-                  });
-                }),
+                  Positioned(
+                    top: 10,
+                    right: 30,
+                    child: FavoriteButton(
+                        animal: animal,
+                        onChanged: (bool isFavorito) {
+                          setState(() {
+                            animal.isFavorito = isFavorito;
+                          });
+                        }),
+                  ),
                   (animal.novo)
                       ? Positioned(
                           top: 10,

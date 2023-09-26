@@ -2,6 +2,7 @@ import 'package:adocao_animais/screens/animal_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adocao_animais/models/usuario.dart';
+import 'animal_favorito_screen.dart';
 import 'home_screen.dart';
 import '../models/adocao.dart';
 import '../models/animal.dart';
@@ -10,7 +11,7 @@ class TabsScreen extends StatefulWidget {
   final Usuario? usuario;
   final List<Adocao> adocoes;
   final Function(Animal) onSubmit;
-  const TabsScreen(this.usuario,this.adocoes, this.onSubmit);
+  const TabsScreen(this.usuario, this.adocoes, this.onSubmit);
 
   @override
   State<TabsScreen> createState() => _HomePageState();
@@ -39,6 +40,7 @@ class _HomePageState extends State<TabsScreen> {
         controller: pc,
         children: [
           HomeScreen(widget.usuario, widget.adocoes, widget.onSubmit),
+          TelaAnimaisFavoritados(),
           AnimalPage(),
         ],
         onPageChanged: setPaginaAtual,
@@ -47,6 +49,7 @@ class _HomePageState extends State<TabsScreen> {
         currentIndex: paginaAtual,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favoritos'),
           BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'Animais'),
         ],
         onTap: (pagina) {
