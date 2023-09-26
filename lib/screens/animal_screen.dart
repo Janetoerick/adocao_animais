@@ -2,6 +2,7 @@ import 'package:adocao_animais/components/filtro_animais.dart';
 import 'package:adocao_animais/components/lista_animais.dart';
 import 'package:flutter/material.dart';
 
+import '../components/default_view.dart';
 import '../components/filter_view.dart';
 import '../models/animal.dart';
 
@@ -79,16 +80,8 @@ class _AnimalPageState extends State<AnimalPage> {
                     : Padding(
                         padding: const EdgeInsets.all(20),
                         child: Center(
-                          child: Container(
-                            child: Text(
-                              "Não há esses animais registrados no momento...",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.primary),
-                            ),
-                          ),
+                          child: DefaultView(
+                              'Não há esses animais registrados no momento...'),
                         ),
                       ),
           ))

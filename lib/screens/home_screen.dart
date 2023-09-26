@@ -1,6 +1,7 @@
 import 'package:adocao_animais/components/lista_adocoes.dart';
 import 'package:flutter/material.dart';
 
+import '../components/default_view.dart';
 import '../models/adocao.dart';
 import '../models/animal.dart';
 
@@ -78,26 +79,8 @@ class HomeScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Stack(alignment: Alignment.center, children: [
-                          Positioned(
-                              child: Image.asset(
-                            'lib/assets/patas.png',
-                            height: 150,
-                            width: 150,
-                            color: Color(0xffcbcbcb),
-                          )),
-                          SizedBox(
-                            width: 250,
-                            child: Text(
-                                'Você não está em processos de adoção no momento...',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                                textAlign: TextAlign.center),
-                          ),
-                        ]),
+                        DefaultView(
+                            'Você não está em processos de adoção no momento...'),
                       ],
                     ),
                   )
