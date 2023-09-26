@@ -18,41 +18,48 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Adote Petz"),
-        centerTitle: true,
+        title: Row(
+          children: [
+            Text("Adote Petz ", style: TextStyle(fontWeight: FontWeight.bold)),
+            Icon(Icons.pets)
+          ],
+        ),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
           // Botão de acesso à tela de login
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-              );
-            },
-            child: Row(
-              children: [
-                if (usuario !=
-                    null) // Exibe o nome do usuário se estiver logado
+          //
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: TextButton(
+              onPressed: () {
+                if (usuario == null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
+                }
+              },
+              child: Row(
+                children: [
                   SizedBox(width: 10),
-                if (usuario != null)
-                  Text("Olá, ${usuario!.nome}",
-                      style: TextStyle(color: Colors.white)),
-                SizedBox(width: 10),
-                Text("Login", style: TextStyle(color: Colors.white)),
-              ],
+                  (usuario != null)
+                      ? Text("Olá, ${usuario!.nome}",
+                          style: TextStyle(color: Colors.white))
+                      : Text("Login", style: TextStyle(color: Colors.white)),
+                ],
+              ),
             ),
           ),
           // Botão de acesso à tela de cadastro
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CadastroScreen()),
-              );
-            },
-            child: Text("Cadastro", style: TextStyle(color: Colors.white)),
-          ),
+          // TextButton(
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => CadastroScreen()),
+          //     );
+          //   },
+          //   child: Text("Cadastro", style: TextStyle(color: Colors.white)),
+          // ),
         ],
       ),
       body: Padding(
