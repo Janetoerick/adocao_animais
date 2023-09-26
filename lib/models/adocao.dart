@@ -1,15 +1,18 @@
 import 'package:adocao_animais/models/animal.dart';
+import 'package:adocao_animais/models/usuario.dart';
 
 class Adocao {
   final String id;
-  final String cpf_adotante;
-  final String email_adotante;
-  final Animal adotado;
+  final Usuario usuario;
+  final Animal animal;
+  final String status;
+  final DateTime data;
 
   const Adocao({
     required this.id,
-    required this.cpf_adotante,
-    required this.email_adotante,
-    required this.adotado,
+    required this.usuario,
+    required this.animal,
+    required this.status,
+    required this.data,
   });
 }
