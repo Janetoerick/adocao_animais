@@ -73,6 +73,8 @@ class _AnimalPageState extends State<AnimalPage> {
           ),
           Expanded(
               child: SizedBox(
+            width: double.infinity,
+            height: double.infinity,
             child: !filter_on
                 ? ListaAnimais(animais)
                 : !_animais_filter.isEmpty
