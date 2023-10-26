@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:adocao_animais/screens/animal_detalhe_screen.dart';
+import 'package:adocao_animais/screens/cadastro_screen.dart';
 import 'package:adocao_animais/screens/login_screen.dart';
 import 'package:adocao_animais/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
@@ -51,10 +52,9 @@ class _MyAppState extends State<MyApp> {
         initialRoute: '/',
         routes: {
           '/': (ctx) => TabsScreen(),
-          '/detalhe_screen': (ctx) =>
-              AnimalDetalheScreen(),
-          '/login': (ctx) =>
-              LoginScreen(),
+          '/detalhe_screen': (ctx) => AnimalDetalheScreen(),
+          '/login': (ctx) => LoginScreen(),
+          '/cadastro_user': (ctx) => CadastroScreen(),
         },
       ),
     );

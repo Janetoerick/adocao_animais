@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 20),
             child: TextButton(
               onPressed: () {
-                if (user.usuario.id == '') {
+                if (user.usuario.login == '') {
                   Navigator.pushNamed(
                     context,
                     '/login',
@@ -43,7 +43,7 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 children: [
                   SizedBox(width: 10),
-                  (user.usuario.id != '')
+                  (user.usuario.login != '')
                       ? Text("Olá, ${user.usuario!.nome}",
                           style: TextStyle(color: Colors.white))
                       : Text("Login", style: TextStyle(color: Colors.white)),

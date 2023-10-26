@@ -1,5 +1,7 @@
 import '../models/animal.dart';
 
+final URLrepository = 'https://adocao-animais-default-rtdb.firebaseio.com/';
+
 final List<Animal> animaisData = [
   Animal(
     id: 'l01',

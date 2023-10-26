@@ -65,9 +65,9 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(builder: (context) => CadastroScreen()),
+                  '/cadastro_user'
                 );
               },
               child: Text('Criar uma conta'),

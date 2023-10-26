@@ -1,14 +1,12 @@
 class Usuario {
-  final String id;
   final String nome;
   final String email;
   final String telefone;
   final String cpf;
-  final String login;
+  final String login; // CHAVE <-
   final String senha;
 
   const Usuario({
-    required this.id,
     required this.nome,
     required this.email,
     required this.telefone,
@@ -21,7 +19,6 @@ class Usuario {
 class UsuarioInvalido extends Usuario {
   UsuarioInvalido()
       : super(
-          id: '',
           nome: '',
           email: '',
           telefone: '',
@@ -35,7 +32,6 @@ class UsuarioInvalido extends Usuario {
 class GerenciadorUsuarios {
   List<Usuario> _usuarios = [
     Usuario(
-      id: '1',
       nome: 'João',
       email: 'joao@example.com',
       telefone: '123456789',
@@ -44,7 +40,6 @@ class GerenciadorUsuarios {
       senha: 'senha123',
     ),
     Usuario(
-      id: '2',
       nome: 'Maria',
       email: 'maria@example.com',
       telefone: '987654321',
@@ -79,7 +74,6 @@ class GerenciadorUsuarios {
     required String senha,
   }) {
     final novoUsuario = Usuario(
-      id: DateTime.now().toString(),
       nome: nome,
       email: email,
       telefone: telefone,

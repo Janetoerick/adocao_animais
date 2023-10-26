@@ -1,14 +1,18 @@
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:adocao_animais/data/my_data.dart';
 import 'package:adocao_animais/models/adocao.dart';
 import 'package:adocao_animais/models/animal.dart';
 import 'package:adocao_animais/models/usuario.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'package:http/http.dart' as http;
+
 
 class UsuarioRepository with ChangeNotifier {
 
-  Usuario _usuario = Usuario(id: '', nome: '', email: '', telefone: '', cpf: '', login: '', senha: '');
+  Usuario _usuario = Usuario(nome: '', email: '', telefone: '', cpf: '', login: '', senha: '');
   List<Animal> _animaisFav = [];
   List<Adocao> _adocoes = [];
 
@@ -24,8 +28,35 @@ class UsuarioRepository with ChangeNotifier {
     return [..._adocoes];
   }
 
+  Future<bool> cadastrarUsuario(Usuario usuario) async {
+    bool _userExists = false;
+    final response = await http
+        .get(Uri.parse(
+            '${URLrepository}users.json?orderBy="login"&equalTo="${usuario.login}"&print=pretty'))
+        .then((value) {
+      if (value.body.length > 10) {
+        _userExists = true;
+      }
+    });
+    if (!_userExists) {
+      http
+          .post(Uri.parse('$URLrepository/users.json'),
+              body: jsonEncode({
+                "nome": usuario.nome,
+                "email": usuario.email,
+                "telefone": usuario.telefone,
+                "cpf": usuario.cpf,
+                "login": usuario.login,
+                "senha": usuario.senha,
+              }))
+          .then((value) => print(value.statusCode));
+      return Future.value(true);
+    }
+    return Future.value(false);
+  }
+
   Future<bool> attAnimalFav(Animal animal){
-    if(_usuario.id == ''){
+    if(_usuario.login == ''){
       return Future.value(false);
     }
     
@@ -40,7 +71,7 @@ class UsuarioRepository with ChangeNotifier {
   }
 
   Future<bool> attAdocoes(Animal animal){
-    if(_usuario.id == ''){
+    if(_usuario.login == ''){
       return Future.value(false);
     }
     
