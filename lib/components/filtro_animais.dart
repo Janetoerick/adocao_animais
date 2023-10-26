@@ -61,9 +61,9 @@ class _FiltroAnimais extends State<FiltroAnimais> {
                               decoration: BoxDecoration(
                                 color: 
                                 typeSelect == list_name[index] ?
-                                  Theme.of(context).colorScheme.secondary
+                                  Color.fromARGB(255, 219, 219, 219)
                                 :
-                                  const Color.fromARGB(255, 219, 219, 219)
+                                  Color.fromARGB(255, 241, 241, 241)
                                 ,
                                 borderRadius: BorderRadius.circular(15)
                               ),
@@ -81,6 +81,11 @@ class _FiltroAnimais extends State<FiltroAnimais> {
                                 height: 50,
                                 alignment: Alignment.centerLeft,
                                 fit: BoxFit.fitHeight,
+                                color: 
+                                typeSelect == list_name[index] 
+                                ? Theme.of(context).colorScheme.secondary
+                                : Colors.black45
+                                ,
                                 ),
                             )
                           ),
@@ -89,7 +94,16 @@ class _FiltroAnimais extends State<FiltroAnimais> {
                             right: 30,
                             child: Text(
                               list_name[index],
-                              style: TextStyle(fontWeight: typeSelect == list_name[index] ? FontWeight.bold : FontWeight.normal),
+                              style: TextStyle(
+                                fontWeight: 
+                                  typeSelect == list_name[index] 
+                                  ? FontWeight.bold 
+                                  : FontWeight.normal,
+                                color: 
+                                  typeSelect == list_name[index] 
+                                  ? Theme.of(context).colorScheme.secondary
+                                  : Colors.black45
+                                ),
                             ),),
                         ],
                                       ),
