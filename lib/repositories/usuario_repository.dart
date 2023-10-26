@@ -28,6 +28,48 @@ class UsuarioRepository with ChangeNotifier {
     return [..._adocoes];
   }
 
+  Future<String> loginUsuario(String login, String senha) async{
+    String result = 'OK';
+    final response = await http
+        .get(Uri.parse(
+          '${URLrepository}users.json?orderBy="login"&equalTo="${login}"&print=pretty'))
+        .then((value) {
+          if(value.body.length > 10){
+            Usuario user = new Usuario(nome: '', email: '', telefone: '', cpf: '', login: '', senha: '');
+            Map<String, dynamic> map = json.decode(value.body);
+            map.forEach((key, value) { 
+              user = Usuario(
+                nome: map[key]['nome'], 
+                email: map[key]['email'], 
+                telefone: map[key]['telefone'], 
+                cpf: map[key]['cpf'], 
+                login: map[key]['login'], 
+                senha: map[key]['senha']);
+            });
+            if(user.senha == senha){
+              _usuario = user;
+            } else {
+              result = 'Senha incorreta';
+            }
+          } else {
+            result = 'Login não existe';
+          }
+        });
+        notifyListeners();
+
+    return Future.value(result);
+  }
+
+  Future<void> logoutUsuario(){
+    _usuario = Usuario(nome: '', email: '', telefone: '', cpf: '', login: '', senha: '');
+    _animaisFav.clear();
+    _adocoes.clear();
+
+    notifyListeners();
+    
+    return Future.value();
+  }
+
   Future<bool> cadastrarUsuario(Usuario usuario) async {
     bool _userExists = false;
     final response = await http

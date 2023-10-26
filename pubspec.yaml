@@ -23,6 +23,7 @@ flutter:
   assets:
    - lib/assets/dog_and_cat.png
    - lib/assets/patas.png
+   - lib/assets/coracao_patas.png
   # fonts:
   #   - family: Schyler
   #     fonts:

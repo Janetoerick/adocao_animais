@@ -125,11 +125,15 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
                       if(!value) {
             showDialog(context: context, builder: (BuildContext context) =>
             AlertDialog(
+              
               title: const Text('Requer login'),
               content: const Text('Para adotar um animal você deve estar logado no sistema...'),
               actions: [
                 TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
-                TextButton(onPressed: () {}, child: const Text('Fazer login'),)
+                TextButton(onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).pushNamed('/login');
+                }, child: const Text('Fazer login'),)
               ],
             ));
           } else {

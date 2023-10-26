@@ -29,28 +29,57 @@ class HomeScreen extends StatelessWidget {
         actions: [
           // Botão de acesso à tela de login
           //
+          
           Padding(
             padding: const EdgeInsets.only(right: 20),
-            child: TextButton(
+            child: 
+            (user.usuario.login == '') ?
+            TextButton(
               onPressed: () {
-                if (user.usuario.login == '') {
                   Navigator.pushNamed(
                     context,
                     '/login',
                   );
-                }
               },
-              child: Row(
+              child: Text("Fazer login", style: TextStyle(color: Colors.white)),
+            )
+            :
+          PopupMenuButton(
+            child: Row(
                 children: [
-                  SizedBox(width: 10),
-                  (user.usuario.login != '')
-                      ? Text("Olá, ${user.usuario!.nome}",
+                  Icon(Icons.account_circle, color: Colors.white,),
+                  SizedBox(width: 5,),
+                  
+                      Text("${user.usuario.nome}",
                           style: TextStyle(color: Colors.white))
-                      : Text("Login", style: TextStyle(color: Colors.white)),
                 ],
               ),
-            ),
-          ),
+            itemBuilder: ((context) => [
+            PopupMenuItem(child: ListTile(
+                        title: Row(
+                          children: [
+                            Icon(Icons.logout),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text('Logout'),
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                              Provider.of<UsuarioRepository>(
+                                context,
+                                listen: false,
+                              ).logoutUsuario();
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Sessão finalizada!'),
+                        duration: const Duration(seconds: 1),
+                      ));
+                        },
+                      ),)
+          ]))
+          )
+          ,
           // Botão de acesso à tela de cadastro
           // TextButton(
           //   onPressed: () {
