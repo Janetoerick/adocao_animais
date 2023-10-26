@@ -24,6 +24,10 @@ flutter:
    - lib/assets/dog_and_cat.png
    - lib/assets/patas.png
    - lib/assets/coracao_patas.png
+   - lib/assets/icon_cachorro.png
+   - lib/assets/icon_gato.png
+   - lib/assets/icon_coelho.png
+   - lib/assets/icon_papagaio.png
   # fonts:
   #   - family: Schyler
   #     fonts:

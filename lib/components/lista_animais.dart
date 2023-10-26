@@ -6,21 +6,18 @@ import 'package:adocao_animais/screens/animal_detalhe_screen.dart';
 import 'package:provider/provider.dart';
 
 class ListaAnimais extends StatelessWidget {
-
-  const ListaAnimais();
+  final List<Animal> animais;
+  const ListaAnimais(this.animais);
 
   @override
   Widget build(BuildContext context) {
 
-    return Consumer<AnimaisRepository>(
-      builder: (context, animal, child) { 
-        return ListView.builder(
-        padding: const EdgeInsets.all(8),
-        itemCount: animal.animais.length,
-        itemBuilder: (ctx, index) {
-          return AnimalIcon(animal.animais[index]);
-        },
-            );
-  });
+    return ListView.builder(
+    padding: const EdgeInsets.all(8),
+    itemCount: animais.length,
+    itemBuilder: (ctx, index) {
+      return AnimalIcon(animais[index]);
+    },
+        );
   }
 }

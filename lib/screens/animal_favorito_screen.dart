@@ -16,7 +16,7 @@ class TelaAnimaisFavoritados extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Animais Favoritados'),
+        title: Text('Seus Favoritados'),
         backgroundColor: Theme.of(context).colorScheme.secondary,
       ),
       body: (user.animaisFav.isEmpty)
