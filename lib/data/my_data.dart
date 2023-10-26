@@ -1,6 +1,6 @@
 import '../models/animal.dart';
 
-List<Animal> animais = [
+final List<Animal> animaisData = [
   Animal(
     id: 'l01',
     novo: true,

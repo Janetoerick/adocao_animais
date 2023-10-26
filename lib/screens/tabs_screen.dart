@@ -8,10 +8,7 @@ import '../models/adocao.dart';
 import '../models/animal.dart';
 
 class TabsScreen extends StatefulWidget {
-  final Usuario? usuario;
-  final List<Adocao> adocoes;
-  final Function(Animal) onSubmit;
-  const TabsScreen(this.usuario, this.adocoes, this.onSubmit);
+  const TabsScreen();
 
   @override
   State<TabsScreen> createState() => _HomePageState();
@@ -39,7 +36,7 @@ class _HomePageState extends State<TabsScreen> {
       body: PageView(
         controller: pc,
         children: [
-          HomeScreen(widget.usuario, widget.adocoes, widget.onSubmit),
+          HomeScreen(),
           TelaAnimaisFavoritados(),
           AnimalPage(),
         ],

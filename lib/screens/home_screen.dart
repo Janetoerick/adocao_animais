@@ -1,21 +1,22 @@
 import 'package:adocao_animais/components/lista_adocoes.dart';
+import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:adocao_animais/screens/login_screen.dart';
 import 'package:adocao_animais/screens/cadastro_screen.dart';
 import 'package:adocao_animais/models/usuario.dart';
+import 'package:provider/provider.dart';
 
 import '../components/default_view.dart';
 import '../models/adocao.dart';
 import '../models/animal.dart';
 
 class HomeScreen extends StatelessWidget {
-  final Usuario? usuario;
-  final List<Adocao> adocoes;
-  final Function(Animal) onSubmit;
-  const HomeScreen(this.usuario, this.adocoes, this.onSubmit);
+  const HomeScreen();
 
   @override
   Widget build(BuildContext context) {
+    var user = context.watch<UsuarioRepository>();
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -32,18 +33,18 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 20),
             child: TextButton(
               onPressed: () {
-                if (usuario == null) {
-                  Navigator.push(
+                if (user.usuario.id == '') {
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    '/login',
                   );
                 }
               },
               child: Row(
                 children: [
                   SizedBox(width: 10),
-                  (usuario != null)
-                      ? Text("Olá, ${usuario!.nome}",
+                  (user.usuario.id != '')
+                      ? Text("Olá, ${user.usuario!.nome}",
                           style: TextStyle(color: Colors.white))
                       : Text("Login", style: TextStyle(color: Colors.white)),
                 ],
@@ -118,7 +119,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            (adocoes.isEmpty)
+            (user.adocoes.isEmpty)
                 ? Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -128,7 +129,7 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                   )
-                : ListaAdocoes(adocoes, onSubmit)
+                : ListaAdocoes()
           ],
         ),
       ),

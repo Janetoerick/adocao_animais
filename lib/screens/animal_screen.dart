@@ -33,7 +33,7 @@ class _AnimalPageState extends State<AnimalPage> {
     setState(() {
       if (tipo != '') {
         filter = tipo;
-        _animais_filter.addAll(animais.where((e) => e.tipo == tipo));
+        _animais_filter.addAll(animaisData.where((e) => e.tipo == tipo));
       } else {
         filter_on = false;
       }
@@ -87,9 +87,9 @@ class _AnimalPageState extends State<AnimalPage> {
             width: double.infinity,
             height: double.infinity,
             child: !filter_on
-                ? ListaAnimais(animais)
+                ? ListaAnimais()
                 : !_animais_filter.isEmpty
-                    ? ListaAnimais(_animais_filter)
+                    ? ListaAnimais()
                     : Padding(
                         padding: const EdgeInsets.all(20),
                         child: Center(

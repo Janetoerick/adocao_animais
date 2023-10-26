@@ -1,23 +1,26 @@
 import 'package:adocao_animais/components/favorite_button.dart';
+import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/animal.dart';
 import '../data/my_data.dart';
 
 class AnimalDetalheScreen extends StatefulWidget {
-  final Function(Animal) saveAdotar;
-  final Function(Animal) isAdotado;
-  const AnimalDetalheScreen(this.saveAdotar, this.isAdotado);
+  const AnimalDetalheScreen();
 
   @override
   State<AnimalDetalheScreen> createState() => _AnimalDetalheScreenState();
 }
 
 class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
+
   @override
   Widget build(BuildContext context) {
+    var usuario = context.watch<UsuarioRepository>();
+    
     final animal = ModalRoute.of(context)?.settings.arguments == null
-        ? animais[0] // Tava dando null quando atualizava a página
+        ? animaisData[0] // Tava dando null quando atualizava a página
         : ModalRoute.of(context)!.settings.arguments as Animal;
 
     return Scaffold(
@@ -115,11 +118,24 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
             ),
           ),
           ElevatedButton(
-            onPressed: widget.isAdotado(animal)
+            onPressed: usuario.isAdotado(animal)
                 ? null
                 : () {
-                    widget.saveAdotar(animal);
-                    Navigator.of(context).pop();
+                    usuario.attAdocoes(animal).then((value) {
+                      if(!value) {
+            showDialog(context: context, builder: (BuildContext context) =>
+            AlertDialog(
+              title: const Text('Requer login'),
+              content: const Text('Para adotar um animal você deve estar logado no sistema...'),
+              actions: [
+                TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
+                TextButton(onPressed: () {}, child: const Text('Fazer login'),)
+              ],
+            ));
+          } else {
+            Navigator.of(context).pop();
+          }
+                    });
                   },
             child: SizedBox(
               width: 200,

@@ -1,35 +1,38 @@
+import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/adocao.dart';
 import '../models/animal.dart';
 
-class ListaAdocoes extends StatelessWidget {
-  final List<Adocao> adocoes;
-  final Function(Animal) onSubmit;
-  const ListaAdocoes(this.adocoes, this.onSubmit);
+class ListaAdocoes extends StatefulWidget {
+  const ListaAdocoes();
 
-  void _selectAnimal(BuildContext context, int index) {
-    Navigator.of(context)
-        .pushNamed(
-          '/detalhe_screen',
-          arguments: adocoes[index].animal,
-        )
-        .then((value) => null);
-  }
+  @override
+  State<ListaAdocoes> createState() => _ListaAdocoesState();
+}
+
+class _ListaAdocoesState extends State<ListaAdocoes> {
 
   @override
   Widget build(BuildContext context) {
+    var user = context.watch<UsuarioRepository>();
+
     return Expanded(
       child: Container(
         padding: EdgeInsets.all(20),
         child: ListView.builder(
-          itemCount: adocoes.length,
+          itemCount: user.adocoes.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: () {
-                  _selectAnimal(context, index);
+                  Navigator.of(context)
+        .pushNamed(
+          '/detalhe_screen',
+          arguments: user.adocoes[index].animal,
+        );
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -41,13 +44,13 @@ class ListaAdocoes extends StatelessWidget {
                   height: 100,
                   child: Stack(children: [
                     Image.network(
-                      adocoes[index].animal.img,
+                      user.adocoes[index].animal.img,
                       height: 100,
                       width: 150,
                       fit: BoxFit.cover,
                     ),
                     Positioned(
-                      child: Text(adocoes[index].status,
+                      child: Text(user.adocoes[index].status,
                           style: TextStyle(color: Colors.white)),
                       bottom: 0,
                       right: 10,
@@ -70,7 +73,7 @@ class ListaAdocoes extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  onSubmit(adocoes[index].animal);
+                                  user.attAdocoes(user.adocoes[index].animal);
                                   Navigator.of(context).pop();
                                 },
                                 child: Text('Sim'),
