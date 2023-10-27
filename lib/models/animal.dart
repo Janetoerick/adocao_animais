@@ -2,7 +2,7 @@ import 'package:adocao_animais/models/usuario.dart';
 
 class Animal {
   final String id;
-  final String dono;
+  final Usuario dono;
   final bool novo; // se é novo no abrigo (1 semana)
   final String especie; // Cachorro, Gato ...
   final String nome;

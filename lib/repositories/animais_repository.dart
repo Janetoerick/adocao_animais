@@ -52,10 +52,18 @@ class AnimaisRepository with ChangeNotifier {
   }
 
   Future<void> addAnimal(Animal animal) {
+    Map<String, dynamic> user_map = {};
+    user_map["nome"] = animal.dono.nome;
+    user_map["email"] = animal.dono.email;
+    user_map["telefone"] = animal.dono.telefone;
+    user_map["cpf"] = animal.dono.cpf;
+    user_map["login"] = animal.dono.login;
+    user_map["senha"] = animal.dono.senha;
+
     final future = http.post(Uri.parse('$URLrepository/animais.json'),
         body: jsonEncode({
           "id": animal.id,
-          "dono": animal.dono,
+          "dono": user_map,
           "novo": true,
           "especie": animal.especie,
           "nome": animal.nome,
@@ -94,7 +102,7 @@ class AnimaisRepository with ChangeNotifier {
 
     final animal = Animal(
         id: hasId ? data['id'] as String : Random().nextDouble().toString(),
-        dono: user.login,
+        dono: user,
         novo: false,
         especie: data['especie'].toString(),
         nome: data['nome'].toString(),

@@ -25,8 +25,14 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
     
     var usuario = context.watch<UsuarioRepository>();
 
-    Usuario? user_animal;
-    Provider.of<UsuarioRepository>(context).findByLogin(animal.dono).then((value) => user_animal = value);
+    // late Usuario user_animal;
+    // Provider.of<UsuarioRepository>(context).findByLogin(animal.dono.login).then((value) {
+
+    //     user_animal = value;  
+
+      
+    //   print(user_animal.telefone);
+    // });
 
     return Scaffold(
       appBar: AppBar(
@@ -98,9 +104,9 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
                               style: Theme.of(context).textTheme.headline6),
                           Text('Descrição: ${animal.descricao}',
                               style: Theme.of(context).textTheme.headline6),
-                          Text('Telefone: ${user_animal!.telefone}',
+                          Text('Telefone: ${animal.dono.telefone}',
                               style: Theme.of(context).textTheme.headline6),
-                          Text('Email: ${user_animal!.email}',
+                          Text('Email: ${animal.dono.email}',
                               style: Theme.of(context).textTheme.headline6),
                         ],
                       ),

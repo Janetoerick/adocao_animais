@@ -10,7 +10,7 @@ final data = DateTime.now();
 final List<Animal> animaisData = [
   Animal(
     id: 'l01',
-    dono: 'janeto', //Usuario(nome: 'Janeto Erick', email: 'janeto@teste.com', telefone: '(84) 92927-7488', cpf: '938.387.483-92', login: 'janeto', senha: '123'),
+    dono: Usuario(nome: 'Janeto Erick', email: 'janeto@teste.com', telefone: '(84) 92927-7488', cpf: '938.387.483-92', login: 'janeto', senha: '123'),
     novo: true,
     especie: 'Gato',
     nome: 'Felix o gato',
@@ -25,7 +25,7 @@ final List<Animal> animaisData = [
   ),
   Animal(
     id: 'l02',
-    dono: 'janeto', //Usuario(nome: 'Janeto Erick', email: 'janeto@teste.com', telefone: '(84) 92927-7488', cpf: '938.387.483-92', login: 'janeto', senha: '123'),
+    dono: Usuario(nome: 'Janeto Erick', email: 'janeto@teste.com', telefone: '(84) 92927-7488', cpf: '938.387.483-92', login: 'janeto', senha: '123'),
     novo: false,
     especie: 'Cachorro',
     nome: 'Au o cão',
@@ -40,7 +40,7 @@ final List<Animal> animaisData = [
   ),
   Animal(
     id: 'l03',
-    dono: 'janeto', //Usuario(nome: 'Janeto Erick', email: 'janeto@teste.com', telefone: '(84) 92927-7488', cpf: '938.387.483-92', login: 'janeto', senha: '123'),
+    dono: Usuario(nome: 'Janeto Erick', email: 'janeto@teste.com', telefone: '(84) 92927-7488', cpf: '938.387.483-92', login: 'janeto', senha: '123'),
     novo: false,
     especie: 'Gato',
     nome: 'Antônio Gebedaia',
@@ -55,7 +55,7 @@ final List<Animal> animaisData = [
   ),
   Animal(
     id: 'l04',
-    dono: 'janeto', //Usuario(nome: 'Janeto Erick', email: 'janeto@teste.com', telefone: '(84) 92927-7488', cpf: '938.387.483-92', login: 'janeto', senha: '123'),
+    dono: Usuario(nome: 'Janeto Erick', email: 'janeto@teste.com', telefone: '(84) 92927-7488', cpf: '938.387.483-92', login: 'janeto', senha: '123'),
     novo: true,
     especie: 'Cachorro',
     nome: 'Valentino',
@@ -70,7 +70,7 @@ final List<Animal> animaisData = [
   ),
   Animal(
     id: 'l05',
-    dono: 'janeto', //Usuario(nome: 'Janeto Erick', email: 'janeto@teste.com', telefone: '(84) 92927-7488', cpf: '938.387.483-92', login: 'janeto', senha: '123'),
+    dono: Usuario(nome: 'Janeto Erick', email: 'janeto@teste.com', telefone: '(84) 92927-7488', cpf: '938.387.483-92', login: 'janeto', senha: '123'),
     novo: false,
     especie: 'Cachorro',
     nome: 'Crodoaldo Romero',
@@ -85,7 +85,7 @@ final List<Animal> animaisData = [
   ),
   Animal(
     id: 'l06',
-    dono: 'janeto', //Usuario(nome: 'Janeto Erick', email: 'janeto@teste.com', telefone: '(84) 92927-7488', cpf: '938.387.483-92', login: 'janeto', senha: '123'),
+    dono: Usuario(nome: 'Janeto Erick', email: 'janeto@teste.com', telefone: '(84) 92927-7488', cpf: '938.387.483-92', login: 'janeto', senha: '123'),
     novo: false,
     especie: 'Cachorro',
     nome: 'Raimundim',
@@ -100,7 +100,7 @@ final List<Animal> animaisData = [
   ),
   Animal(
     id: 'l07',
-    dono: 'janeto', //Usuario(nome: 'Janeto Erick', email: 'janeto@teste.com', telefone: '(84) 92927-7488', cpf: '938.387.483-92', login: 'janeto', senha: '123'),
+    dono: Usuario(nome: 'Janeto Erick', email: 'janeto@teste.com', telefone: '(84) 92927-7488', cpf: '938.387.483-92', login: 'janeto', senha: '123'), //'janeto', 
     novo: false,
     especie: 'Cachorro',
     nome: 'Pamonha',
