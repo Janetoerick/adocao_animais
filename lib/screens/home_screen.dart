@@ -1,3 +1,4 @@
+import 'package:adocao_animais/components/grid_options_home.dart';
 import 'package:adocao_animais/components/lista_adocoes.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
@@ -137,6 +138,9 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
+            Container(
+              height: 100,
+              child: const GridOptionsHome()),
             Container(
               padding: EdgeInsets.only(top: 10),
               child: Text(

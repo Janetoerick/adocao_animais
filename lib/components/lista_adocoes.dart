@@ -44,7 +44,7 @@ class _ListaAdocoesState extends State<ListaAdocoes> {
                   height: 100,
                   child: Stack(children: [
                     Image.network(
-                      user.adocoes[index].animal.img,
+                      user.adocoes[index].animal.img[0],
                       height: 100,
                       width: 150,
                       fit: BoxFit.cover,

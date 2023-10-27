@@ -41,7 +41,7 @@ class AnimalIcon extends StatelessWidget {
                       Stack(
                         children: [
                           Image.network(
-                            animal.img,
+                            animal.img[0],
                             height: 100,
                             width: 150,
                             fit: BoxFit.cover,

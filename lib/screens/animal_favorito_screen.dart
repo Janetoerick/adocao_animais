@@ -39,7 +39,7 @@ class TelaAnimaisFavoritados extends StatelessWidget {
                         .then((value) => null);
                   },
                   child: ListTile(
-                    leading: Image.network(animal.img),
+                    leading: Image.network(animal.img[0]),
                     title: Text(animal.nome),
                     subtitle: Text(animal.tipo),
                     // Outros detalhes do animal podem ser adicionados aqui

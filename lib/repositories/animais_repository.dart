@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:adocao_animais/models/animal.dart';
+import 'package:adocao_animais/models/usuario.dart';
 import '../data/my_data.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 
 class AnimaisRepository with ChangeNotifier {
@@ -13,6 +16,93 @@ class AnimaisRepository with ChangeNotifier {
 
   List<Animal> get animais {
     return [..._animais];
+  }
+
+  Future<void> addAnimal(Animal animal) {
+    final future = http.post(Uri.parse('$URLrepository/animais.json'),
+        body: jsonEncode({
+          "id": animal.id,
+          // "dono": animal.dono,
+          "novo": animal.novo,
+          "tipo": animal.tipo,
+          "nome": animal.nome,
+          "porte": animal.porte,
+          "sexo": animal.sexo,
+          "idade": animal.idade,
+          "img": animal.img,
+          "raca": animal.raca,
+          "descricao": animal.descricao,
+          "data_registro": DateFormat('dd-MM-yyyy').format(animal.data_registro),
+          "isFavorito": animal.isFavorito,
+        }));
+    return future.then((response) {
+      _animais.add(Animal(
+        id: animal.id,
+        dono: animal.dono,
+        novo: true,
+        tipo: animal.tipo,
+        nome: animal.nome,
+        porte: animal.porte,
+        sexo: animal.sexo,
+        idade: animal.idade,
+        img: animal.img,
+        raca: animal.raca,
+        descricao: animal.descricao,
+        data_registro: animal.data_registro,
+        isFavorito: animal.isFavorito
+        ));
+      notifyListeners();
+    });
+  }
+
+  Future<void> saveAnimal(Map<String, Object> data, Usuario user) {
+    bool hasId = data['id'] != null;
+    bool hasDate = data['data_registro'] != null;
+
+    final animal = Animal(
+        id: hasId ? data['id'] as String : Random().nextDouble().toString(),
+        dono: user,
+        novo: false,
+        tipo: data['tipo'].toString(),
+        nome: data['nome'].toString(),
+        porte: data['porte'].toString(),
+        sexo: data['sexo'].toString(),
+        idade: data['idade'].toString(),
+        img: data['img'] as List<String>,
+        raca: data['raca'].toString(),
+        descricao: data['descricao'].toString(),
+        data_registro: hasDate ? data['data_registro'] as DateTime : DateTime.now(),
+        isFavorito: false,
+    );
+    if (hasId) {
+      return updateAnimal(animal);
+    } else {
+      return addAnimal(animal);
+    }
+  }
+
+  Future<void> updateAnimal(Animal animal) async {
+    // int index = _items.indexWhere((p) => p.id == product.id);
+
+    // var temp = _items.where((element) => element.id == product.id);
+    // if (index >= 0) {
+    //   _items[index] = product;
+    //   notifyListeners();
+    //   final future = await http.put(
+    //       Uri.parse('$_baseUrl/products/${product.id}.json'),
+    //       body: jsonEncode({
+    //         "id": product.id,
+    //         "title": product.title,
+    //         "description": product.description,
+    //         "price": product.price,
+    //         "imageUrl": product.imageUrl,
+    //         "isFavorite": temp.first.isFavorite,
+    //       }),
+    //       headers: {
+    //         "Accept": "application/json"
+    //       }).then((response) => print(response.statusCode));
+    // }
+    return Future.value();
   }
 
 

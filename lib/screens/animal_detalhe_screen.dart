@@ -38,7 +38,7 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
                       color: Theme.of(context).colorScheme.secondary,
                       alignment: Alignment.center,
                       child: Image.network(
-                        animal.img,
+                        animal.img[0],
                         fit: BoxFit.cover,
                         height: 200,
                       )),
@@ -95,20 +95,6 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
                               style: Theme.of(context).textTheme.headline6),
                           Text('Contatos:',
                               style: Theme.of(context).textTheme.headline6),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 25),
-                            child: ListView.builder(
-                              padding: EdgeInsets.only(top: 5),
-                              shrinkWrap: true,
-                              itemCount: animal.contato.length,
-                              itemBuilder: (context, index) {
-                                return Text(
-                                  animal.contato[index],
-                                  style: TextStyle(fontSize: 18),
-                                );
-                              },
-                            ),
-                          ),
                         ],
                       ),
                     ],
