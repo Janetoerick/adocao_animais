@@ -28,8 +28,8 @@ class _AnimalPageState extends State<AnimalPage> {
         });
   }
 
-  _novo_filtro(String tipo) {
-    if(tipo != ''){
+  _novo_filtro(String especie) {
+    if(especie != ''){
       filter_on = true;
     } else {
       _remove_filter();
@@ -39,9 +39,9 @@ class _AnimalPageState extends State<AnimalPage> {
 
     final _total_animals = Provider.of<AnimaisRepository>(context, listen: false).animais;
     setState(() {
-      if (tipo != '') {
-        filter = tipo;
-        _animais_filter.addAll(_total_animals.where((e) => e.tipo == tipo));
+      if (especie != '') {
+        filter = especie;
+        _animais_filter.addAll(_total_animals.where((e) => e.especie == especie));
       } else {
         filter_on = false;
       }

@@ -12,7 +12,40 @@ import 'package:intl/intl.dart';
 
 class AnimaisRepository with ChangeNotifier {
 
-  List<Animal> _animais = animaisData;
+  List<Animal> _animais = []; // animaisData
+
+  AnimaisRepository(){
+    _setUpProducts();
+  }
+
+  _setUpProducts() async {
+    final response = await http.get(Uri.parse('$URLrepository/animais.json'));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> json = jsonDecode(response.body);
+      json.forEach((key, element) {
+        List<String> imagens = [];
+        json[key]['img'].forEach((e) {
+          imagens.add(e);
+        });
+        _animais.add(Animal(
+            id: key,
+            dono: json[key]['dono'],
+            novo: json[key]['novo'],
+            especie: json[key]['especie'],
+            nome: json[key]['nome'],
+            porte: json[key]['porte'],
+            sexo: json[key]['sexo'],
+            idade: json[key]['idade'],
+            img: imagens,
+            raca: json[key]['raca'],
+            descricao: json[key]['descricao'],
+            data_registro: json[key]['data_registro'],
+            isFavorito: json[key]['isFavorito']));
+      });
+    }
+    notifyListeners();
+  }
 
   List<Animal> get animais {
     return [..._animais];
@@ -22,9 +55,9 @@ class AnimaisRepository with ChangeNotifier {
     final future = http.post(Uri.parse('$URLrepository/animais.json'),
         body: jsonEncode({
           "id": animal.id,
-          // "dono": animal.dono,
-          "novo": animal.novo,
-          "tipo": animal.tipo,
+          "dono": animal.dono,
+          "novo": true,
+          "especie": animal.especie,
           "nome": animal.nome,
           "porte": animal.porte,
           "sexo": animal.sexo,
@@ -32,7 +65,7 @@ class AnimaisRepository with ChangeNotifier {
           "img": animal.img,
           "raca": animal.raca,
           "descricao": animal.descricao,
-          "data_registro": DateFormat('dd-MM-yyyy').format(animal.data_registro),
+          "data_registro": animal.data_registro,
           "isFavorito": animal.isFavorito,
         }));
     return future.then((response) {
@@ -40,7 +73,7 @@ class AnimaisRepository with ChangeNotifier {
         id: animal.id,
         dono: animal.dono,
         novo: true,
-        tipo: animal.tipo,
+        especie: animal.especie,
         nome: animal.nome,
         porte: animal.porte,
         sexo: animal.sexo,
@@ -61,9 +94,9 @@ class AnimaisRepository with ChangeNotifier {
 
     final animal = Animal(
         id: hasId ? data['id'] as String : Random().nextDouble().toString(),
-        dono: user,
+        dono: user.login,
         novo: false,
-        tipo: data['tipo'].toString(),
+        especie: data['especie'].toString(),
         nome: data['nome'].toString(),
         porte: data['porte'].toString(),
         sexo: data['sexo'].toString(),
@@ -71,7 +104,7 @@ class AnimaisRepository with ChangeNotifier {
         img: data['img'] as List<String>,
         raca: data['raca'].toString(),
         descricao: data['descricao'].toString(),
-        data_registro: hasDate ? data['data_registro'] as DateTime : DateTime.now(),
+        data_registro: hasDate ? data['data_registro'].toString() : DateFormat('dd-MM-yyyy').format(DateTime.now()),
         isFavorito: false,
     );
     if (hasId) {

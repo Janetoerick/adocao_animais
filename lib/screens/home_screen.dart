@@ -1,5 +1,6 @@
 import 'package:adocao_animais/components/grid_options_home.dart';
 import 'package:adocao_animais/components/lista_adocoes.dart';
+import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:adocao_animais/screens/login_screen.dart';
@@ -16,6 +17,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var animals = context.watch<AnimaisRepository>();
     var user = context.watch<UsuarioRepository>();
 
     return Scaffold(
@@ -139,12 +141,12 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             Container(
-              height: 100,
+              height: 150,
               child: const GridOptionsHome()),
             Container(
               padding: EdgeInsets.only(top: 10),
               child: Text(
-                'Animais em fase de adoção:',
+                'Animais em fase de adoção',
                 style: TextStyle(
                   fontSize: 18,
                   color: Theme.of(context).colorScheme.primary,

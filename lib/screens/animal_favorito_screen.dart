@@ -41,7 +41,7 @@ class TelaAnimaisFavoritados extends StatelessWidget {
                   child: ListTile(
                     leading: Image.network(animal.img[0]),
                     title: Text(animal.nome),
-                    subtitle: Text(animal.tipo),
+                    subtitle: Text(animal.especie),
                     // Outros detalhes do animal podem ser adicionados aqui
                   ),
                 );

@@ -133,10 +133,34 @@ class UsuarioRepository with ChangeNotifier {
     return Future.value(true);
   }
 
+  Future<Usuario> findByLogin(String login) async {
+    Usuario result = Usuario(nome: '', email: '', telefone: '', cpf: '', login: '', senha: '');
+    final response = await http
+        .get(Uri.parse(
+            '${URLrepository}users.json?orderBy="login"&equalTo="${login}"&print=pretty'))
+        .then((value) {
+      if (value.body.length > 10) {
+        Map<String, dynamic> map = json.decode(value.body);
+        map.forEach((key, value) { 
+          result = Usuario(
+            nome: map[key]['nome'], 
+            email: map[key]['email'], 
+            telefone: map[key]['telefone'], 
+            cpf: map[key]['cpf'], 
+            login: login, 
+            senha: map[key]['senha']);
+        });
+      }
+    });
+    return Future.value(result);
+  }
+
   bool isAdotado(Animal animal){
     if(_adocoes.where((element) => element.animal == animal).isEmpty){
       return false;
     }
     return true;
   }
+
+
 }

@@ -1,4 +1,5 @@
 import 'package:adocao_animais/components/favorite_button.dart';
+import 'package:adocao_animais/models/usuario.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,11 +18,15 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var usuario = context.watch<UsuarioRepository>();
     
     final animal = ModalRoute.of(context)?.settings.arguments == null
         ? animaisData[0] // Tava dando null quando atualizava a página
         : ModalRoute.of(context)!.settings.arguments as Animal;
+    
+    var usuario = context.watch<UsuarioRepository>();
+
+    Usuario? user_animal;
+    Provider.of<UsuarioRepository>(context).findByLogin(animal.dono).then((value) => user_animal = value);
 
     return Scaffold(
       appBar: AppBar(
@@ -93,7 +98,9 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
                               style: Theme.of(context).textTheme.headline6),
                           Text('Descrição: ${animal.descricao}',
                               style: Theme.of(context).textTheme.headline6),
-                          Text('Contatos:',
+                          Text('Telefone: ${user_animal!.telefone}',
+                              style: Theme.of(context).textTheme.headline6),
+                          Text('Email: ${user_animal!.email}',
                               style: Theme.of(context).textTheme.headline6),
                         ],
                       ),

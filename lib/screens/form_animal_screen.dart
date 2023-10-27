@@ -52,7 +52,7 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
         _formData['id'] = animal.id;
         _formData['dono'] = animal.dono;
         _formData['novo'] = animal.novo;
-       _formData['tipo'] = animal.tipo;
+       _formData['especie'] = animal.especie;
        _formData['nome'] = animal.nome;
        _formData['porte'] = animal.porte;
        _formData['sexo'] = animal.sexo;
@@ -79,6 +79,7 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
 
     _formKey.currentState?.save();
     var user = Provider.of<UsuarioRepository>(context, listen: false).usuario;
+    print(user.login);
 
     _formData['img'] = _imagens;
     Provider.of<AnimaisRepository>(
@@ -136,9 +137,9 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                   labelText: 'Idade (Ex.: 2 anos e 1 mes)',
                 ),
                 textInputAction: TextInputAction.next,
-                onSaved: (raca) => _formData['raca'] = raca ?? '',
-                validator: (raca) {
-                  if(raca == null || raca == ''){
+                onSaved: (idade) => _formData['idade'] = idade ?? '',
+                validator: (idade) {
+                  if(idade == null || idade == ''){
                     return 'Campo obrigatório';
                   }
                 },
