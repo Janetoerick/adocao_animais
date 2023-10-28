@@ -75,9 +75,9 @@ class _AnimalPageState extends State<AnimalPage> {
             width: double.infinity,
             height: double.infinity,
             child: !filter_on
-                ? ListaAnimais(_total_animals)
+                ? ListaAnimais(_total_animals, false)
                 : !_animais_filter.isEmpty
-                    ? ListaAnimais(_animais_filter)
+                    ? ListaAnimais(_animais_filter, false)
                     : Padding(
                         padding: const EdgeInsets.all(20),
                         child: Center(

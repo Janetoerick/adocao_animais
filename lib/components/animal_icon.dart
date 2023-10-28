@@ -1,4 +1,5 @@
 import 'package:adocao_animais/repositories/animais_repository.dart';
+import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:adocao_animais/models/animal.dart';
 import 'package:adocao_animais/screens/animal_detalhe_screen.dart';
@@ -6,8 +7,9 @@ import 'package:provider/provider.dart';
 
 class AnimalIcon extends StatelessWidget {
   final Animal animal;
+  final bool gerenciar;
 
-  const AnimalIcon(this.animal);
+  const AnimalIcon(this.animal, this.gerenciar);
 
   void _selectAnimal(BuildContext context) {
     Navigator.of(context)
@@ -57,33 +59,115 @@ class AnimalIcon extends StatelessWidget {
                         ],
                       ),
                       Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        child: Stack(
                           children: [
-                            Text(
-                              animal.nome,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                            Container(
+                              width: double.infinity,
+                              child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  animal.nome,
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.primary,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  '${animal.sexo} / ${animal.porte}',
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.secondary,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                Text(
+                                  '${animal.idade}',
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.secondary,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
                               ),
                             ),
-                            Text(
-                              '${animal.sexo} / ${animal.porte}',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 18,
+                            gerenciar 
+                            ?
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: PopupMenuButton(
+                              icon: Icon(
+                                Icons.more_vert,
                               ),
-                            ),
-                            Text(
-                              '${animal.idade}',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ],
+                              itemBuilder: (context) => [
+                                PopupMenuItem(
+                                  child: ListTile(
+                                    title: Row(
+                                      children: [
+                                        Icon(Icons.edit),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10),
+                                          child: Text('Editar'),
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      Navigator.of(context).pushNamed(
+                                          '/form_animal',
+                                          arguments: animal);
+                                    },
+                                  ),
+                                ),
+                                PopupMenuItem(
+                                  child: ListTile(
+                                    title: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10),
+                                          child: Text(
+                                            'Excluir',
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      final snackBar = SnackBar(
+                                        content:
+                                            const Text('Tem certeza que deseja excluir?'),
+                                        action: SnackBarAction(
+                                          label: 'Sim',
+                                          onPressed: () {
+                                            Provider.of<UsuarioRepository>(context, listen: false).removeMeusAnimais(animal);
+                                            Provider.of<AnimaisRepository>(context, listen: false).removeAnimal(animal);
+                                            final snackBarConfrim = SnackBar(
+                                              content: const Text(
+                                                  'Pet exlucido com sucesso!'),
+                                            );
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBarConfrim);
+                                          },
+                                        ),
+                                      );
+                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),)
+                            : 
+                            Container()
+                          ]
                         ),
                       ),
                     ],

@@ -11,7 +11,7 @@ class GridOptionsHome extends StatelessWidget {
 
     return GridView.count(
       primary: false,
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
       crossAxisCount: 2,
       childAspectRatio: (1 / .7),
       crossAxisSpacing: 10,
@@ -70,7 +70,23 @@ class GridOptionsHome extends StatelessWidget {
             child: ElevatedButton(
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
               onPressed: () {
-                
+                if(user.usuario.login != ''){
+                  Navigator.of(context).pushNamed('/meus_pets');
+                } else {
+                  showDialog(context: context, builder: (BuildContext context) =>
+                  AlertDialog(
+                    
+                    title: const Text('Requer login'),
+                    content: const Text('Para ver seus pets você deve estar logado no sistema...'),
+                    actions: [
+                      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
+                      TextButton(onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).pushNamed('/login');
+                      }, child: const Text('Fazer login'),)
+                    ],
+                  ));
+                }
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

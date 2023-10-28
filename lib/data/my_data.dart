@@ -48,7 +48,7 @@ final List<Animal> animaisData = [
     porte: 'Pequeno',
     idade: '1 ano',
     img:
-        ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3g1PlXY0Ua0aWAq6yTdOyl2kRyf-VlGdvQw&usqp=CAU'],
+        ['https://www.petz.com.br/blog/wp-content/uploads/2023/01/gato-com-felv-pode-tomar-vacina-3.jpg'],
     raca: 'Viralata',
     descricao: 'Toma remedio controlado',
     data_registro: DateFormat('dd-MM-yyyy').format(data),

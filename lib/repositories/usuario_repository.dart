@@ -13,11 +13,16 @@ import 'package:http/http.dart' as http;
 class UsuarioRepository with ChangeNotifier {
 
   Usuario _usuario = Usuario(nome: '', email: '', telefone: '', cpf: '', login: '', senha: '');
+  List<Animal> _meus_animais = [];
   List<Animal> _animaisFav = [];
   List<Adocao> _adocoes = [];
 
   Usuario get usuario {
     return _usuario;
+  }
+
+  List<Animal> get meus_animais {
+    return [..._meus_animais];
   }
 
   List<Animal> get animaisFav {
@@ -55,9 +60,63 @@ class UsuarioRepository with ChangeNotifier {
             result = 'Login não existe';
           }
         });
+
+    if(result == 'OK'){
+      setUpMeusAnimais();
+    }
         notifyListeners();
 
     return Future.value(result);
+  }
+
+  void setUpMeusAnimais() async{
+    _meus_animais = [];
+    var response = await http
+                    .get(Uri.parse('${URLrepository}/animais.json')) 
+                    .then((value) {
+                      Map<String, dynamic> map = json.decode(value.body);
+                      map.forEach((key, value) { 
+                        if(map[key]['dono']['login'] == usuario.login){
+                          List<String> imgs = [];
+                          map[key]['img'].map((e) {
+                            imgs.add(e);
+                          }).toList();
+                            
+                          _meus_animais.add( Animal(
+                            id: key,
+                            dono: _usuario,
+                            novo: map[key]['novo'],
+                            especie: map[key]['especie'],
+                            nome: map[key]['nome'],
+                            porte: map[key]['porte'],
+                            sexo: map[key]['sexo'],
+                            idade: map[key]['idade'],
+                            img: imgs,
+                            raca: map[key]['raca'],
+                            descricao: map[key]['descricao'],
+                            data_registro: map[key]['data_registro'],
+                            isFavorito: map[key]['isFavorito'])
+                          );
+                        }
+                      });
+                    });
+      notifyListeners();
+  }
+
+  void addMeusAnimais(Animal animal){
+    if(_meus_animais.where((element) => element.id == animal.id).isEmpty){
+      _meus_animais.add(animal);
+    } else {
+      _meus_animais.removeWhere((element) => element.id == animal.id);
+      _meus_animais.add(animal);
+    }
+    
+    notifyListeners();
+  }
+
+  void removeMeusAnimais(Animal animal){
+    _meus_animais.remove(animal);
+    notifyListeners();
   }
 
   Future<void> logoutUsuario(){

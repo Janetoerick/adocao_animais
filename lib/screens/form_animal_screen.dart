@@ -1,4 +1,5 @@
 import 'package:adocao_animais/models/animal.dart';
+import 'package:adocao_animais/models/usuario.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:brasil_fields/brasil_fields.dart';
@@ -79,13 +80,14 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
 
     _formKey.currentState?.save();
     var user = Provider.of<UsuarioRepository>(context, listen: false).usuario;
-    print(user.login);
 
     _formData['img'] = _imagens;
+    
     Provider.of<AnimaisRepository>(
       context,
       listen: false,
     ).saveAnimal(_formData, user).then((value) {
+      Provider.of<UsuarioRepository>(context, listen: false).setUpMeusAnimais();
       Navigator.of(context).pop();
     });
   }
@@ -93,7 +95,7 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Registrar Pet')),
+      appBar: AppBar(title: const Text('Forms Pet')),
       body: Padding(
         padding: EdgeInsets.all(10),
         child: Form(
@@ -323,7 +325,21 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                           child: Container(
                             height: 100,
                             width: 100,
-                            child: Image.network(_imagens[index], width: 100, height: 100, fit: BoxFit.fill,)),
+                            child: Stack(children: [
+                              Image.network(_imagens[index], width: 100, height: 100, fit: BoxFit.fill,),
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _imagens.remove(_imagens[index]);  
+                                    });
+                                  }, 
+                                  icon: Icon(Icons.remove_circle)
+                                )
+                              )
+                            ])),
                           );
                       })
                   ),
@@ -342,8 +358,14 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
         child: ElevatedButton(
           onPressed: () {
             _submitForm();
+            final snackBarConfrim = SnackBar(
+              content: const Text(
+                  'Pet adicionado com sucesso!'),
+            );
+            ScaffoldMessenger.of(context)
+                .showSnackBar(snackBarConfrim);
           }, 
-          child: Text('Cadastrar Pet', style: TextStyle(fontSize: 20),),
+          child: Text('Salvar', style: TextStyle(fontSize: 20),),
           )
         ),
     );

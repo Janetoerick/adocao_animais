@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 
 class ListaAnimais extends StatelessWidget {
   final List<Animal> animais;
-  const ListaAnimais(this.animais);
+  final bool gerenciar;
+  const ListaAnimais(this.animais, this.gerenciar);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class ListaAnimais extends StatelessWidget {
     padding: const EdgeInsets.all(8),
     itemCount: animais.length,
     itemBuilder: (ctx, index) {
-      return AnimalIcon(animais[index]);
+      return AnimalIcon(animais[index], gerenciar);
     },
         );
   }

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:adocao_animais/models/animal.dart';
 import 'package:adocao_animais/models/usuario.dart';
+import 'package:adocao_animais/repositories/usuario_repository.dart';
 import '../data/my_data.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -15,10 +16,10 @@ class AnimaisRepository with ChangeNotifier {
   List<Animal> _animais = []; // animaisData
 
   AnimaisRepository(){
-    _setUpProducts();
+    _setUpAnimais();
   }
 
-  _setUpProducts() async {
+  _setUpAnimais() async {
     final response = await http.get(Uri.parse('$URLrepository/animais.json'));
 
     if (response.statusCode == 200) {
@@ -28,9 +29,12 @@ class AnimaisRepository with ChangeNotifier {
         json[key]['img'].forEach((e) {
           imagens.add(e);
         });
+
+        Usuario user_temp = Usuario(nome: json[key]['dono']['nome'], email: json[key]['dono']['email'], telefone: json[key]['dono']['telefone'], 
+        cpf: json[key]['dono']['cpf'], login: json[key]['dono']['login'], senha: json[key]['dono']['senha']);
         _animais.add(Animal(
             id: key,
-            dono: json[key]['dono'],
+            dono: user_temp,
             novo: json[key]['novo'],
             especie: json[key]['especie'],
             nome: json[key]['nome'],
@@ -51,6 +55,7 @@ class AnimaisRepository with ChangeNotifier {
     return [..._animais];
   }
 
+
   Future<void> addAnimal(Animal animal) {
     Map<String, dynamic> user_map = {};
     user_map["nome"] = animal.dono.nome;
@@ -62,7 +67,6 @@ class AnimaisRepository with ChangeNotifier {
 
     final future = http.post(Uri.parse('$URLrepository/animais.json'),
         body: jsonEncode({
-          "id": animal.id,
           "dono": user_map,
           "novo": true,
           "especie": animal.especie,
@@ -77,8 +81,9 @@ class AnimaisRepository with ChangeNotifier {
           "isFavorito": animal.isFavorito,
         }));
     return future.then((response) {
+      final id = jsonDecode(response.body)['name'];
       _animais.add(Animal(
-        id: animal.id,
+        id: id,
         dono: animal.dono,
         novo: true,
         especie: animal.especie,
@@ -113,7 +118,7 @@ class AnimaisRepository with ChangeNotifier {
         raca: data['raca'].toString(),
         descricao: data['descricao'].toString(),
         data_registro: hasDate ? data['data_registro'].toString() : DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        isFavorito: false,
+        isFavorito: true,
     );
     if (hasId) {
       return updateAnimal(animal);
@@ -122,27 +127,58 @@ class AnimaisRepository with ChangeNotifier {
     }
   }
 
-  Future<void> updateAnimal(Animal animal) async {
-    // int index = _items.indexWhere((p) => p.id == product.id);
 
-    // var temp = _items.where((element) => element.id == product.id);
-    // if (index >= 0) {
-    //   _items[index] = product;
-    //   notifyListeners();
-    //   final future = await http.put(
-    //       Uri.parse('$_baseUrl/products/${product.id}.json'),
-    //       body: jsonEncode({
-    //         "id": product.id,
-    //         "title": product.title,
-    //         "description": product.description,
-    //         "price": product.price,
-    //         "imageUrl": product.imageUrl,
-    //         "isFavorite": temp.first.isFavorite,
-    //       }),
-    //       headers: {
-    //         "Accept": "application/json"
-    //       }).then((response) => print(response.statusCode));
-    // }
+  Future<void> updateAnimal(Animal animal) async {
+    int index = _animais.indexWhere((p) => p.id == animal.id);
+
+    var temp = _animais.where((element) => element.id == animal.id);
+    if (index >= 0) {
+      _animais[index] = animal;
+      notifyListeners();
+
+      Map<String, dynamic> user_map = {};
+      user_map["nome"] = animal.dono.nome;
+      user_map["email"] = animal.dono.email;
+      user_map["telefone"] = animal.dono.telefone;
+      user_map["cpf"] = animal.dono.cpf;
+      user_map["login"] = animal.dono.login;
+      user_map["senha"] = animal.dono.senha;
+      final future = await http.put(
+          Uri.parse('${URLrepository}/animais/${animal.id}.json'),
+          body: jsonEncode({
+            "dono": user_map,
+            "novo": animal.novo,
+            "especie": animal.especie,
+            "nome": animal.nome,
+            "porte": animal.porte,
+            "sexo": animal.sexo,
+            "idade": animal.idade,
+            "img": animal.img,
+            "raca": animal.raca,
+            "descricao": animal.descricao,
+            "data_registro": animal.data_registro,
+            "isFavorito": animal.isFavorito,
+          }),
+          headers: {
+            "Accept": "application/json"
+          }).then((response) => print(response.statusCode));
+    }
+    return Future.value();
+  }
+
+  Future<void> removeAnimal(Animal animal) async {
+    int index = _animais.indexWhere((p) => p.id == animal.id);
+
+    if (index >= 0) {
+      _animais.removeWhere((p) => p.id == animal.id);
+      notifyListeners();
+      final future = http.delete(
+        Uri.parse('${URLrepository}/animais/${animal.id}.json'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ).then((response) => print(response.statusCode));
+    }
     return Future.value();
   }
 

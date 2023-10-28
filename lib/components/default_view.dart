@@ -11,7 +11,7 @@ class DefaultView extends StatelessWidget {
         'lib/assets/patas.png',
         height: 150,
         width: 150,
-        color: Color(0xffcbcbcb),
+        color: Color.fromARGB(255, 233, 233, 233),
       )),
       SizedBox(
         width: 250,

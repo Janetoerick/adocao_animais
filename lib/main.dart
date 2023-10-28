@@ -6,11 +6,13 @@ import 'package:adocao_animais/screens/animal_detalhe_screen.dart';
 import 'package:adocao_animais/screens/cadastro_screen.dart';
 import 'package:adocao_animais/screens/form_animal_screen.dart';
 import 'package:adocao_animais/screens/login_screen.dart';
+import 'package:adocao_animais/screens/meus_animais_screen.dart';
 import 'package:adocao_animais/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:adocao_animais/models/usuario.dart';
 
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'models/adocao.dart';
 import 'models/animal.dart';
@@ -44,11 +46,9 @@ class _MyAppState extends State<MyApp> {
                 secondary: Color(0xff379634),
                 tertiary: Color(0xff7CFFCB),
               ),
-          textTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(
-                  fontSize: 18,
-                ),
-              ),
+          textTheme: GoogleFonts.latoTextTheme(
+            Theme.of(context).textTheme,
+          ),
         ),
         initialRoute: '/',
         routes: {
@@ -57,6 +57,7 @@ class _MyAppState extends State<MyApp> {
           '/login': (ctx) => LoginScreen(),
           '/cadastro_user': (ctx) => CadastroScreen(),
           '/form_animal': (ctx) => FormAnimalScreen(),
+          '/meus_pets': (ctx) => MeusAnimaisScreen(),
         },
       ),
     );

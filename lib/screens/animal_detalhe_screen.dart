@@ -1,5 +1,7 @@
 import 'package:adocao_animais/components/favorite_button.dart';
+import 'package:adocao_animais/components/info_animal.dart';
 import 'package:adocao_animais/models/usuario.dart';
+import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,97 +27,16 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
     
     var usuario = context.watch<UsuarioRepository>();
 
-    // late Usuario user_animal;
-    // Provider.of<UsuarioRepository>(context).findByLogin(animal.dono.login).then((value) {
-
-    //     user_animal = value;  
-
-      
-    //   print(user_animal.telefone);
-    // });
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(animal.nome), // Nome do animal como título da página
+        title: Text('Adote ${animal.nome}!'), 
       ),
       body: Column(
         children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.81,
-            child: SingleChildScrollView(
-              child: Column(children: [
-                Stack(children: [
-                  Container(
-                      color: Theme.of(context).colorScheme.secondary,
-                      alignment: Alignment.center,
-                      child: Image.network(
-                        animal.img[0],
-                        fit: BoxFit.cover,
-                        height: 200,
-                      )),
-                  Positioned(
-                    top: 10,
-                    right: 30,
-                    child: FavoriteButton(
-                        animal: animal,
-                        onChanged: (bool isFavorito) {
-                          setState(() {
-                            animal.isFavorito = isFavorito;
-                          });
-                        }),
-                  ),
-                  (animal.novo)
-                      ? Positioned(
-                          top: 10,
-                          left: 30,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Theme.of(context).colorScheme.tertiary,
-                            ),
-                            width: 50,
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Novo",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        )
-                      : Container()
-                ]), // Foto do animal
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Porte: ${animal.porte}',
-                              style: Theme.of(context).textTheme.headline6),
-                          Text('Sexo: ${animal.sexo}',
-                              style: Theme.of(context).textTheme.headline6),
-                          Text('Idade: ${animal.idade}',
-                              style: Theme.of(context).textTheme.headline6),
-                          Text('Raça: ${animal.raca}',
-                              style: Theme.of(context).textTheme.headline6),
-                          Text('Descrição: ${animal.descricao}',
-                              style: Theme.of(context).textTheme.headline6),
-                          Text('Telefone: ${animal.dono.telefone}',
-                              style: Theme.of(context).textTheme.headline6),
-                          Text('Email: ${animal.dono.email}',
-                              style: Theme.of(context).textTheme.headline6),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ]),
-            ),
-          ),
+          InfoAnimal(animal),   // lançando o component de informações
+          animal.dono.login != usuario.usuario.login   // Quem entrou na página não adicionou o animal
+          ?
           ElevatedButton(
             onPressed: usuario.isAdotado(animal)
                 ? null
@@ -145,12 +66,82 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
               height: 50,
               child: Center(
                 child: Text(
-                  "Adotar",
+                  'Adotar',
                   style: TextStyle(fontSize: 20),
                 ),
               ),
             ),
           )
+          
+          // Quem entrou na página adicionou o animal
+          :
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+            
+                }, 
+                child: SizedBox(
+                  height: 50,
+                  child: Center(
+                    child: Text('Interessados em adotar', style: TextStyle(fontSize: 16),),
+                  ),
+                )
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            ElevatedButton(
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 156, 156, 54))),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/form_animal', arguments: animal);
+              }, 
+              child: SizedBox(
+                width: 30,
+                height: 50,
+                child: Center(
+                  child: Icon(Icons.edit),
+                ),
+              )
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            ElevatedButton(
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 255, 102, 102))),
+              onPressed: () {
+                showDialog(context: context, builder: (BuildContext context) =>
+                  AlertDialog(
+                    title: Text('Tem certeza que deseja excluir ${animal.nome} ?'),
+                    actions: [
+                      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Não'),),
+                      TextButton(onPressed: () {
+                        Provider.of<AnimaisRepository>(context, listen: false).removeAnimal(animal);
+                        Provider.of<UsuarioRepository>(context, listen: false).setUpMeusAnimais();
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      }, child: const Text('Sim'),)
+                    ],
+                  ));
+              }, 
+              child: SizedBox(
+                width: 30,
+                height: 50,
+                child: Center(
+                  child: Icon(Icons.delete),
+                ),
+              )),
+            SizedBox(
+              width: 20,
+            ),
+          ],)
         ],
       ),
     );
