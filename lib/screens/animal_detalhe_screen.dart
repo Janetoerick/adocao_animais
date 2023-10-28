@@ -31,11 +31,36 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Adote ${animal.nome}!'), 
+        actions: 
+        animal.dono.login == usuario.usuario.login ?
+        [
+          IconButton(onPressed: () {
+            Navigator.of(context).pushNamed('/form_animal', arguments: animal);
+          }, icon: Icon(Icons.edit)),
+          IconButton(onPressed: () {
+            showDialog(context: context, builder: (BuildContext context) =>
+              AlertDialog(
+                title: Text('Tem certeza que deseja excluir ${animal.nome} ?'),
+                actions: [
+                  TextButton(onPressed: () => Navigator.pop(context), child: const Text('Não'),),
+                  TextButton(onPressed: () {
+                    Provider.of<AnimaisRepository>(context, listen: false).removeAnimal(animal);
+                    Provider.of<UsuarioRepository>(context, listen: false).setUpMeusAnimais();
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  }, child: const Text('Sim'),)
+                ],
+              )
+            );
+          }, icon: Icon(Icons.delete)),
+        ]
+        : 
+        []
+        ,
       ),
-      body: Column(
-        children: [
-          InfoAnimal(animal),   // lançando o component de informações
-          animal.dono.login != usuario.usuario.login   // Quem entrou na página não adicionou o animal
+      body: InfoAnimal(animal),
+      bottomSheet: 
+        animal.dono.login != usuario.usuario.login   // Quem entrou na página não adicionou o animal
           ?
           ElevatedButton(
             onPressed: usuario.isAdotado(animal)
@@ -62,7 +87,6 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
                     });
                   },
             child: SizedBox(
-              width: 200,
               height: 50,
               child: Center(
                 child: Text(
@@ -75,75 +99,17 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
           
           // Quem entrou na página adicionou o animal
           :
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-            SizedBox(
-              width: 20,
-            ),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () {
-            
-                }, 
-                child: SizedBox(
-                  height: 50,
-                  child: Center(
-                    child: Text('Interessados em adotar', style: TextStyle(fontSize: 16),),
-                  ),
-                )
+          ElevatedButton(
+            onPressed: () {
+          
+            }, 
+            child: SizedBox(
+              height: 50,
+              child: Center(
+                child: Text('Interessados em adotar', style: TextStyle(fontSize: 20),),
               ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            ElevatedButton(
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 156, 156, 54))),
-              onPressed: () {
-                Navigator.of(context).pushNamed('/form_animal', arguments: animal);
-              }, 
-              child: SizedBox(
-                width: 30,
-                height: 50,
-                child: Center(
-                  child: Icon(Icons.edit),
-                ),
-              )
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            ElevatedButton(
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 255, 102, 102))),
-              onPressed: () {
-                showDialog(context: context, builder: (BuildContext context) =>
-                  AlertDialog(
-                    title: Text('Tem certeza que deseja excluir ${animal.nome} ?'),
-                    actions: [
-                      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Não'),),
-                      TextButton(onPressed: () {
-                        Provider.of<AnimaisRepository>(context, listen: false).removeAnimal(animal);
-                        Provider.of<UsuarioRepository>(context, listen: false).setUpMeusAnimais();
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                      }, child: const Text('Sim'),)
-                    ],
-                  ));
-              }, 
-              child: SizedBox(
-                width: 30,
-                height: 50,
-                child: Center(
-                  child: Icon(Icons.delete),
-                ),
-              )),
-            SizedBox(
-              width: 20,
-            ),
-          ],)
-        ],
-      ),
+            )
+          ),
     );
   }
 }

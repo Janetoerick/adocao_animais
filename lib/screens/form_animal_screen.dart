@@ -295,6 +295,8 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                             validator: (_imageUrl) {
                               if (_imagens.isEmpty) {
                                 return 'Registre pelo menos uma imagem!';
+                              } else if (_imagens.length > 5){
+                                return 'Você só pode cadastrar no máximo 5 imagens!';
                               }
                             
                               return null;

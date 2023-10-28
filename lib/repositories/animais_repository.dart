@@ -32,6 +32,12 @@ class AnimaisRepository with ChangeNotifier {
 
         Usuario user_temp = Usuario(nome: json[key]['dono']['nome'], email: json[key]['dono']['email'], telefone: json[key]['dono']['telefone'], 
         cpf: json[key]['dono']['cpf'], login: json[key]['dono']['login'], senha: json[key]['dono']['senha']);
+        List<String> favorites = [];
+        if(json[key]['isFavorito'] != null){
+            json[key]['isFavorito'].map((e) {
+            favorites.add(e);
+          }).toList();
+        }
         _animais.add(Animal(
             id: key,
             dono: user_temp,
@@ -45,7 +51,7 @@ class AnimaisRepository with ChangeNotifier {
             raca: json[key]['raca'],
             descricao: json[key]['descricao'],
             data_registro: json[key]['data_registro'],
-            isFavorito: json[key]['isFavorito']));
+            isFavorito: favorites));
       });
     }
     notifyListeners();
@@ -68,7 +74,7 @@ class AnimaisRepository with ChangeNotifier {
     final future = http.post(Uri.parse('$URLrepository/animais.json'),
         body: jsonEncode({
           "dono": user_map,
-          "novo": true,
+          "novo": false,
           "especie": animal.especie,
           "nome": animal.nome,
           "porte": animal.porte,
@@ -85,7 +91,7 @@ class AnimaisRepository with ChangeNotifier {
       _animais.add(Animal(
         id: id,
         dono: animal.dono,
-        novo: true,
+        novo: false,
         especie: animal.especie,
         nome: animal.nome,
         porte: animal.porte,
@@ -108,7 +114,7 @@ class AnimaisRepository with ChangeNotifier {
     final animal = Animal(
         id: hasId ? data['id'] as String : Random().nextDouble().toString(),
         dono: user,
-        novo: true,
+        novo: false,
         especie: data['especie'].toString(),
         nome: data['nome'].toString(),
         porte: data['porte'].toString(),
@@ -118,7 +124,7 @@ class AnimaisRepository with ChangeNotifier {
         raca: data['raca'].toString(),
         descricao: data['descricao'].toString(),
         data_registro: hasDate ? data['data_registro'].toString() : DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        isFavorito: true,
+        isFavorito: [],
     );
     if (hasId) {
       return updateAnimal(animal);
@@ -185,6 +191,24 @@ class AnimaisRepository with ChangeNotifier {
   Animal findByid(String id){
     List<Animal> result = _animais.where((element) => element.id == id).toList();
     return result[0];
+  }
+
+  Future<void> attFavorito(Animal animal, Usuario user) {
+    _animais.forEach((e) {
+      if(e.id == animal.id){
+        if(animal.isFavorito.where((element) => element == user.login).isEmpty){
+          animal.isFavorito.add(user.login);
+        } else {
+          animal.isFavorito.remove(user.login);
+        }
+        e.isFavorito = animal.isFavorito;
+      }
+    });
+    notifyListeners();
+    
+    updateAnimal(animal);
+
+    return Future.value();
   }
 
 

@@ -140,9 +140,17 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              height: 150,
-              child: const GridOptionsHome()),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: const Color.fromARGB(255, 238, 238, 238)
+                ),
+                height: 155,
+                child: const GridOptionsHome()),
+            ),
             Container(
               padding: EdgeInsets.only(top: 10),
               child: Text(

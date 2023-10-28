@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class GridOptionsHome extends StatelessWidget {
-  const GridOptionsHome({super.key});
+  const GridOptionsHome();
 
   @override
   Widget build(BuildContext context) {
     var user = context.watch<UsuarioRepository>();
 
     return GridView.count(
-      primary: false,
+      physics: NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.only(top: 10, bottom: 10),
       crossAxisCount: 2,
       childAspectRatio: (1 / .7),

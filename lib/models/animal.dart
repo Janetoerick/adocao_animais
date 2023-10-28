@@ -13,7 +13,7 @@ class Animal {
   final String raca;
   final String descricao;
   final String data_registro;
-  bool isFavorito;
+  List<String> isFavorito;
 
   Animal({
     required this.id,
@@ -28,6 +28,6 @@ class Animal {
     required this.raca,
     required this.descricao,
     required this.data_registro,
-    this.isFavorito = false,
+    required this.isFavorito,
   });
 }

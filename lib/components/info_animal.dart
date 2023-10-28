@@ -1,6 +1,7 @@
 import 'package:adocao_animais/components/favorite_button.dart';
 import 'package:adocao_animais/models/animal.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
+import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -15,67 +16,99 @@ class InfoAnimal extends StatefulWidget {
 }
 
 class _InfoAnimalState extends State<InfoAnimal> {
+  late PageController _pageController;
+  int activePage = 0;
+  
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(viewportFraction: 0.8, initialPage : activePage);
+  }
+
+  List<Widget> indicators(imagesLength,currentIndex) {
+    return List<Widget>.generate(imagesLength, (index) {
+      return Container(
+        margin: EdgeInsets.all(3),
+        width: 10,
+        height: 10,
+        decoration: BoxDecoration(
+            color: currentIndex == index ? Colors.black : Colors.black26,
+            shape: BoxShape.circle),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<UsuarioRepository>(context, listen: false).usuario;
     Animal animal = Provider.of<AnimaisRepository>(context, listen: false).findByid(widget.animal.id);
     return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.83,
+            height: MediaQuery.of(context).size.height * 0.85,
             child: SingleChildScrollView(
-              child: Column(children: [
-                Stack(children: [
-                  Container(
-                      alignment: Alignment.center,
-                      child: Image.network(
-                        animal.img[0],
-                        fit: BoxFit.cover,
-                        height: 250,
-                      )),
-                  Positioned(
-                    top: 10,
-                    right: 30,
-                    child: FavoriteButton(
-                        animal: animal,
-                        onChanged: (bool isFavorito) {
+              child: Column(
+                children: [
+                Column(
+                  children: [
+                    Container(
+                      height: 250,
+                      width: MediaQuery.of(context).size.width,
+                      child: PageView.builder(
+                        pageSnapping: true,
+                        itemCount: animal.img.length,
+                        controller: _pageController,
+                        onPageChanged: (page) {
                           setState(() {
-                            animal.isFavorito = isFavorito;
+                            activePage = page;
                           });
-                        }),
-                  ),
-                  (animal.novo)
-                      ? Positioned(
-                          top: 10,
-                          left: 30,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Theme.of(context).colorScheme.tertiary,
-                            ),
-                            width: 50,
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Novo",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        )
-                      : Container()
-                ]), // Foto do animal
-                SizedBox(
-                  height: 10,
-                ),
+                        },
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.all(10),
+                            child: Image.network(
+                              animal.img[index],
+                              fit: BoxFit.contain,
+                            ));
+                        },
+                        ),
+                    ),
+                    animal.img.length > 1 ?
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: indicators(animal.img.length, activePage)
+                      )
+                    : Container()
+                  ],
+                ), // Foto do animal
+                
                 Container(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      // (animal.novo)
+                      // ? Container(
+                      //     child: Container(
+                      //       decoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(10),
+                      //         color: Theme.of(context).colorScheme.tertiary,
+                      //       ),
+                      //       width: 50,
+                      //       alignment: Alignment.center,
+                      //       child: Text(
+                      //         "Novo",
+                      //         style: TextStyle(fontWeight: FontWeight.bold),
+                      //       ),
+                      //     ),
+                      //   )
+                      // : Container(),
                       Container(
-                        height: 85,
+                        height: 90,
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: const Color.fromARGB(255, 238, 238, 238)
                         ),
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.only(top: 12, bottom: 12, right: 20, left: 20),
                         child: Row(
                           children: [
                             Expanded(
@@ -109,7 +142,13 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                 ]
                               ),
                             ),
-                            Icon(Icons.favorite_border, size: 50,),
+                            user.login != animal.dono.login ?
+                            FavoriteButton(
+                              animal: animal,
+                              size: 40,
+                            )
+                              
+                            : Container(),
                           ]
                         ),
                       ),
@@ -194,7 +233,13 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                     color: Colors.black45,
                                   ),
                                 ),
-                                Text(animal.dono.email, style: TextStyle(fontSize: 20),),
+                                Expanded(
+                                  child: Container(
+                                    child: Text('Para saber o email de contato, entre em processo de adoção', 
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Theme.of(context).colorScheme.secondary),)),
+                                ),
                               ],
                             ),
                             SizedBox(
@@ -211,7 +256,13 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                     color: Colors.black45,
                                   ),
                                 ),
-                                Text(animal.dono.telefone, style: TextStyle(fontSize: 20),),
+                                Expanded(
+                                  child: Container(
+                                    child: Text('Para saber o telefone de contato, entre em processo de adoção', 
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Theme.of(context).colorScheme.secondary),)),
+                                ),
                               ],
                             ),
                           ],

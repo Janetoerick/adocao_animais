@@ -22,6 +22,7 @@ final List<Animal> animaisData = [
     raca: 'falino',
     descricao: 'Branco com manchas pretas',
     data_registro: DateFormat('dd-MM-yyyy').format(data),
+    isFavorito: [],
   ),
   Animal(
     id: 'l02',
@@ -37,6 +38,7 @@ final List<Animal> animaisData = [
     raca: 'Golden',
     descricao: 'Peludo',
     data_registro: DateFormat('dd-MM-yyyy').format(data),
+    isFavorito: [],
   ),
   Animal(
     id: 'l03',
@@ -52,6 +54,7 @@ final List<Animal> animaisData = [
     raca: 'Viralata',
     descricao: 'Toma remedio controlado',
     data_registro: DateFormat('dd-MM-yyyy').format(data),
+    isFavorito: [],
   ),
   Animal(
     id: 'l04',
@@ -67,6 +70,7 @@ final List<Animal> animaisData = [
     raca: 'Pug',
     descricao: 'Sabe usar a caixa de areia',
     data_registro: DateFormat('dd-MM-yyyy').format(data),
+    isFavorito: [],
   ),
   Animal(
     id: 'l05',
@@ -82,6 +86,7 @@ final List<Animal> animaisData = [
     raca: 'Viralata',
     descricao: 'Gosta de brincar de pegar',
     data_registro: DateFormat('dd-MM-yyyy').format(data),
+    isFavorito: [],
   ),
   Animal(
     id: 'l06',
@@ -97,6 +102,7 @@ final List<Animal> animaisData = [
     raca: 'Salsicha',
     descricao: 'Muito amigável e brincaçhão',
     data_registro: DateFormat('dd-MM-yyyy').format(data),
+    isFavorito: [],
   ),
   Animal(
     id: 'l07',
@@ -112,5 +118,6 @@ final List<Animal> animaisData = [
     raca: 'Viralata',
     descricao: 'Gosta de passear',
     data_registro: DateFormat('dd-MM-yyyy').format(data),
+    isFavorito: [],
   ),
 ];

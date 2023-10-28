@@ -62,14 +62,83 @@ class UsuarioRepository with ChangeNotifier {
         });
 
     if(result == 'OK'){
-      setUpMeusAnimais();
+      setUpInitSection();
     }
-        notifyListeners();
+    
+    notifyListeners();
 
     return Future.value(result);
   }
 
-  void setUpMeusAnimais() async{
+  void setUpInitSection() async{
+    _meus_animais = [];
+    _animaisFav = [];
+    var response = await http
+                    .get(Uri.parse('${URLrepository}/animais.json')) 
+                    .then((value) {
+                      Map<String, dynamic> map = json.decode(value.body);
+                      map.forEach((key, value) { 
+                        List<String> imgs = [];
+                          map[key]['img'].map((e) {
+                            imgs.add(e);
+                          }).toList();
+                        List<String> favorites = [];
+                        if(map[key]['isFavorito'] != null){
+                            map[key]['isFavorito'].map((e) {
+                            favorites.add(e);
+                          }).toList();
+                        }
+                        Usuario temp_user = Usuario(
+                          nome: map[key]['dono']['nome'], 
+                          email: map[key]['dono']['email'], 
+                          telefone: map[key]['dono']['telefone'], 
+                          cpf: map[key]['dono']['cpf'], 
+                          login: map[key]['dono']['login'], 
+                          senha: map[key]['dono']['senha']);
+
+                        if(map[key]['dono']['login'] == usuario.login){
+                          
+                            
+                          _meus_animais.add( Animal(
+                            id: key,
+                            dono: temp_user,
+                            novo: map[key]['novo'],
+                            especie: map[key]['especie'],
+                            nome: map[key]['nome'],
+                            porte: map[key]['porte'],
+                            sexo: map[key]['sexo'],
+                            idade: map[key]['idade'],
+                            img: imgs,
+                            raca: map[key]['raca'],
+                            descricao: map[key]['descricao'],
+                            data_registro: map[key]['data_registro'],
+                            isFavorito: favorites)
+                          );
+                        }
+                        if(favorites.contains(usuario.login)){
+                            
+                          _animaisFav.add( Animal(
+                            id: key,
+                            dono: temp_user,
+                            novo: map[key]['novo'],
+                            especie: map[key]['especie'],
+                            nome: map[key]['nome'],
+                            porte: map[key]['porte'],
+                            sexo: map[key]['sexo'],
+                            idade: map[key]['idade'],
+                            img: imgs,
+                            raca: map[key]['raca'],
+                            descricao: map[key]['descricao'],
+                            data_registro: map[key]['data_registro'],
+                            isFavorito: favorites)
+                          );
+                        }
+                        
+                      });
+                    });
+  }
+
+  void setUpMeusAnimais() async {
     _meus_animais = [];
     var response = await http
                     .get(Uri.parse('${URLrepository}/animais.json')) 
@@ -98,9 +167,11 @@ class UsuarioRepository with ChangeNotifier {
                             isFavorito: map[key]['isFavorito'])
                           );
                         }
+                        
                       });
                     });
       notifyListeners();
+
   }
 
   void addMeusAnimais(Animal animal){
@@ -156,21 +227,6 @@ class UsuarioRepository with ChangeNotifier {
     return Future.value(false);
   }
 
-  Future<bool> attAnimalFav(Animal animal){
-    if(_usuario.login == ''){
-      return Future.value(false);
-    }
-    
-    if(_animaisFav.contains(animal)){
-      _animaisFav.remove(animal);
-    } else {
-      _animaisFav.add(animal);
-    }
-    
-    notifyListeners();
-    return Future.value(true);
-  }
-
   Future<bool> attAdocoes(Animal animal){
     if(_usuario.login == ''){
       return Future.value(false);
@@ -192,26 +248,35 @@ class UsuarioRepository with ChangeNotifier {
     return Future.value(true);
   }
 
-  Future<Usuario> findByLogin(String login) async {
-    Usuario result = Usuario(nome: '', email: '', telefone: '', cpf: '', login: '', senha: '');
-    final response = await http
-        .get(Uri.parse(
-            '${URLrepository}users.json?orderBy="login"&equalTo="${login}"&print=pretty'))
-        .then((value) {
-      if (value.body.length > 10) {
-        Map<String, dynamic> map = json.decode(value.body);
-        map.forEach((key, value) { 
-          result = Usuario(
-            nome: map[key]['nome'], 
-            email: map[key]['email'], 
-            telefone: map[key]['telefone'], 
-            cpf: map[key]['cpf'], 
-            login: login, 
-            senha: map[key]['senha']);
-        });
+  Future<bool> attAnimalFav(Animal animal){
+    if(_usuario.login == ''){
+      return Future.value(false);
+    }
+
+    bool itsRemove = false;
+    _animaisFav.forEach((element) { 
+      if(element.id == animal.id){
+        itsRemove = true;
       }
     });
-    return Future.value(result);
+    if(itsRemove){
+      _animaisFav.remove(animal);
+    } else {
+      _animaisFav.add(animal);
+    }
+
+    notifyListeners();
+    return Future.value(true);
+  }
+
+  bool isFavorito(Animal animal){
+    bool result = false;
+    _animaisFav.forEach((element) { 
+      if(element.id == animal.id){
+        result = true;
+      }
+    });
+    return result;
   }
 
   bool isAdotado(Animal animal){
@@ -223,3 +288,27 @@ class UsuarioRepository with ChangeNotifier {
 
 
 }
+
+
+
+  // Future<Usuario> findByLogin(String login) async {
+  //   Usuario result = Usuario(nome: '', email: '', telefone: '', cpf: '', login: '', senha: '');
+  //   final response = await http
+  //       .get(Uri.parse(
+  //           '${URLrepository}users.json?orderBy="login"&equalTo="${login}"&print=pretty'))
+  //       .then((value) {
+  //     if (value.body.length > 10) {
+  //       Map<String, dynamic> map = json.decode(value.body);
+  //       map.forEach((key, value) { 
+  //         result = Usuario(
+  //           nome: map[key]['nome'], 
+  //           email: map[key]['email'], 
+  //           telefone: map[key]['telefone'], 
+  //           cpf: map[key]['cpf'], 
+  //           login: login, 
+  //           senha: map[key]['senha']);
+  //       });
+  //     }
+  //   });
+  //   return Future.value(result);
+  // }
