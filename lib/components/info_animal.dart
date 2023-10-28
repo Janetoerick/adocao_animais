@@ -1,8 +1,10 @@
 import 'package:adocao_animais/components/favorite_button.dart';
 import 'package:adocao_animais/models/animal.dart';
+import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class InfoAnimal extends StatefulWidget {
   final Animal animal;
@@ -13,9 +15,9 @@ class InfoAnimal extends StatefulWidget {
 }
 
 class _InfoAnimalState extends State<InfoAnimal> {
-
   @override
   Widget build(BuildContext context) {
+    Animal animal = Provider.of<AnimaisRepository>(context, listen: false).findByid(widget.animal.id);
     return SizedBox(
             height: MediaQuery.of(context).size.height * 0.83,
             child: SingleChildScrollView(
@@ -24,7 +26,7 @@ class _InfoAnimalState extends State<InfoAnimal> {
                   Container(
                       alignment: Alignment.center,
                       child: Image.network(
-                        widget.animal.img[0],
+                        animal.img[0],
                         fit: BoxFit.cover,
                         height: 250,
                       )),
@@ -32,14 +34,14 @@ class _InfoAnimalState extends State<InfoAnimal> {
                     top: 10,
                     right: 30,
                     child: FavoriteButton(
-                        animal: widget.animal,
+                        animal: animal,
                         onChanged: (bool isFavorito) {
                           setState(() {
-                            widget.animal.isFavorito = isFavorito;
+                            animal.isFavorito = isFavorito;
                           });
                         }),
                   ),
-                  (widget.animal.novo)
+                  (animal.novo)
                       ? Positioned(
                           top: 10,
                           left: 30,
@@ -82,7 +84,7 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    widget.animal.nome,
+                                    animal.nome,
                                     style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
@@ -93,14 +95,14 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       color: 
-                                      widget.animal.sexo == 'Macho' ?
+                                      animal.sexo == 'Macho' ?
                                         Color.fromARGB(255, 94, 176, 243)
                                       :
                                         Color.fromARGB(255, 245, 97, 146)
                                     ),
                                     padding: EdgeInsets.all(5),
                                     child: Text(
-                                      '${widget.animal.sexo}, ${widget.animal.idade}',
+                                      '${animal.sexo}, ${animal.idade}',
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),
@@ -133,7 +135,7 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                     color: Colors.black45,
                                   ),
                                 ),
-                                Text(widget.animal.raca, style: TextStyle(fontSize: 20),),
+                                Text(animal.raca, style: TextStyle(fontSize: 20),),
                               ],
                             ),
                             SizedBox(
@@ -150,7 +152,7 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                     color: Colors.black45,
                                   ),
                                 ),
-                                Text(widget.animal.porte, style: TextStyle(fontSize: 20),),
+                                Text(animal.porte, style: TextStyle(fontSize: 20),),
                               ],
                             ),
                             SizedBox(
@@ -167,7 +169,15 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                     color: Colors.black45,
                                   ),
                                 ),
-                                Text(widget.animal.descricao, style: TextStyle(fontSize: 20),),
+                                Expanded(
+                                  child: Container(
+                                    child: Text(
+                                      animal.descricao, 
+                                      style: TextStyle(
+                                        fontSize: 20),
+                                    )
+                                  ),
+                                ),
                               ],
                             ),
                             SizedBox(
@@ -184,7 +194,7 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                     color: Colors.black45,
                                   ),
                                 ),
-                                Text(widget.animal.dono.email, style: TextStyle(fontSize: 20),),
+                                Text(animal.dono.email, style: TextStyle(fontSize: 20),),
                               ],
                             ),
                             SizedBox(
@@ -201,7 +211,7 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                     color: Colors.black45,
                                   ),
                                 ),
-                                Text(widget.animal.dono.telefone, style: TextStyle(fontSize: 20),),
+                                Text(animal.dono.telefone, style: TextStyle(fontSize: 20),),
                               ],
                             ),
                           ],

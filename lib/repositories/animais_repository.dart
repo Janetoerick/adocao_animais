@@ -108,7 +108,7 @@ class AnimaisRepository with ChangeNotifier {
     final animal = Animal(
         id: hasId ? data['id'] as String : Random().nextDouble().toString(),
         dono: user,
-        novo: false,
+        novo: true,
         especie: data['especie'].toString(),
         nome: data['nome'].toString(),
         porte: data['porte'].toString(),
@@ -180,6 +180,11 @@ class AnimaisRepository with ChangeNotifier {
       ).then((response) => print(response.statusCode));
     }
     return Future.value();
+  }
+
+  Animal findByid(String id){
+    List<Animal> result = _animais.where((element) => element.id == id).toList();
+    return result[0];
   }
 
 

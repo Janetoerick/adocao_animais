@@ -360,7 +360,8 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
             _submitForm();
             final snackBarConfrim = SnackBar(
               content: const Text(
-                  'Pet adicionado com sucesso!'),
+                  'Salvo com sucesso!'),
+                  duration: Duration(milliseconds: 900),
             );
             ScaffoldMessenger.of(context)
                 .showSnackBar(snackBarConfrim);
