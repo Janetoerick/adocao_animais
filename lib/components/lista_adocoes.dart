@@ -1,4 +1,5 @@
 import 'package:adocao_animais/repositories/usuario_repository.dart';
+import 'package:adocao_animais/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +31,7 @@ class _ListaAdocoesState extends State<ListaAdocoes> {
                 onTap: () {
                   Navigator.of(context)
         .pushNamed(
-          '/detalhe_screen',
+          AppRoutes.ANIMAL_DETAIL,
           arguments: user.adocoes[index].animal,
         );
                 },

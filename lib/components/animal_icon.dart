@@ -1,5 +1,6 @@
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
+import 'package:adocao_animais/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:adocao_animais/models/animal.dart';
 import 'package:adocao_animais/screens/animal_detalhe_screen.dart';
@@ -14,7 +15,7 @@ class AnimalIcon extends StatelessWidget {
   void _selectAnimal(BuildContext context) {
     Navigator.of(context)
         .pushNamed(
-          '/detalhe_screen',
+          AppRoutes.ANIMAL_DETAIL,
           arguments: animal,
         )
         .then((value) => null);
@@ -116,7 +117,7 @@ class AnimalIcon extends StatelessWidget {
                                     onTap: () {
                                       Navigator.pop(context);
                                       Navigator.of(context).pushNamed(
-                                          '/form_animal',
+                                          AppRoutes.FORM_ANIMAL,
                                           arguments: animal);
                                     },
                                   ),

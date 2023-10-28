@@ -1,4 +1,5 @@
 import 'package:adocao_animais/repositories/usuario_repository.dart';
+import 'package:adocao_animais/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +29,7 @@ class GridOptionsHome extends StatelessWidget {
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
               onPressed: () {
                 if(user.usuario.login != ''){
-                  Navigator.of(context).pushNamed('/form_animal');
+                  Navigator.of(context).pushNamed(AppRoutes.FORM_ANIMAL);
                 } else {
                   showDialog(context: context, builder: (BuildContext context) =>
                   AlertDialog(
@@ -39,7 +40,7 @@ class GridOptionsHome extends StatelessWidget {
                       TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
                       TextButton(onPressed: () {
                         Navigator.pop(context);
-                        Navigator.of(context).pushNamed('/login');
+                        Navigator.of(context).pushNamed(AppRoutes.LOGIN);
                       }, child: const Text('Fazer login'),)
                     ],
                   ));
@@ -71,7 +72,7 @@ class GridOptionsHome extends StatelessWidget {
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
               onPressed: () {
                 if(user.usuario.login != ''){
-                  Navigator.of(context).pushNamed('/meus_pets');
+                  Navigator.of(context).pushNamed(AppRoutes.MEUS_PETS);
                 } else {
                   showDialog(context: context, builder: (BuildContext context) =>
                   AlertDialog(
@@ -82,7 +83,7 @@ class GridOptionsHome extends StatelessWidget {
                       TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
                       TextButton(onPressed: () {
                         Navigator.pop(context);
-                        Navigator.of(context).pushNamed('/login');
+                        Navigator.of(context).pushNamed(AppRoutes.LOGIN);
                       }, child: const Text('Fazer login'),)
                     ],
                   ));

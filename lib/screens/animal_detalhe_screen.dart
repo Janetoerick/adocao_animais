@@ -3,6 +3,7 @@ import 'package:adocao_animais/components/info_animal.dart';
 import 'package:adocao_animais/models/usuario.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
+import 'package:adocao_animais/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +36,7 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
         animal.dono.login == usuario.usuario.login ?
         [
           IconButton(onPressed: () {
-            Navigator.of(context).pushNamed('/form_animal', arguments: animal);
+            Navigator.of(context).pushNamed(AppRoutes.FORM_ANIMAL, arguments: animal);
           }, icon: Icon(Icons.edit)),
           IconButton(onPressed: () {
             showDialog(context: context, builder: (BuildContext context) =>
@@ -77,7 +78,7 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
                 TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
                 TextButton(onPressed: () {
                   Navigator.pop(context);
-                  Navigator.of(context).pushNamed('/login');
+                  Navigator.of(context).pushNamed(AppRoutes.LOGIN);
                 }, child: const Text('Fazer login'),)
               ],
             ));

@@ -1,6 +1,7 @@
 import 'package:adocao_animais/main.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:adocao_animais/screens/home_screen.dart';
+import 'package:adocao_animais/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:adocao_animais/screens/cadastro_screen.dart';
 import 'package:adocao_animais/models/usuario.dart';
@@ -106,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       Navigator.pushNamed(
                         context,
-                        '/cadastro_user'
+                        AppRoutes.CADASTRO_USER
                       );
                     },
                     child: Text('Criar uma conta'),

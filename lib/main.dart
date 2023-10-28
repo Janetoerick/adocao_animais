@@ -8,6 +8,7 @@ import 'package:adocao_animais/screens/form_animal_screen.dart';
 import 'package:adocao_animais/screens/login_screen.dart';
 import 'package:adocao_animais/screens/meus_animais_screen.dart';
 import 'package:adocao_animais/screens/tabs_screen.dart';
+import 'package:adocao_animais/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:adocao_animais/models/usuario.dart';
 
@@ -52,12 +53,12 @@ class _MyAppState extends State<MyApp> {
         ),
         initialRoute: '/',
         routes: {
-          '/': (ctx) => TabsScreen(),
-          '/detalhe_screen': (ctx) => AnimalDetalheScreen(),
-          '/login': (ctx) => LoginScreen(),
-          '/cadastro_user': (ctx) => CadastroScreen(),
-          '/form_animal': (ctx) => FormAnimalScreen(),
-          '/meus_pets': (ctx) => MeusAnimaisScreen(),
+          AppRoutes.HOME: (ctx) => TabsScreen(),
+          AppRoutes.ANIMAL_DETAIL: (ctx) => AnimalDetalheScreen(),
+          AppRoutes.LOGIN: (ctx) => LoginScreen(),
+          AppRoutes.CADASTRO_USER: (ctx) => CadastroScreen(),
+          AppRoutes.FORM_ANIMAL: (ctx) => FormAnimalScreen(),
+          AppRoutes.MEUS_PETS: (ctx) => MeusAnimaisScreen(),
         },
       ),
     );

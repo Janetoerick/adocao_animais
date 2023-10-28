@@ -2,6 +2,7 @@ import 'package:adocao_animais/components/lista_animais.dart';
 import 'package:adocao_animais/models/animal.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
+import 'package:adocao_animais/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +23,7 @@ class _MeusAnimaisScreenState extends State<MeusAnimaisScreen> {
         title: Text('Meus Pets'),
         actions: [
           IconButton(onPressed: () {
-            Navigator.of(context).pushNamed('/form_animal');
+            Navigator.of(context).pushNamed(AppRoutes.FORM_ANIMAL);
           }, icon: Icon(Icons.add))
         ],
       ),

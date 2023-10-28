@@ -2,6 +2,7 @@ import 'package:adocao_animais/components/grid_options_home.dart';
 import 'package:adocao_animais/components/lista_adocoes.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
+import 'package:adocao_animais/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:adocao_animais/screens/login_screen.dart';
 import 'package:adocao_animais/screens/cadastro_screen.dart';
@@ -41,7 +42,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                   Navigator.pushNamed(
                     context,
-                    '/login',
+                    AppRoutes.LOGIN,
                   );
               },
               child: Text("Fazer login", style: TextStyle(color: Colors.white)),

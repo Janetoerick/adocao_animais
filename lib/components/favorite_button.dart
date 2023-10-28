@@ -1,5 +1,6 @@
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
+import 'package:adocao_animais/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/animal.dart';
@@ -34,7 +35,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
                 TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
                 TextButton(onPressed: () {
                   Navigator.pop(context);
-                  Navigator.of(context).pushNamed('/login');
+                  Navigator.of(context).pushNamed(AppRoutes.LOGIN);
                 }, child: const Text('Fazer login'),)
               ],
             ));
