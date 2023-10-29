@@ -1,4 +1,4 @@
-import 'package:adocao_animais/components/lista_adocoes.dart';
+import 'package:adocao_animais/components/lista_adocoes_all.dart';
 import 'package:adocao_animais/models/adocao.dart';
 import 'package:adocao_animais/models/animal.dart';
 import 'package:adocao_animais/repositories/adocoes_repository.dart';
@@ -14,17 +14,27 @@ class AdocaoDetalheScreen extends StatefulWidget {
 }
 
 class _AdocaoScreenState extends State<AdocaoDetalheScreen> {
+  String dropdownValue = '';
+
   @override
   Widget build(BuildContext context) {
-    final animal = ModalRoute.of(context)?.settings.arguments as Animal;
+    final adocao = ModalRoute.of(context)?.settings.arguments as Adocao;
 
     final user = Provider.of<UsuarioRepository>(context, listen: false).usuario;
-    final adocao = Provider.of<AdocoesRepository>(context, listen: false).findByAnimal(animal);
 
     final bool isDono = adocao.animal.dono.login == user.login;
 
-    final List<String> options = ['em processo...', 'rejeitado', 'aprovado'];
-    String dropdownValue = adocao.status;
+    const List<String> options = <String>['em processo...', 'rejeitado', 'aprovado'];
+    
+    if(dropdownValue == ''){
+      dropdownValue = adocao.status;
+    }
+
+    onSubmit(Adocao adocao, String status){
+      final new_adocao = Adocao(id: adocao.id, usuario: adocao.usuario, animal: adocao.animal, status: status, data: adocao.data);
+
+      Provider.of<AdocoesRepository>(context, listen: false).attAdocoes(new_adocao, true);
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -51,6 +61,47 @@ class _AdocaoScreenState extends State<AdocaoDetalheScreen> {
                         width: 40,
                         alignment: Alignment.centerRight,
                         child: Icon(
+                          Icons.person, 
+                          color: Theme.of(context).colorScheme.secondary,
+                          size: 30,
+                        ),
+                      ),
+                      SizedBox(width: 10,),
+                      Expanded(
+                        child: Container(
+                          child: Text(
+                            isDono 
+                            ?
+                            adocao.usuario.nome
+                            :
+                            adocao.animal.dono.nome
+                            , 
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary, 
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold),),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: 300,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Theme.of(context).colorScheme.secondary),
+                    borderRadius: BorderRadius.circular(20)
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 40,
+                        alignment: Alignment.centerRight,
+                        child: Icon(
                           Icons.smartphone, 
                           color: Theme.of(context).colorScheme.secondary,
                           size: 30,
@@ -60,6 +111,10 @@ class _AdocaoScreenState extends State<AdocaoDetalheScreen> {
                       Expanded(
                         child: Container(
                           child: Text(
+                            isDono 
+                            ?
+                            adocao.usuario.telefone
+                            :
                             adocao.animal.dono.telefone, 
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.secondary, 
@@ -96,10 +151,16 @@ class _AdocaoScreenState extends State<AdocaoDetalheScreen> {
                       Expanded(
                         child: Container(
                           child: Text(
-                            adocao.animal.dono.email, 
+                            isDono 
+                            ?
+                            adocao.usuario.email
+                            :
+                            adocao.animal.dono.email
+                            , 
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.secondary, 
-                              fontSize: 24,
+                              fontSize: 24
+                              ,
                               fontWeight: FontWeight.bold),),
                         ),
                       ),
@@ -116,7 +177,7 @@ class _AdocaoScreenState extends State<AdocaoDetalheScreen> {
                   decoration: BoxDecoration(
                     border: Border.all(width: 1, color: Theme.of(context).colorScheme.secondary),
                     borderRadius: 
-                      dropdownValue == adocao.status ? 
+                      !isDono ?
                         BorderRadius.circular(20) 
                       : 
                         BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))
@@ -133,22 +194,17 @@ class _AdocaoScreenState extends State<AdocaoDetalheScreen> {
                         ),
                       ),
                       isDono ?
-                        DropdownButton<String>(
-                              value: adocao.status,
-                              elevation: 16,
-                              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                              underline: Container(
-                                height: 2,
-                              ),
-                              onChanged: (String? value) {
+                        DropdownMenu<String>(
+                              initialSelection: dropdownValue,
+                              onSelected: (String? value) {
                                 setState(() {
                                   dropdownValue = value!;
                                 });
                               },
-                              items: options.map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
+                              dropdownMenuEntries: options.map<DropdownMenuEntry<String>>((String value) {
+                                return DropdownMenuEntry<String>(
                                   value: value,
-                                  child: Text(value),
+                                  label: value,
                                 );
                               }).toList(),
                             )
@@ -163,7 +219,8 @@ class _AdocaoScreenState extends State<AdocaoDetalheScreen> {
                     ],
                   ),
                 ),
-                dropdownValue != adocao.status ?
+                isDono
+                ?
                 Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary,
@@ -174,16 +231,21 @@ class _AdocaoScreenState extends State<AdocaoDetalheScreen> {
                   height: 40,
                   child:
                   ElevatedButton(
-                    onPressed: () {}, 
+                    onPressed: () {
+                      print("O DROPDOWNVALUE = ${dropdownValue}");
+                      Adocao new_adocao = Adocao(id: adocao.id, usuario: adocao.usuario, animal: adocao.animal, status: dropdownValue, data: adocao.data);
+                      Provider.of<AdocoesRepository>(context, listen: false).attAdocoes(new_adocao, true).then((value) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Atualizado com sucesso!'),
+                          duration: const Duration(seconds: 1)));
+                        
+                        Navigator.of(context).pop();
+                      });
+                    }, 
                     child: Text('Salvar')
                   )
                 )
-                :
-                Container(
-                  height: 40,
-                  child: Container()
-                )
-                
+                : Container(height: 40,),
               ],
             ),
           ],

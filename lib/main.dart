@@ -4,7 +4,8 @@ import 'package:adocao_animais/repositories/adocoes_repository.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:adocao_animais/screens/adocao_detalhe_screen.dart';
-import 'package:adocao_animais/screens/adocao_screen.dart';
+import 'package:adocao_animais/screens/adocao_all_screen.dart';
+import 'package:adocao_animais/screens/adocao_unique_screen.dart';
 import 'package:adocao_animais/screens/animal_detalhe_screen.dart';
 import 'package:adocao_animais/screens/cadastro_screen.dart';
 import 'package:adocao_animais/screens/form_animal_screen.dart';
@@ -63,7 +64,8 @@ class _MyAppState extends State<MyApp> {
           AppRoutes.CADASTRO_USER: (ctx) => CadastroScreen(),
           AppRoutes.FORM_ANIMAL: (ctx) => FormAnimalScreen(),
           AppRoutes.MEUS_PETS: (ctx) => MeusAnimaisScreen(),
-          AppRoutes.ADOCAO: (ctx) => AdocaoScreen(),
+          AppRoutes.ADOCAO_ALL: (ctx) => AdocaoAllScreen(),
+          AppRoutes.ADOCAO_UNIQUE: (ctx) => AdocaoUniqueScreen(),
           AppRoutes.ADOCAO_DETAIL: (ctx) => AdocaoDetalheScreen(),
         },
       ),

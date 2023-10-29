@@ -103,6 +103,49 @@ class GridOptionsHome extends StatelessWidget {
             ),
           ),
         ),
+        Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          child: SizedBox.expand(
+            child: ElevatedButton(
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
+              onPressed: () {
+                if(user.usuario.login != ''){
+                  Navigator.of(context).pushNamed(AppRoutes.ADOCAO_ALL, arguments: false);
+                } else {
+                  showDialog(context: context, builder: (BuildContext context) =>
+                  AlertDialog(
+                    
+                    title: const Text('Requer login'),
+                    content: const Text('Para cadastrar um pet você deve estar logado no sistema...'),
+                    actions: [
+                      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
+                      TextButton(onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).pushNamed(AppRoutes.LOGIN);
+                      }, child: const Text('Fazer login'),)
+                    ],
+                  ));
+                }
+                
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset('lib/assets/icon_adocao.png', width: 50, height: 50, color: Theme.of(context).colorScheme.secondary,),
+                  Text('Minhas adoções', 
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontWeight: FontWeight.bold), 
+                  textAlign: TextAlign.center,),
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

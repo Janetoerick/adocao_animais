@@ -235,10 +235,18 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                 ),
                                 Expanded(
                                   child: Container(
-                                    child: Text('Para saber o email de contato, entre em processo de adoção', 
+                                    child: Text(
+                                      animal.dono.login == user.login ?
+                                      user.email
+                                      :
+                                      'Para saber o email de contato, entre em processo de adoção', 
                                       style: TextStyle(
                                         fontSize: 20,
-                                        color: Theme.of(context).colorScheme.secondary),)),
+                                        color: 
+                                        animal.dono.login == user.login ?
+                                        Colors.black
+                                        :
+                                        Theme.of(context).colorScheme.secondary),)),
                                 ),
                               ],
                             ),
@@ -258,10 +266,18 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                 ),
                                 Expanded(
                                   child: Container(
-                                    child: Text('Para saber o telefone de contato, entre em processo de adoção', 
+                                    child: Text(
+                                      animal.dono.login == user.login ?
+                                      user.telefone
+                                      :
+                                      'Para saber o telefone de contato, entre em processo de adoção', 
                                       style: TextStyle(
                                         fontSize: 20,
-                                        color: Theme.of(context).colorScheme.secondary),)),
+                                        color: 
+                                        animal.dono.login == user.login ?
+                                        Colors.black
+                                        :
+                                          Theme.of(context).colorScheme.secondary),)),
                                 ),
                               ],
                             ),

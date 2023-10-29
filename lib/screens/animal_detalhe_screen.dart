@@ -106,7 +106,8 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
           :
             ElevatedButton(
               onPressed: () {
-                      Navigator.of(context).pushNamed(AppRoutes.ADOCAO_DETAIL, arguments: animal);
+                      var adocao = Provider.of<AdocoesRepository>(context, listen: false).findByAnimal(animal);
+                      Navigator.of(context).pushNamed(AppRoutes.ADOCAO_DETAIL, arguments: adocao[0]);
                     },
               child: SizedBox(
                 height: 50,
@@ -123,7 +124,7 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
           :
           ElevatedButton(
             onPressed: () {
-              
+              Navigator.of(context).pushNamed(AppRoutes.ADOCAO_UNIQUE, arguments: animal);
             }, 
             child: SizedBox(
               height: 50,

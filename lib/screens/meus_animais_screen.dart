@@ -1,3 +1,4 @@
+import 'package:adocao_animais/components/default_view.dart';
 import 'package:adocao_animais/components/lista_animais.dart';
 import 'package:adocao_animais/models/animal.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
@@ -27,7 +28,27 @@ class _MeusAnimaisScreenState extends State<MeusAnimaisScreen> {
           }, icon: Icon(Icons.add))
         ],
       ),
-      body: ListaAnimais(animais, true),
+      body: Container(
+        height: MediaQuery.of(context).size.height * 0.85,
+        child: 
+        animais.isEmpty ?
+        Container(alignment: Alignment.center,child: DefaultView('Você não tem animais cadastrado no momento...'))
+        :
+        ListaAnimais(animais, true)
+      ),
+      bottomSheet: 
+      animais.isEmpty ?
+      Container(height: 0,)
+      :
+      Container(
+        height: MediaQuery.of(context).size.height * 0.055,
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed(AppRoutes.ADOCAO_ALL, arguments: true);
+          }, 
+          child: Text('Gerenciar processos de adoção', style: TextStyle(fontSize: 18),)),
+      ),
 
     );
   }

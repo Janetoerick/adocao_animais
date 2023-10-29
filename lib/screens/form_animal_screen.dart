@@ -95,7 +95,9 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Forms Pet')),
+      appBar: AppBar(
+        title: const Text('Forms Pet'),
+      ),
       body: Padding(
         padding: EdgeInsets.all(10),
         child: Form(
@@ -192,6 +194,7 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                       height: 60,
                       padding: EdgeInsets.only(top: 10),
                       child: GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
                         itemCount: _sexos.length,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
@@ -239,6 +242,7 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                       height: 60,
                       padding: EdgeInsets.only(top: 10),
                       child: GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
                         itemCount: _portes.length,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,

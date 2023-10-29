@@ -5,6 +5,7 @@ class AppRoutes {
   static const CADASTRO_USER = '/cadastro_user';
   static const FORM_ANIMAL = '/form_animal';
   static const MEUS_PETS = '/meus_pets';
-  static const ADOCAO = '/adocao';
+  static const ADOCAO_ALL = '/adocao_all';
+  static const ADOCAO_UNIQUE = '/adocao_unique';
   static const ADOCAO_DETAIL = '/adocao_detail';
 }

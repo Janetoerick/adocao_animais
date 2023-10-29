@@ -1,5 +1,5 @@
 import 'package:adocao_animais/components/grid_options_home.dart';
-import 'package:adocao_animais/components/lista_adocoes.dart';
+import 'package:adocao_animais/components/lista_adocoes_all.dart';
 import 'package:adocao_animais/repositories/adocoes_repository.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
@@ -153,20 +153,20 @@ class HomeScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   color: const Color.fromARGB(255, 238, 238, 238)
                 ),
-                height: 155,
+                height: 280,
                 child: const GridOptionsHome()),
             ),
-            Container(
-              padding: EdgeInsets.only(top: 10),
-              child: Text(
-                'Animais em fase de adoção',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            // Container(
+            //   padding: EdgeInsets.only(top: 10),
+            //   child: Text(
+            //     'Animais em fase de adoção',
+            //     style: TextStyle(
+            //       fontSize: 18,
+            //       color: Theme.of(context).colorScheme.primary,
+            //       fontWeight: FontWeight.bold,
+            //     ),
+            //   ),
+            // ),
             // (adocoes.user_adocoes.isEmpty)
             //     ? Expanded(
             //         child: Row(
