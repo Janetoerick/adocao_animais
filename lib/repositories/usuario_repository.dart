@@ -28,14 +28,13 @@ class UsuarioRepository with ChangeNotifier {
     return [..._animaisFav];
   }
 
-  Future<String> loginUsuario(String login, String senha) async{
-    String result = 'OK';
+  Future<Usuario> loginUsuario(String login, String senha) async{
+    Usuario user = new Usuario(nome: '', email: '', telefone: '', cpf: '', login: '', senha: '');
     final response = await http
         .get(Uri.parse(
           '${URLrepository}users.json?orderBy="login"&equalTo="${login}"&print=pretty'))
         .then((value) {
           if(value.body.length > 10){
-            Usuario user = new Usuario(nome: '', email: '', telefone: '', cpf: '', login: '', senha: '');
             Map<String, dynamic> map = json.decode(value.body);
             map.forEach((key, value) { 
               user = Usuario(
@@ -48,21 +47,17 @@ class UsuarioRepository with ChangeNotifier {
             });
             if(user.senha == senha){
               _usuario = user;
-            } else {
-              result = 'Senha incorreta';
-            }
-          } else {
-            result = 'Login não existe';
-          }
+            } 
+          } 
         });
 
-    if(result == 'OK'){
+    if(user.login != ''){
       setUpInitSection();
     }
     
     notifyListeners();
 
-    return Future.value(result);
+    return Future.value(user);
   }
 
   void setUpInitSection() async{

@@ -24,6 +24,89 @@ class AdocoesRepository with ChangeNotifier {
     return [..._user_adocoes];
   }
 
+  void setUpAdocoesAccount(Usuario usuario) async{
+    final response = await http
+    .get(Uri.parse('${URLrepository}/adocoes.json'));
+    if(response.statusCode == 200){
+      Map<String, dynamic> json = jsonDecode(response.body);
+      json.forEach((key, value) { 
+        final isUser = json[key]['usuario']['login'] == usuario.login;
+        final isDono = json[key]['animal']['dono']['login'] == usuario.login;
+        if(isUser || isDono){ // verifica se o usuario esta envolvido com a doacao
+          // transforma imagens em list
+          List<String> imagens = [];
+          json[key]['animal']['img'].forEach((e) {
+            imagens.add(e);
+          });
+          //transforma favoritos em list
+          List<String> favorites = [];
+          if(json[key]['animal']['isFavorito'] != null){
+              json[key]['animal']['isFavorito'].map((e) {
+              favorites.add(e);
+            }).toList();
+          }
+
+          
+          if(isUser){ // caso seja o usuario da adocao
+            Usuario dono = Usuario(
+              nome: json[key]['animal']['dono']['nome'], 
+              email: json[key]['animal']['dono']['email'], 
+              telefone: json[key]['animal']['dono']['telefone'], 
+              cpf: json[key]['animal']['dono']['cpf'], 
+              login: json[key]['animal']['dono']['login'], 
+              senha: json[key]['animal']['dono']['senha']
+            );
+
+            Animal animal = Animal(
+            id: json[key]['animal']['id'], 
+            dono: dono, 
+            novo: json[key]['animal']['novo'], 
+            especie: json[key]['animal']['especie'], 
+            nome: json[key]['animal']['nome'], 
+            porte: json[key]['animal']['porte'], 
+            sexo: json[key]['animal']['sexo'], 
+            idade: json[key]['animal']['idade'], 
+            img: imagens, 
+            raca: json[key]['animal']['raca'], 
+            descricao: json[key]['animal']['descricao'], 
+            data_registro: json[key]['animal']['data_registro'], 
+            isFavorito: favorites
+            );
+            _user_adocoes.add(Adocao(id: key, usuario: usuario, animal: animal, status: json[key]['status'], data: json[key]['data']));
+
+          } else if (isDono){ // caso seja o dono da doacao
+            Usuario user = Usuario(
+              nome: json[key]['usuario']['nome'], 
+              email: json[key]['usuario']['email'], 
+              telefone: json[key]['usuario']['telefone'], 
+              cpf: json[key]['usuario']['cpf'], 
+              login: json[key]['usuario']['login'], 
+              senha: json[key]['usuario']['senha']
+            );
+
+            Animal animal = Animal(
+            id: json[key]['animal']['id'], 
+            dono: usuario, 
+            novo: json[key]['animal']['novo'], 
+            especie: json[key]['animal']['especie'], 
+            nome: json[key]['animal']['nome'], 
+            porte: json[key]['animal']['porte'], 
+            sexo: json[key]['animal']['sexo'], 
+            idade: json[key]['animal']['idade'], 
+            img: imagens, 
+            raca: json[key]['animal']['raca'], 
+            descricao: json[key]['animal']['descricao'], 
+            data_registro: json[key]['animal']['data_registro'], 
+            isFavorito: favorites
+            );
+            _dono_adocoes.add(Adocao(id: key, usuario: user, animal: animal, status: json[key]['status'], data: json[key]['data']));
+          }
+        }
+      });
+      notifyListeners();
+    }
+  }
+
   // adicionar uma adocao < a partir do usuario que deseja adotar >
   Future<bool> addAdocao(Animal animal, Usuario usuario){
     // transformando usuario de animal em map
@@ -46,6 +129,7 @@ class AdocoesRepository with ChangeNotifier {
 
     // transformando animal em map
     Map<String, dynamic> animal_map = {};
+    animal_map["id"] = animal.id;
     animal_map["dono"] = user_dono_map;
     animal_map["novo"] = false;
     animal_map["especie"] = animal.especie;
@@ -66,7 +150,8 @@ class AdocoesRepository with ChangeNotifier {
           "status": 'em processo...',
           "data": DateFormat('dd-MM-yyyy').format(DateTime.now()),
         })).then((value) {
-          _user_adocoes.add(Adocao(usuario: usuario, animal: animal, status: 'status', data: DateTime.now()));
+          final id = jsonDecode(value.body)['name'];
+          _user_adocoes.add(Adocao(id: id, usuario: usuario, animal: animal, status: 'status', data: DateFormat('dd-MM-yyyy').format(DateTime.now())));
         });
       notifyListeners();
 
@@ -76,7 +161,7 @@ class AdocoesRepository with ChangeNotifier {
   bool inUserAdocoes(Animal animal, String login){
     bool result = false;
     _user_adocoes.forEach((element) { 
-      if(element.animal == animal && element.usuario.login == login){
+      if(element.animal.id == animal.id && element.usuario.login == login){
         result = true;
       }
     });
@@ -102,6 +187,30 @@ class AdocoesRepository with ChangeNotifier {
     
     notifyListeners();
     return Future.value(true);
+  }
+
+  void ClearAll(){
+    _dono_adocoes.clear();
+    _user_adocoes.clear();
+
+    notifyListeners();
+  }
+
+  Adocao findByAnimal(Animal animal){
+    Adocao? adocao;
+    _user_adocoes.forEach((element) { 
+      if(element.animal.id == animal.id){
+        adocao = element;
+      }
+    });
+    if(adocao == null){
+      _dono_adocoes.forEach((element) { 
+      if(element.animal.id == animal.id){
+        adocao = element;
+      }
+    });
+    }
+    return adocao!;
   }
 
 }

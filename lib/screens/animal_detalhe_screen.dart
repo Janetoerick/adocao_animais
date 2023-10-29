@@ -65,7 +65,8 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
       bottomSheet: 
         animal.dono.login != usuario.usuario.login   // Quem entrou na página não adicionou o animal
           ?
-          !adocoes.inUserAdocoes(animal, usuario.usuario.login) ?
+            !adocoes.inUserAdocoes(animal, usuario.usuario.login) // Usuario já esta em processo de adocao desse animal
+            ?
             ElevatedButton(
               onPressed: () {
                     if(usuario.usuario.login == ''){
@@ -105,29 +106,7 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
           :
             ElevatedButton(
               onPressed: () {
-                    if(usuario.usuario.login == ''){
-                      showDialog(context: context, builder: (BuildContext context) =>
-                          AlertDialog(
-                            
-                            title: const Text('Requer login'),
-                            content: const Text('Para adotar um animal você deve estar logado no sistema...'),
-                            actions: [
-                              TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
-                              TextButton(onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.of(context).pushNamed(AppRoutes.LOGIN);
-                              }, child: const Text('Fazer login'),)
-                            ],
-                          ));
-                    } else {
-                      adocoes.addAdocao(animal, usuario.usuario).then((value) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Processo de adoção iniciado!'),
-                          duration: const Duration(seconds: 1)));
-                        
-                        Navigator.of(context).pop();
-                      });
-                    } 
+                      Navigator.of(context).pushNamed(AppRoutes.ADOCAO_DETAIL, arguments: animal);
                     },
               child: SizedBox(
                 height: 50,

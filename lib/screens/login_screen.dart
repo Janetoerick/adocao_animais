@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:adocao_animais/main.dart';
+import 'package:adocao_animais/repositories/adocoes_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:adocao_animais/screens/home_screen.dart';
 import 'package:adocao_animais/utils/app_routes.dart';
@@ -35,12 +38,12 @@ class _LoginScreenState extends State<LoginScreen> {
       listen: false
     ).loginUsuario(_loginController.text, _senhaController.text)
     .then((value) {
-      print(value.toString());
-      if(value.toString() != 'OK'){
+      if(value.login == ''){
         setState(() {
-          error_login = value.toString();  
+          error_login = 'login ou senha incorretos';  
         });
       } else {
+        Provider.of<AdocoesRepository>(context, listen: false).setUpAdocoesAccount(value);
         Navigator.of(context).pop();
       }
     });

@@ -73,14 +73,16 @@ class HomeScreen extends StatelessWidget {
                         ),
                         onTap: () {
                           Navigator.pop(context);
+                              Provider.of<AdocoesRepository>(context, listen: false).ClearAll();
                               Provider.of<UsuarioRepository>(
                                 context,
                                 listen: false,
                               ).logoutUsuario();
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Sessão finalizada!'),
-                        duration: const Duration(seconds: 1),
-                      ));
+                                content: Text('Sessão finalizada!'),
+                                duration: const Duration(seconds: 1),
+                                )
+                              );
                         },
                       ),)
           ]))
@@ -165,17 +167,17 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            (adocoes.user_adocoes.isEmpty)
-                ? Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        DefaultView(
-                            'Você não está em processos de adoção no momento...'),
-                      ],
-                    ),
-                  )
-                : ListaAdocoes()
+            // (adocoes.user_adocoes.isEmpty)
+            //     ? Expanded(
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           children: [
+            //             DefaultView(
+            //                 'Você não está em processos de adoção no momento...'),
+            //           ],
+            //         ),
+            //       )
+            //     : ListaAdocoes()
           ],
         ),
       ),
