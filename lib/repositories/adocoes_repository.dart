@@ -158,6 +158,20 @@ class AdocoesRepository with ChangeNotifier {
     return Future.value(true);
   }
 
+  Future<void> deleteAdocao(Adocao adocao) async{
+
+    final response = await http.delete(
+      Uri.parse('${URLrepository}/adocoes/${adocao.id}.json'),
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      ).then((value) {
+        _user_adocoes.remove(adocao);
+      });
+    notifyListeners();
+    return Future.value();
+  }
+
   bool inUserAdocoes(Animal animal, String login){
     bool result = false;
     _user_adocoes.forEach((element) { 
@@ -250,7 +264,7 @@ class AdocoesRepository with ChangeNotifier {
       }
     });
     }
-    
+
     return result;
   }
 

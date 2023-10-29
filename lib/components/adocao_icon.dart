@@ -1,3 +1,4 @@
+import 'package:adocao_animais/components/info_animal.dart';
 import 'package:adocao_animais/models/adocao.dart';
 import 'package:adocao_animais/repositories/adocoes_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
@@ -15,6 +16,16 @@ class AdocaoIcon extends StatelessWidget {
     var usuario = context.watch<UsuarioRepository>();
     var repository = context.watch<AdocoesRepository>();
 
+    _openTaskFilterModal(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            child: InfoAnimal(adocao.animal),
+          );
+        });
+  }
+
     return Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
@@ -24,6 +35,9 @@ class AdocaoIcon extends StatelessWidget {
                   AppRoutes.ADOCAO_DETAIL,
                   arguments: adocao,
                 );
+              },
+              onLongPress: (){
+                _openTaskFilterModal(context);
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -111,7 +125,7 @@ class AdocaoIcon extends StatelessWidget {
                             ),
                             TextButton(
                               onPressed: () {
-                                // repository.attAdocoes(adocao.animal, usuario.usuario, false);
+                                repository.deleteAdocao(adocao);
                                 Navigator.of(context).pop();
                               },
                               child: Text('Sim'),

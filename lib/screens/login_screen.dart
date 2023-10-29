@@ -61,15 +61,20 @@ class _LoginScreenState extends State<LoginScreen> {
           alignment: Alignment.center,
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(30.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Image.asset('lib/assets/coracao_patas.png', width: 200, height: 200, color: Theme.of(context).colorScheme.secondary,),
+                  Icon(Icons.account_circle, size: 200, color: Theme.of(context).colorScheme.secondary,),
+                  // Image.asset('lib/assets/coracao_patas.png', width: 200, height: 200, color: Theme.of(context).colorScheme.secondary,),
                   TextFormField(
+                    
                     controller: _loginController, // Captura o valor do campo de login
-                    decoration: InputDecoration(labelText: 'Login'),
+                    decoration: InputDecoration(
+                      labelText: 'Login',
+                      icon: Icon(Icons.person),
+                    ),
                     validator: (value) {
                       if(value == null || value == ''){
                         return 'Campo obrigatório!';
@@ -81,7 +86,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextFormField(
                     controller: _senhaController, // Captura o valor do campo de senha
-                    decoration: InputDecoration(labelText: 'Senha'),
+                    decoration: InputDecoration(
+                      labelText: 'Senha',
+                      icon: Icon(Icons.lock),
+                    ),
                     obscureText: true,
                     validator: (value) {
                       if(value == null || value == ''){

@@ -322,7 +322,19 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                     height: 100,
                     width: double.infinity,
                     padding: EdgeInsets.only(top: 10),
-                    child: ListView.builder(
+                    child: 
+                    _imagens.isEmpty ?
+                    Container(
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 216, 216, 216),
+                        borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Icon(Icons.add_photo_alternate_rounded),
+                    )
+
+                    :
+                    ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: _imagens.length,
                       itemBuilder: (context, index) {

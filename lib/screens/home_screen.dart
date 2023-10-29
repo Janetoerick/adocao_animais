@@ -53,11 +53,10 @@ class HomeScreen extends StatelessWidget {
           PopupMenuButton(
             child: Row(
                 children: [
-                  Icon(Icons.account_circle, color: Colors.white,),
-                  SizedBox(width: 5,),
-                  
                       Text("${user.usuario.nome}",
-                          style: TextStyle(color: Colors.white))
+                          style: TextStyle(color: Colors.white)),
+                      SizedBox(width: 5,),
+                      Icon(Icons.account_circle, color: Colors.white,),
                 ],
               ),
             itemBuilder: ((context) => [
