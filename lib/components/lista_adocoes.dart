@@ -1,3 +1,4 @@
+import 'package:adocao_animais/repositories/adocoes_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:adocao_animais/utils/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +18,14 @@ class _ListaAdocoesState extends State<ListaAdocoes> {
 
   @override
   Widget build(BuildContext context) {
-    var user = context.watch<UsuarioRepository>();
+    var usuario = context.watch<UsuarioRepository>();
+    var adocoes = context.watch<AdocoesRepository>();
 
     return Expanded(
       child: Container(
         padding: EdgeInsets.all(20),
         child: ListView.builder(
-          itemCount: user.adocoes.length,
+          itemCount: adocoes.user_adocoes.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
@@ -32,7 +34,7 @@ class _ListaAdocoesState extends State<ListaAdocoes> {
                   Navigator.of(context)
         .pushNamed(
           AppRoutes.ANIMAL_DETAIL,
-          arguments: user.adocoes[index].animal,
+          arguments: adocoes.user_adocoes[index].animal,
         );
                 },
                 child: Container(
@@ -45,13 +47,13 @@ class _ListaAdocoesState extends State<ListaAdocoes> {
                   height: 100,
                   child: Stack(children: [
                     Image.network(
-                      user.adocoes[index].animal.img[0],
+                      adocoes.user_adocoes[index].animal.img[0],
                       height: 100,
                       width: 150,
                       fit: BoxFit.cover,
                     ),
                     Positioned(
-                      child: Text(user.adocoes[index].status,
+                      child: Text(adocoes.user_adocoes[index].status,
                           style: TextStyle(color: Colors.white)),
                       bottom: 0,
                       right: 10,
@@ -74,7 +76,7 @@ class _ListaAdocoesState extends State<ListaAdocoes> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  user.attAdocoes(user.adocoes[index].animal);
+                                  adocoes.attAdocoes(adocoes.user_adocoes[index].animal, usuario.usuario);
                                   Navigator.of(context).pop();
                                 },
                                 child: Text('Sim'),

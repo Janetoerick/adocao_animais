@@ -1,6 +1,7 @@
 import 'package:adocao_animais/components/favorite_button.dart';
 import 'package:adocao_animais/components/info_animal.dart';
 import 'package:adocao_animais/models/usuario.dart';
+import 'package:adocao_animais/repositories/adocoes_repository.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:adocao_animais/utils/app_routes.dart';
@@ -27,6 +28,7 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
         : ModalRoute.of(context)!.settings.arguments as Animal;
     
     var usuario = context.watch<UsuarioRepository>();
+    var adocoes = context.watch<AdocoesRepository>();
 
 
     return Scaffold(
@@ -63,46 +65,86 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
       bottomSheet: 
         animal.dono.login != usuario.usuario.login   // Quem entrou na página não adicionou o animal
           ?
-          ElevatedButton(
-            onPressed: usuario.isAdotado(animal)
-                ? null
-                : () {
-                    usuario.attAdocoes(animal).then((value) {
-                      if(!value) {
-            showDialog(context: context, builder: (BuildContext context) =>
-            AlertDialog(
-              
-              title: const Text('Requer login'),
-              content: const Text('Para adotar um animal você deve estar logado no sistema...'),
-              actions: [
-                TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
-                TextButton(onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).pushNamed(AppRoutes.LOGIN);
-                }, child: const Text('Fazer login'),)
-              ],
-            ));
-          } else {
-            Navigator.of(context).pop();
-          }
-                    });
-                  },
-            child: SizedBox(
-              height: 50,
-              child: Center(
-                child: Text(
-                  'Adotar',
-                  style: TextStyle(fontSize: 20),
+          !adocoes.inUserAdocoes(animal, usuario.usuario.login) ?
+            ElevatedButton(
+              onPressed: () {
+                    if(usuario.usuario.login == ''){
+                      showDialog(context: context, builder: (BuildContext context) =>
+                          AlertDialog(
+                            
+                            title: const Text('Requer login'),
+                            content: const Text('Para adotar um animal você deve estar logado no sistema...'),
+                            actions: [
+                              TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
+                              TextButton(onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.of(context).pushNamed(AppRoutes.LOGIN);
+                              }, child: const Text('Fazer login'),)
+                            ],
+                          ));
+                    } else {
+                      adocoes.addAdocao(animal, usuario.usuario).then((value) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Processo de adoção iniciado!'),
+                          duration: const Duration(seconds: 1)));
+                        
+                        Navigator.of(context).pop();
+                      });
+                    } 
+                    },
+              child: SizedBox(
+                height: 50,
+                child: Center(
+                  child: Text(
+                    'Adotar',
+                    style: TextStyle(fontSize: 20),
+                  ),
                 ),
               ),
-            ),
-          )
+            )
+          :
+            ElevatedButton(
+              onPressed: () {
+                    if(usuario.usuario.login == ''){
+                      showDialog(context: context, builder: (BuildContext context) =>
+                          AlertDialog(
+                            
+                            title: const Text('Requer login'),
+                            content: const Text('Para adotar um animal você deve estar logado no sistema...'),
+                            actions: [
+                              TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
+                              TextButton(onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.of(context).pushNamed(AppRoutes.LOGIN);
+                              }, child: const Text('Fazer login'),)
+                            ],
+                          ));
+                    } else {
+                      adocoes.addAdocao(animal, usuario.usuario).then((value) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Processo de adoção iniciado!'),
+                          duration: const Duration(seconds: 1)));
+                        
+                        Navigator.of(context).pop();
+                      });
+                    } 
+                    },
+              child: SizedBox(
+                height: 50,
+                child: Center(
+                  child: Text(
+                    'Visualizar processo desta adoção',
+                    style: TextStyle(fontSize: 19),
+                  ),
+                ),
+              ),
+            )
           
           // Quem entrou na página adicionou o animal
           :
           ElevatedButton(
             onPressed: () {
-          
+              
             }, 
             child: SizedBox(
               height: 50,

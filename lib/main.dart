@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:adocao_animais/repositories/adocoes_repository.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
+import 'package:adocao_animais/screens/adocao_screen.dart';
 import 'package:adocao_animais/screens/animal_detalhe_screen.dart';
 import 'package:adocao_animais/screens/cadastro_screen.dart';
 import 'package:adocao_animais/screens/form_animal_screen.dart';
@@ -38,6 +40,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(create: (context) => AnimaisRepository()),
         ChangeNotifierProvider(create: (context) => UsuarioRepository()),
+        ChangeNotifierProvider(create: (context) => AdocoesRepository()),
       ],
       child: MaterialApp(
         title: 'Amigos de patas',
@@ -59,6 +62,7 @@ class _MyAppState extends State<MyApp> {
           AppRoutes.CADASTRO_USER: (ctx) => CadastroScreen(),
           AppRoutes.FORM_ANIMAL: (ctx) => FormAnimalScreen(),
           AppRoutes.MEUS_PETS: (ctx) => MeusAnimaisScreen(),
+          AppRoutes.ADOCAO: (ctx) => AdocaoScreen(),
         },
       ),
     );

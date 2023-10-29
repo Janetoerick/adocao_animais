@@ -15,7 +15,6 @@ class UsuarioRepository with ChangeNotifier {
   Usuario _usuario = Usuario(nome: '', email: '', telefone: '', cpf: '', login: '', senha: '');
   List<Animal> _meus_animais = [];
   List<Animal> _animaisFav = [];
-  List<Adocao> _adocoes = [];
 
   Usuario get usuario {
     return _usuario;
@@ -27,10 +26,6 @@ class UsuarioRepository with ChangeNotifier {
 
   List<Animal> get animaisFav {
     return [..._animaisFav];
-  }
-
-  List<Adocao> get adocoes {
-    return [..._adocoes];
   }
 
   Future<String> loginUsuario(String login, String senha) async{
@@ -193,7 +188,6 @@ class UsuarioRepository with ChangeNotifier {
   Future<void> logoutUsuario(){
     _usuario = Usuario(nome: '', email: '', telefone: '', cpf: '', login: '', senha: '');
     _animaisFav.clear();
-    _adocoes.clear();
 
     notifyListeners();
     
@@ -227,27 +221,6 @@ class UsuarioRepository with ChangeNotifier {
     return Future.value(false);
   }
 
-  Future<bool> attAdocoes(Animal animal){
-    if(_usuario.login == ''){
-      return Future.value(false);
-    }
-    
-    if(_adocoes.where((element) => element.animal == animal).isEmpty){
-      _adocoes.add(Adocao(
-              id: Random().toString(),
-              animal: animal,
-              status: 'em processo...',
-              usuario: _usuario,
-              data: DateTime.now(),
-      ));
-    } else {
-      _adocoes.removeWhere((element) => element.animal == animal);
-    }
-    
-    notifyListeners();
-    return Future.value(true);
-  }
-
   Future<bool> attAnimalFav(Animal animal){
     if(_usuario.login == ''){
       return Future.value(false);
@@ -279,17 +252,7 @@ class UsuarioRepository with ChangeNotifier {
     return result;
   }
 
-  bool isAdotado(Animal animal){
-    if(_adocoes.where((element) => element.animal == animal).isEmpty){
-      return false;
-    }
-    return true;
-  }
-
-
 }
-
-
 
   // Future<Usuario> findByLogin(String login) async {
   //   Usuario result = Usuario(nome: '', email: '', telefone: '', cpf: '', login: '', senha: '');

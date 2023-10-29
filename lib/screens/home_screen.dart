@@ -1,5 +1,6 @@
 import 'package:adocao_animais/components/grid_options_home.dart';
 import 'package:adocao_animais/components/lista_adocoes.dart';
+import 'package:adocao_animais/repositories/adocoes_repository.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:adocao_animais/utils/app_routes.dart';
@@ -20,6 +21,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var animals = context.watch<AnimaisRepository>();
     var user = context.watch<UsuarioRepository>();
+    var adocoes = context.watch<AdocoesRepository>();
 
     return Scaffold(
       appBar: AppBar(
@@ -163,7 +165,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            (user.adocoes.isEmpty)
+            (adocoes.user_adocoes.isEmpty)
                 ? Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
