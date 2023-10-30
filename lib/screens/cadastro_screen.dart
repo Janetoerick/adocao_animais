@@ -63,7 +63,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
         title: Text('Cadastro'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(30.0),
         child: Form(
           key: _formKey,
           child: Container(
@@ -74,7 +74,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Login'),
+                    decoration: InputDecoration(labelText: 'Login', icon: Icon(Icons.account_circle)),
                     controller: _login,
                     validator: (value) {
                           if (value == null || value == '') {
@@ -86,7 +86,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                     height: 10,
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Nome'),
+                    decoration: InputDecoration(labelText: 'Nome', icon: Icon(Icons.accessibility)),
                     controller: _nome,
                     validator: (value) {
                           if (value == null || value == '') {
@@ -98,7 +98,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                     height: 10,
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Email'),
+                    decoration: InputDecoration(labelText: 'Email', icon: Icon(Icons.mail)),
                     controller: _email,
                     validator: (value) {
                           if (value == null || value == '') {
@@ -112,7 +112,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                     height: 10,
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Telefone'),
+                    decoration: InputDecoration(labelText: 'Telefone', icon: Icon(Icons.smartphone)),
                     controller: _telefone,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
@@ -128,7 +128,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                     height: 10,
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'CPF'),
+                    decoration: InputDecoration(labelText: 'CPF', icon: Icon(Icons.blur_on)),
                     controller: _cpf,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
@@ -144,7 +144,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                     height: 10,
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Senha'),
+                    decoration: InputDecoration(labelText: 'Senha', icon: Icon(Icons.lock)),
                     controller: _senha,
                     obscureText: true,
                     validator: (value) {
@@ -159,7 +159,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                     height: 10,
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Confirmar senha'),
+                    decoration: InputDecoration(labelText: 'Confirmar senha', icon: Icon(Icons.lock_reset)),
                     controller: _senhaConfirm,
                     obscureText: true,
                     validator: (value) {

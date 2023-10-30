@@ -151,7 +151,7 @@ class AdocoesRepository with ChangeNotifier {
           "data": DateFormat('dd-MM-yyyy').format(DateTime.now()),
         })).then((value) {
           final id = jsonDecode(value.body)['name'];
-          _user_adocoes.add(Adocao(id: id, usuario: usuario, animal: animal, status: 'status', data: DateFormat('dd-MM-yyyy').format(DateTime.now())));
+          _user_adocoes.add(Adocao(id: id, usuario: usuario, animal: animal, status: 'em processo...', data: DateFormat('dd-MM-yyyy').format(DateTime.now())));
         });
       notifyListeners();
 
@@ -265,6 +265,24 @@ class AdocoesRepository with ChangeNotifier {
     });
     }
 
+    return result;
+  }
+
+  List<Adocao> findByStatus(String status, bool isDono){
+    List<Adocao> result = [];
+    if(isDono){
+      _dono_adocoes.forEach((element) { 
+        if(element.status == status){
+          result.add(element);
+        }
+      });
+    } else {
+      _user_adocoes.forEach((element) { 
+        if(element.status == status){
+          result.add(element);
+        }
+      });
+    }
     return result;
   }
 

@@ -98,9 +98,32 @@ class AdocaoIcon extends StatelessWidget {
                   ),
                   
                   Positioned(
-                    child: Text(adocao.status,
-                        style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
-                    bottom: 0,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: Container(
+                            width: 8,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40),
+                              border: Border.all(width: 1, color: Colors.black38),
+                              color: 
+                              adocao.status == 'em processo...' ?
+                              Colors.white
+                              : adocao.status == 'rejeitado' ?
+                                Colors.red
+                              :
+                                Colors.green
+                            ),
+                          ),
+                        ),
+                        Text(adocao.status,
+                            style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+                      ],
+                    ),
+                    bottom: 2,
                     right: 10,
                   ),
                   isDono 

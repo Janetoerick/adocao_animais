@@ -119,7 +119,7 @@ class GridOptionsHome extends StatelessWidget {
                   AlertDialog(
                     
                     title: const Text('Requer login'),
-                    content: const Text('Para cadastrar um pet você deve estar logado no sistema...'),
+                    content: const Text('Para visulizar suas adoções você deve estar logado no sistema...'),
                     actions: [
                       TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
                       TextButton(onPressed: () {

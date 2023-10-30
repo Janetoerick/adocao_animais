@@ -227,8 +227,9 @@ class UsuarioRepository with ChangeNotifier {
         itsRemove = true;
       }
     });
+
     if(itsRemove){
-      _animaisFav.remove(animal);
+      _animaisFav.removeWhere((element) => element.id == animal.id);
     } else {
       _animaisFav.add(animal);
     }

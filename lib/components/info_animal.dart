@@ -1,5 +1,6 @@
 import 'package:adocao_animais/components/favorite_button.dart';
 import 'package:adocao_animais/models/animal.dart';
+import 'package:adocao_animais/repositories/adocoes_repository.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,7 @@ class _InfoAnimalState extends State<InfoAnimal> {
   Widget build(BuildContext context) {
     var user = Provider.of<UsuarioRepository>(context, listen: false).usuario;
     Animal animal = Provider.of<AnimaisRepository>(context, listen: false).findByid(widget.animal.id);
+    var adocoes = Provider.of<AdocoesRepository>(context, listen: false);
     return SizedBox(
             height: MediaQuery.of(context).size.height * 0.85,
             child: SingleChildScrollView(
@@ -236,14 +238,14 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                 Expanded(
                                   child: Container(
                                     child: Text(
-                                      animal.dono.login == user.login ?
+                                      animal.dono.login == user.login || adocoes.inUserAdocoes(animal, user.login)?
                                       user.email
                                       :
                                       'Para saber o email de contato, entre em processo de adoção', 
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: 
-                                        animal.dono.login == user.login ?
+                                        animal.dono.login == user.login || adocoes.inUserAdocoes(animal, user.login)?
                                         Colors.black
                                         :
                                         Theme.of(context).colorScheme.secondary),)),
@@ -267,14 +269,14 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                 Expanded(
                                   child: Container(
                                     child: Text(
-                                      animal.dono.login == user.login ?
+                                      animal.dono.login == user.login || adocoes.inUserAdocoes(animal, user.login)?
                                       user.telefone
                                       :
                                       'Para saber o telefone de contato, entre em processo de adoção', 
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: 
-                                        animal.dono.login == user.login ?
+                                        animal.dono.login == user.login || adocoes.inUserAdocoes(animal, user.login)?
                                         Colors.black
                                         :
                                           Theme.of(context).colorScheme.secondary),)),

@@ -39,6 +39,37 @@ class _AdocaoScreenState extends State<AdocaoDetalheScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Processo de adoção'),
+        actions: [
+          !isDono ?
+          IconButton(
+            onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text('Cancelar adoção'),
+                content: const Text(
+                    'Tem certeza que quer cancelar a adoção?'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Não'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Provider.of<AdocoesRepository>(context, listen: false).deleteAdocao(adocao);
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Sim'),
+                  ),
+                ],
+              ),
+            )
+          , icon: Icon(Icons.delete))
+          :
+          Container()
+        ],
       ),
       body: Container(
         width: double.infinity,
@@ -232,7 +263,6 @@ class _AdocaoScreenState extends State<AdocaoDetalheScreen> {
                   child:
                   ElevatedButton(
                     onPressed: () {
-                      print("O DROPDOWNVALUE = ${dropdownValue}");
                       Adocao new_adocao = Adocao(id: adocao.id, usuario: adocao.usuario, animal: adocao.animal, status: dropdownValue, data: adocao.data);
                       Provider.of<AdocoesRepository>(context, listen: false).attAdocoes(new_adocao, true).then((value) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
