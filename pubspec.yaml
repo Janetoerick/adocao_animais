@@ -9,17 +9,30 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  provider: ^6.0.5
+  http: ^0.13.5
+  brasil_fields: ^1.14.0
+  google_fonts: ^4.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.2
+  intl: ^0.18.0
 
 flutter:
   uses-material-design: true
   assets:
    - lib/assets/dog_and_cat.png
    - lib/assets/patas.png
+   - lib/assets/coracao_patas.png
+   - lib/assets/icon_cachorro.png
+   - lib/assets/icon_gato.png
+   - lib/assets/icon_coelho.png
+   - lib/assets/icon_papagaio.png
+   - lib/assets/pet_add.png
+   - lib/assets/gato_1.png
+   - lib/assets/icon_adocao.png
   # fonts:
   #   - family: Schyler
   #     fonts:

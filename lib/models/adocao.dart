@@ -6,7 +6,7 @@ class Adocao {
   final Usuario usuario;
   final Animal animal;
   final String status;
-  final DateTime data;
+  final String data;
 
   const Adocao({
     required this.id,

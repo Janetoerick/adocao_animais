@@ -1,21 +1,28 @@
-import 'package:adocao_animais/components/lista_adocoes.dart';
+import 'package:adocao_animais/components/grid_options_home.dart';
+import 'package:adocao_animais/components/lista_adocoes_all.dart';
+import 'package:adocao_animais/repositories/adocoes_repository.dart';
+import 'package:adocao_animais/repositories/animais_repository.dart';
+import 'package:adocao_animais/repositories/usuario_repository.dart';
+import 'package:adocao_animais/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:adocao_animais/screens/login_screen.dart';
 import 'package:adocao_animais/screens/cadastro_screen.dart';
 import 'package:adocao_animais/models/usuario.dart';
+import 'package:provider/provider.dart';
 
 import '../components/default_view.dart';
 import '../models/adocao.dart';
 import '../models/animal.dart';
 
 class HomeScreen extends StatelessWidget {
-  final Usuario? usuario;
-  final List<Adocao> adocoes;
-  final Function(Animal) onSubmit;
-  const HomeScreen(this.usuario, this.adocoes, this.onSubmit);
+  const HomeScreen();
 
   @override
   Widget build(BuildContext context) {
+    var animals = context.watch<AnimaisRepository>();
+    var user = context.watch<UsuarioRepository>();
+    var adocoes = context.watch<AdocoesRepository>();
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -28,28 +35,58 @@ class HomeScreen extends StatelessWidget {
         actions: [
           // Botão de acesso à tela de login
           //
+          
           Padding(
             padding: const EdgeInsets.only(right: 20),
-            child: TextButton(
+            child: 
+            (user.usuario.login == '') ?
+            TextButton(
               onPressed: () {
-                if (usuario == null) {
-                  Navigator.push(
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    AppRoutes.LOGIN,
                   );
-                }
               },
-              child: Row(
+              child: Text("Fazer login", style: TextStyle(color: Colors.white)),
+            )
+            :
+          PopupMenuButton(
+            child: Row(
                 children: [
-                  SizedBox(width: 10),
-                  (usuario != null)
-                      ? Text("Olá, ${usuario!.nome}",
-                          style: TextStyle(color: Colors.white))
-                      : Text("Login", style: TextStyle(color: Colors.white)),
+                      Text("${user.usuario.nome}",
+                          style: TextStyle(color: Colors.white)),
+                      SizedBox(width: 5,),
+                      Icon(Icons.account_circle, color: Colors.white,),
                 ],
               ),
-            ),
-          ),
+            itemBuilder: ((context) => [
+            PopupMenuItem(child: ListTile(
+                        title: Row(
+                          children: [
+                            Icon(Icons.logout),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text('Logout'),
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                              Provider.of<AdocoesRepository>(context, listen: false).ClearAll();
+                              Provider.of<UsuarioRepository>(
+                                context,
+                                listen: false,
+                              ).logoutUsuario();
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('Sessão finalizada!'),
+                                duration: const Duration(seconds: 1),
+                                )
+                              );
+                        },
+                      ),)
+          ]))
+          )
+          ,
           // Botão de acesso à tela de cadastro
           // TextButton(
           //   onPressed: () {
@@ -63,13 +100,11 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(20.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 10,
-            ),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -107,28 +142,40 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(top: 10),
-              child: Text(
-                'Animais em fase de adoção:',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: const Color.fromARGB(255, 238, 238, 238)
                 ),
+                height: 280,
+                child: const GridOptionsHome()
               ),
             ),
-            (adocoes.isEmpty)
-                ? Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        DefaultView(
-                            'Você não está em processos de adoção no momento...'),
-                      ],
-                    ),
-                  )
-                : ListaAdocoes(adocoes, onSubmit)
+            // Container(
+            //   padding: EdgeInsets.only(top: 10),
+            //   child: Text(
+            //     'Animais em fase de adoção',
+            //     style: TextStyle(
+            //       fontSize: 18,
+            //       color: Theme.of(context).colorScheme.primary,
+            //       fontWeight: FontWeight.bold,
+            //     ),
+            //   ),
+            // ),
+            // (adocoes.user_adocoes.isEmpty)
+            //     ? Expanded(
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           children: [
+            //             DefaultView(
+            //                 'Você não está em processos de adoção no momento...'),
+            //           ],
+            //         ),
+            //       )
+            //     : ListaAdocoes()
           ],
         ),
       ),

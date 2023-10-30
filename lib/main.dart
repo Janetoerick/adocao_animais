@@ -1,9 +1,24 @@
 import 'dart:math';
 
+import 'package:adocao_animais/repositories/adocoes_repository.dart';
+import 'package:adocao_animais/repositories/animais_repository.dart';
+import 'package:adocao_animais/repositories/usuario_repository.dart';
+import 'package:adocao_animais/screens/adocao_detalhe_screen.dart';
+import 'package:adocao_animais/screens/adocao_all_screen.dart';
+import 'package:adocao_animais/screens/adocao_unique_screen.dart';
 import 'package:adocao_animais/screens/animal_detalhe_screen.dart';
+import 'package:adocao_animais/screens/animal_favorito_screen.dart';
+import 'package:adocao_animais/screens/cadastro_screen.dart';
+import 'package:adocao_animais/screens/form_animal_screen.dart';
+import 'package:adocao_animais/screens/login_screen.dart';
+import 'package:adocao_animais/screens/meus_animais_screen.dart';
 import 'package:adocao_animais/screens/tabs_screen.dart';
+import 'package:adocao_animais/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:adocao_animais/models/usuario.dart';
+
+import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'models/adocao.dart';
 import 'models/animal.dart';
@@ -21,60 +36,41 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Animal> _AnimalAdotado = [];
-  List<Adocao> _adocoes = [];
-
-  void _saveAdotado(Animal animal) {
-    setState(() {
-      if (_AnimalAdotado.contains(animal)) {
-        _AnimalAdotado.remove(animal);
-        _adocoes.removeWhere((element) => element.animal == animal);
-      } else {
-        _AnimalAdotado.add(animal);
-        _adocoes.add(Adocao(
-          id: Random().toString(),
-          animal: animal,
-          status: 'em processo...',
-          usuario: Usuario(
-              id: '123',
-              email: 'janeto@gmail.com',
-              cpf: '92942842828',
-              nome: 'janeto',
-              telefone: '994124664',
-              login: 'jan',
-              senha: '123'),
-          data: DateTime.now(),
-        ));
-      }
-    });
-  }
-
-  bool _isAdotado(Animal animal) {
-    return _AnimalAdotado.contains(animal);
-  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Amigos de patas',
-      theme: ThemeData(
-        colorScheme: ThemeData().colorScheme.copyWith(
-              primary: Color(0xff0A3200),
-              secondary: Color(0xff379634),
-              tertiary: Color(0xff7CFFCB),
-            ),
-        textTheme: ThemeData.light().textTheme.copyWith(
-              headline6: TextStyle(
-                fontSize: 18,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AnimaisRepository()),
+        ChangeNotifierProvider(create: (context) => UsuarioRepository()),
+        ChangeNotifierProvider(create: (context) => AdocoesRepository()),
+      ],
+      child: MaterialApp(
+        title: 'Amigos de patas',
+        theme: ThemeData(
+          colorScheme: ThemeData().colorScheme.copyWith(
+                primary: Color(0xff0A3200),
+                secondary: Color(0xff379634),
+                tertiary: Color(0xff7CFFCB),
               ),
-            ),
+          textTheme: GoogleFonts.latoTextTheme(
+            Theme.of(context).textTheme,
+          ),
+        ),
+        initialRoute: '/',
+        routes: {
+          AppRoutes.HOME: (ctx) => TabsScreen(),
+          AppRoutes.MEUS_FAVORITOS: (ctx) => TelaAnimaisFavoritados(),
+          AppRoutes.ANIMAL_DETAIL: (ctx) => AnimalDetalheScreen(),
+          AppRoutes.LOGIN: (ctx) => LoginScreen(),
+          AppRoutes.CADASTRO_USER: (ctx) => CadastroScreen(),
+          AppRoutes.FORM_ANIMAL: (ctx) => FormAnimalScreen(),
+          AppRoutes.MEUS_PETS: (ctx) => MeusAnimaisScreen(),
+          AppRoutes.ADOCAO_ALL: (ctx) => AdocaoAllScreen(),
+          AppRoutes.ADOCAO_UNIQUE: (ctx) => AdocaoUniqueScreen(),
+          AppRoutes.ADOCAO_DETAIL: (ctx) => AdocaoDetalheScreen(),
+        },
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (ctx) => TabsScreen(widget.usuario, _adocoes, _saveAdotado),
-        '/detalhe_screen': (ctx) =>
-            AnimalDetalheScreen(_saveAdotado, _isAdotado),
-      },
     );
   }
 }
