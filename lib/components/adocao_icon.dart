@@ -7,10 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AdocaoIcon extends StatelessWidget {
-  final Function(String) modifyAdocoes;
   final Adocao adocao;
   final bool isDono;
-  const AdocaoIcon(this.adocao, this.isDono, this.modifyAdocoes);
+  const AdocaoIcon(this.adocao, this.isDono);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,6 @@ class AdocaoIcon extends StatelessWidget {
                   AppRoutes.ADOCAO_DETAIL,
                   arguments: adocao,
                 );
-                modifyAdocoes('Todos');
               },
               onLongPress: (){
                 _openTaskFilterModal(context);

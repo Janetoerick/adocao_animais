@@ -8,12 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ListaAdocoesUnique extends StatelessWidget {
-  final Function(String) modifyAdocoes;
   final bool isDono;
   final Animal animal;
   final List<Adocao> adocoes;
   final bool filter_on;
-  const ListaAdocoesUnique(this.isDono, this.animal, this.adocoes, this.modifyAdocoes, this.filter_on);
+  const ListaAdocoesUnique(this.isDono, this.animal, this.adocoes,this.filter_on);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,7 @@ class ListaAdocoesUnique extends StatelessWidget {
         ListView.builder(
         itemCount: adocoes.length,
         itemBuilder: (context, index) {
-          return AdocaoIcon(adocoes[index], isDono, modifyAdocoes);
+          return AdocaoIcon(adocoes[index], isDono);
         },
       ),
     );

@@ -51,8 +51,8 @@ class _AdocaoUniqueScreenState extends State<AdocaoUniqueScreen> {
           FiltroAdocoes(_modifyAdocoes),
           Expanded(child: 
           filter_on 
-          ? ListaAdocoesUnique(true, animal, adocoes_filter, _modifyAdocoes, filter_on)
-          : ListaAdocoesUnique(true, animal, all_adocoes, _modifyAdocoes, filter_on),
+          ? ListaAdocoesUnique(true, animal, adocoes_filter, filter_on)
+          : ListaAdocoesUnique(true, animal, all_adocoes, filter_on),
           ),
         ],
       ),

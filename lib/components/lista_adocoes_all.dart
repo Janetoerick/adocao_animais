@@ -49,7 +49,7 @@ class ListaAdocoesAll extends StatelessWidget {
           child: ListView.builder(
               itemCount: adocoes.length,
               itemBuilder: (context, index) {
-                return AdocaoIcon(adocoes[index], isDono, modifyAdocoes);
+                return AdocaoIcon(adocoes[index], isDono);
               },
           )    
         )
