@@ -2,7 +2,6 @@ import 'package:adocao_animais/screens/animal_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adocao_animais/models/usuario.dart';
-import 'animal_favorito_screen.dart';
 import 'home_screen.dart';
 import '../models/adocao.dart';
 import '../models/animal.dart';
@@ -37,18 +36,16 @@ class _HomePageState extends State<TabsScreen> {
         controller: pc,
         children: [
           HomeScreen(),
-          TelaAnimaisFavoritados(),
           AnimalPage(),
         ],
         onPageChanged: setPaginaAtual,
       ),
       bottomNavigationBar: BottomNavigationBar(
+        fixedColor: Theme.of(context).colorScheme.secondary,
         currentIndex: paginaAtual,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.favorite), label: 'Favoritos'),
-          BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'Animais'),
+          BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'Pets'),
         ],
         onTap: (pagina) {
           pc.animateToPage(pagina,

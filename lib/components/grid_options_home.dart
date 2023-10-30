@@ -146,6 +146,49 @@ class GridOptionsHome extends StatelessWidget {
             ),
           ),
         ),
+        Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          child: SizedBox.expand(
+            child: ElevatedButton(
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
+              onPressed: () {
+                if(user.usuario.login != ''){
+                  Navigator.of(context).pushNamed(AppRoutes.MEUS_FAVORITOS);
+                } else {
+                  showDialog(context: context, builder: (BuildContext context) =>
+                  AlertDialog(
+                    
+                    title: const Text('Requer login'),
+                    content: const Text('Para visulizar seus favoritos você deve estar logado no sistema...'),
+                    actions: [
+                      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
+                      TextButton(onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).pushNamed(AppRoutes.LOGIN);
+                      }, child: const Text('Fazer login'),)
+                    ],
+                  ));
+                }
+                
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.favorite, color: Theme.of(context).colorScheme.secondary, size: 55,),
+                  Text('Meus favoritos', 
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontWeight: FontWeight.bold), 
+                  textAlign: TextAlign.center,),
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

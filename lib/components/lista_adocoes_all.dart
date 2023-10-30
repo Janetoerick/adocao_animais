@@ -10,80 +10,48 @@ import 'package:provider/provider.dart';
 import '../models/adocao.dart';
 import '../models/animal.dart';
 
-class ListaAdocoesAll extends StatefulWidget {
+class ListaAdocoesAll extends StatelessWidget {
+  final Function(String) modifyAdocoes;
+  final bool filter_on;
   final bool isDono;
-  const ListaAdocoesAll(this.isDono);
+  final List<Adocao> adocoes;
+  const ListaAdocoesAll(this.filter_on, this.isDono, this.adocoes, this.modifyAdocoes);
 
-  @override
-  State<ListaAdocoesAll> createState() => _ListaAdocoesState();
-}
-
-class _ListaAdocoesState extends State<ListaAdocoesAll> {
-  
   @override
   Widget build(BuildContext context) {
-    var usuario = context.watch<UsuarioRepository>().usuario;
-    var repository = context.watch<AdocoesRepository>();
-
-    List<Adocao> all_adocoes = [];
-    List<Adocao> adocoes = [];
-    
-    if(widget.isDono){
-      all_adocoes.addAll(repository.dono_adocoes);
-    } else {
-      all_adocoes.addAll(repository.user_adocoes);
-    }
-
-    adocoes = all_adocoes;
-
-    _setFiltro(filtro){
-      
-
-      final new_list = repository.findByStatus(filtro, widget.isDono);
-      setState((){
-        print('entrou');
-        adocoes = [];
-        // if(filtro == 'Todos'){
-        //   adocoes.addAll(all_adocoes);
-        // } else {
-        //   adocoes.addAll(new_list);
-        // }
-      }
-      );
-    }
 
     return Container(
       padding: EdgeInsets.all(20),
       child: 
-        adocoes.isEmpty 
-        ?
-          widget.isDono 
-          ?
+        adocoes.isEmpty
+        ?               // a lista de adocoes esta vazia
           Container(
             alignment: Alignment.center,
             height: double.infinity,
             child:DefaultView(
-              'Seus pets não receberam pedidos de adoção no momento...'
+              isDono 
+              ?                              // é dono dos pets
+                filter_on                         
+                ? // Usuario esta filtrando a informação
+                'Não há registros de adoção com esse filtro...'  
+                : // Usuario esta tentando vê todas as informações                        
+                'Seus pets não receberam pedidos de adoção no momento...'
+              :                              // não é dono dos pets          
+                filter_on                         
+                ? // Usuario esta filtrando a informação
+                'Você não está em processos de adoção com esse status...'  
+                : // Usuario esta tentando vê todas as informações                                 
+                'Você não está em processos de adoção no momento...'
             )
           )
-          :
-          Container(
-            alignment: Alignment.center,
-            height: double.infinity,
-            child:DefaultView(
-              'Você não está em nenhum processo de adoção no momento...'
-            )
-          )
-        :
-        Expanded(
-          child: Container(
-            child: ListView.builder(
-                itemCount: adocoes.length,
-                itemBuilder: (context, index) {
-                  return AdocaoIcon(adocoes[index], widget.isDono);
-                },
-            )    
-          ),
+        :               // a lista de adocoes não esta vazia
+        Container(
+          child: ListView.builder(
+              itemCount: adocoes.length,
+              itemBuilder: (context, index) {
+                return AdocaoIcon(adocoes[index], isDono, modifyAdocoes);
+              },
+          )    
         )
         
       );

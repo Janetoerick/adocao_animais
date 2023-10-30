@@ -1,5 +1,6 @@
 class AppRoutes {
   static const HOME = '/';
+  static const MEUS_FAVORITOS = '/meus_favoritos';
   static const ANIMAL_DETAIL = '/detalhe_screen';
   static const LOGIN = '/login';
   static const CADASTRO_USER = '/cadastro_user';

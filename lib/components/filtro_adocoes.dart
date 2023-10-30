@@ -18,7 +18,8 @@ class _FiltroAdocoesState extends State<FiltroAdocoes> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 90,
+      padding: EdgeInsets.only(right: 15, left: 15, top: 10),
+      height: 95,
       child: GridView.builder(
         physics: NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

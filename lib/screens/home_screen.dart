@@ -102,11 +102,9 @@ class HomeScreen extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 10,
-            ),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -153,7 +151,8 @@ class HomeScreen extends StatelessWidget {
                   color: const Color.fromARGB(255, 238, 238, 238)
                 ),
                 height: 280,
-                child: const GridOptionsHome()),
+                child: const GridOptionsHome()
+              ),
             ),
             // Container(
             //   padding: EdgeInsets.only(top: 10),

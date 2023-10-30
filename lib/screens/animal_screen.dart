@@ -91,19 +91,19 @@ class _AnimalPageState extends State<AnimalPage> {
     ),
     floatingActionButton: ElevatedButton(
       style: ButtonStyle(
-  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-    RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(50.0),
-    )
-  )
-),
-                onPressed: () => _openTaskFilterModal(context),
-                child: Container(
-                  height: 60,
-                  width: 25,
-                  alignment: Alignment.center,
-                  child: Icon(Icons.filter_list),
-              ),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50.0),
+          )
+        )
+      ),
+      onPressed: () => _openTaskFilterModal(context),
+      child: Container(
+        height: 60,
+        width: 25,
+        alignment: Alignment.center,
+        child: Icon(Icons.filter_list),
+    ),
     ));
   }
 }

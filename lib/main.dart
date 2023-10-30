@@ -7,6 +7,7 @@ import 'package:adocao_animais/screens/adocao_detalhe_screen.dart';
 import 'package:adocao_animais/screens/adocao_all_screen.dart';
 import 'package:adocao_animais/screens/adocao_unique_screen.dart';
 import 'package:adocao_animais/screens/animal_detalhe_screen.dart';
+import 'package:adocao_animais/screens/animal_favorito_screen.dart';
 import 'package:adocao_animais/screens/cadastro_screen.dart';
 import 'package:adocao_animais/screens/form_animal_screen.dart';
 import 'package:adocao_animais/screens/login_screen.dart';
@@ -59,6 +60,7 @@ class _MyAppState extends State<MyApp> {
         initialRoute: '/',
         routes: {
           AppRoutes.HOME: (ctx) => TabsScreen(),
+          AppRoutes.MEUS_FAVORITOS: (ctx) => TelaAnimaisFavoritados(),
           AppRoutes.ANIMAL_DETAIL: (ctx) => AnimalDetalheScreen(),
           AppRoutes.LOGIN: (ctx) => LoginScreen(),
           AppRoutes.CADASTRO_USER: (ctx) => CadastroScreen(),
