@@ -172,6 +172,33 @@ class AdocoesRepository with ChangeNotifier {
     return Future.value();
   }
 
+  Future<void> deleteAdocaoByAnimal(Animal animal) async{
+    List<String> id_adocoes_remove = [];
+    final response = await http
+    .get(Uri.parse('${URLrepository}/adocoes.json'))
+    .then((value) {
+      Map<String, dynamic> map = jsonDecode(value.body);
+
+      map.forEach((key, value) { 
+        if(map[key]['animal']['id'] == animal.id){
+          id_adocoes_remove.add(key);
+        }
+      });
+    });
+
+    _dono_adocoes.removeWhere((element) => element.animal.id == animal.id);
+
+    notifyListeners();
+    id_adocoes_remove.forEach((element) { 
+      final deletes = http.delete(Uri.parse('${URLrepository}/adocoes/${element}.json'),
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      );
+    });
+    return Future.value();
+  }
+
   bool inUserAdocoes(Animal animal, String login){
     bool result = false;
     _user_adocoes.forEach((element) { 

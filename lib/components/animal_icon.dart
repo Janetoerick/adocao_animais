@@ -1,4 +1,5 @@
 import 'package:adocao_animais/components/info_animal.dart';
+import 'package:adocao_animais/repositories/adocoes_repository.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:adocao_animais/utils/app_routes.dart';
@@ -144,6 +145,29 @@ class AnimalIcon extends StatelessWidget {
                                     ),
                                     onTap: () {
                                       Navigator.pop(context);
+                                      showDialog(context: context, builder: (BuildContext context) =>
+                                        AlertDialog(
+                                          title: Text('Tem certeza que deseja excluir ${animal.nome} ?'),
+                                          actions: [
+                                            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Não'),),
+                                            TextButton(
+                                              onPressed: () {
+                                                Provider.of<UsuarioRepository>(context, listen: false).removeMeusAnimais(animal);
+                                                Provider.of<AnimaisRepository>(context, listen: false).removeAnimal(animal);
+
+                                                Provider.of<AdocoesRepository>(context, listen: false).deleteAdocaoByAnimal(animal);
+                                                Navigator.pop(context);
+                                                final snackBarConfrim = SnackBar(
+                                                  content: const Text(
+                                                      'Pet exlucido com sucesso!'),
+                                                );
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(snackBarConfrim);
+                                              }, 
+                                              child: const Text('Sim'),)
+                                          ],
+                                        )
+                                      );
                                       final snackBar = SnackBar(
                                         content:
                                             const Text('Tem certeza que deseja excluir?'),
@@ -152,6 +176,8 @@ class AnimalIcon extends StatelessWidget {
                                           onPressed: () {
                                             Provider.of<UsuarioRepository>(context, listen: false).removeMeusAnimais(animal);
                                             Provider.of<AnimaisRepository>(context, listen: false).removeAnimal(animal);
+
+                                            Provider.of<AdocoesRepository>(context, listen: false).deleteAdocaoByAnimal(animal);
                                             final snackBarConfrim = SnackBar(
                                               content: const Text(
                                                   'Pet exlucido com sucesso!'),

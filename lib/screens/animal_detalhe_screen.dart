@@ -34,32 +34,32 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Adote ${animal.nome}!'), 
-        actions: 
-        animal.dono.login == usuario.usuario.login ?
-        [
-          IconButton(onPressed: () {
-            Navigator.of(context).pushNamed(AppRoutes.FORM_ANIMAL, arguments: animal);
-          }, icon: Icon(Icons.edit)),
-          IconButton(onPressed: () {
-            showDialog(context: context, builder: (BuildContext context) =>
-              AlertDialog(
-                title: Text('Tem certeza que deseja excluir ${animal.nome} ?'),
-                actions: [
-                  TextButton(onPressed: () => Navigator.pop(context), child: const Text('Não'),),
-                  TextButton(onPressed: () {
-                    Provider.of<AnimaisRepository>(context, listen: false).removeAnimal(animal);
-                    Provider.of<UsuarioRepository>(context, listen: false).setUpMeusAnimais();
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  }, child: const Text('Sim'),)
-                ],
-              )
-            );
-          }, icon: Icon(Icons.delete)),
-        ]
-        : 
-        []
-        ,
+        // actions: 
+        // animal.dono.login == usuario.usuario.login ?
+        // [
+        //   IconButton(onPressed: () {
+        //     Navigator.of(context).pushNamed(AppRoutes.FORM_ANIMAL, arguments: animal);
+        //   }, icon: Icon(Icons.edit)),
+        //   IconButton(onPressed: () {
+        //     showDialog(context: context, builder: (BuildContext context) =>
+        //       AlertDialog(
+        //         title: Text('Tem certeza que deseja excluir ${animal.nome} ?'),
+        //         actions: [
+        //           TextButton(onPressed: () => Navigator.pop(context), child: const Text('Não'),),
+        //           TextButton(onPressed: () {
+        //             Provider.of<AnimaisRepository>(context, listen: false).removeAnimal(animal);
+        //             Provider.of<UsuarioRepository>(context, listen: false).setUpMeusAnimais();
+        //             Navigator.pop(context);
+        //             Navigator.pop(context);
+        //           }, child: const Text('Sim'),)
+        //         ],
+        //       )
+        //     );
+        //   }, icon: Icon(Icons.delete)),
+        // ]
+        // : 
+        // []
+        // ,
       ),
       body: InfoAnimal(animal),
       bottomSheet: 
