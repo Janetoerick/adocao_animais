@@ -180,7 +180,7 @@ class AnimaisRepository with ChangeNotifier {
           }),
           headers: {
             "Accept": "application/json"
-          }).then((response) => print(response.statusCode));
+          }).then((response) { });
     return Future.value();
   }
 
@@ -191,7 +191,7 @@ class AnimaisRepository with ChangeNotifier {
       headers: {
         'Content-Type': 'application/json',
       },
-    ).then((response) => print(response.statusCode));
+    ).then((response) { });
 
     return Future.value();
   }

@@ -158,57 +158,7 @@ class AdocoesRepository with ChangeNotifier {
     return Future.value(true);
   }
 
-  Future<void> deleteAdocao(Adocao adocao) async{
-
-    final response = await http.delete(
-      Uri.parse('${URLrepository}/adocoes/${adocao.id}.json'),
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      ).then((value) {
-        _user_adocoes.remove(adocao);
-      });
-    notifyListeners();
-    return Future.value();
-  }
-
-  Future<void> deleteAdocaoByAnimal(Animal animal) async{
-    List<String> id_adocoes_remove = [];
-    final response = await http
-    .get(Uri.parse('${URLrepository}/adocoes.json'))
-    .then((value) {
-      Map<String, dynamic> map = jsonDecode(value.body);
-
-      map.forEach((key, value) { 
-        if(map[key]['animal']['id'] == animal.id){
-          id_adocoes_remove.add(key);
-        }
-      });
-    });
-
-    _dono_adocoes.removeWhere((element) => element.animal.id == animal.id);
-
-    notifyListeners();
-    id_adocoes_remove.forEach((element) { 
-      final deletes = http.delete(Uri.parse('${URLrepository}/adocoes/${element}.json'),
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      );
-    });
-    return Future.value();
-  }
-
-  bool inUserAdocoes(Animal animal, String login){
-    bool result = false;
-    _user_adocoes.forEach((element) { 
-      if(element.animal.id == animal.id && element.usuario.login == login){
-        result = true;
-      }
-    });
-    return result;
-  }
-
+  // Para atualizar uma adoção específica
   Future<bool> attAdocoes(Adocao adocao, bool isDono) async{
     // transformando usuario de animal em map
     Map<String, dynamic> user_dono_map = {};
@@ -266,6 +216,117 @@ class AdocoesRepository with ChangeNotifier {
         });
       notifyListeners();
     return Future.value(true);
+  }
+
+  // Para atualizar um conjunto de adoções que tenham o animal
+  Future<void> attAdocoesByAnimal(Map<String, dynamic> animal, Usuario user) async{
+    int length = _dono_adocoes.where((element) => element.animal.id == animal['id']).length;
+
+    if(length > 0){ // Caso o animal esteja em alguma adocao
+
+      // transformando usuario de animal em map
+      Map<String, dynamic> user_map = {};
+      user_map["nome"] = user.nome;
+      user_map["email"] = user.email;
+      user_map["telefone"] = user.telefone;
+      user_map["cpf"] = user.cpf;
+      user_map["login"] = user.login;
+      user_map["senha"] = user.senha;
+      animal['dono'] = user_map;
+
+      // // transformando animal em map
+      // Map<String, dynamic> animal_map = {};
+      // animal_map["id"] = animal.id;
+      // animal_map["dono"] = user_dono_map;
+      // animal_map["novo"] = animal.novo;
+      // animal_map["especie"] = animal.especie;
+      // animal_map["nome"] = animal.nome;
+      // animal_map["porte"] = animal.porte;
+      // animal_map["sexo"] = animal.sexo;
+      // animal_map["idade"] = animal.idade;
+      // animal_map["img"] = animal.img;
+      // animal_map["raca"] = animal.raca;
+      // animal_map["descricao"] = animal.descricao;
+      // animal_map["data_registro"] = animal.data_registro;
+      // animal_map["isFavorito"] = animal.isFavorito;
+
+      final response = await http
+        .get(Uri.parse('${URLrepository}/adocoes.json'))
+        .then((value) {
+          Map<String, dynamic> map = jsonDecode(value.body);
+          map.forEach((key, value) {
+            if(map[key]['animal']['id'] == animal['id']){
+              http.put(Uri.parse('${URLrepository}/adocoes/${key}.json'), 
+                body: jsonEncode({
+                    "usuario": map[key]["usuario"],
+                    "animal": animal,
+                    "status": map[key]["status"],
+                    "data": map[key]["data"],
+                  }
+                ),
+                headers: {
+                  "Accept": "application/json"
+                }
+              );
+              }  
+          }); 
+        });
+
+    }
+    
+    return Future.value();
+  }
+
+  // Deletar uma adoção <como só quem pode deletar é o usuário que solicitou, só faz mudança no _user_adocoes>
+  Future<void> deleteAdocao(Adocao adocao) async{
+
+    final response = await http.delete(
+      Uri.parse('${URLrepository}/adocoes/${adocao.id}.json'),
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      ).then((value) {
+        _user_adocoes.remove(adocao);
+      });
+    notifyListeners();
+    return Future.value();
+  }
+
+  Future<void> deleteAdocaoByAnimal(Animal animal) async{
+    List<String> id_adocoes_remove = [];
+    final response = await http
+    .get(Uri.parse('${URLrepository}/adocoes.json'))
+    .then((value) {
+      Map<String, dynamic> map = jsonDecode(value.body);
+
+      map.forEach((key, value) { 
+        if(map[key]['animal']['id'] == animal.id){
+          id_adocoes_remove.add(key);
+        }
+      });
+    });
+
+    _dono_adocoes.removeWhere((element) => element.animal.id == animal.id);
+
+    notifyListeners();
+    id_adocoes_remove.forEach((element) { 
+      final deletes = http.delete(Uri.parse('${URLrepository}/adocoes/${element}.json'),
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      );
+    });
+    return Future.value();
+  }
+
+  bool inUserAdocoes(Animal animal, String login){
+    bool result = false;
+    _user_adocoes.forEach((element) { 
+      if(element.animal.id == animal.id && element.usuario.login == login){
+        result = true;
+      }
+    });
+    return result;
   }
 
   void ClearAll(){

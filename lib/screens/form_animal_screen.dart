@@ -1,5 +1,6 @@
 import 'package:adocao_animais/models/animal.dart';
 import 'package:adocao_animais/models/usuario.dart';
+import 'package:adocao_animais/repositories/adocoes_repository.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:brasil_fields/brasil_fields.dart';
@@ -61,7 +62,7 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
        _formData['img'] = animal.img;
        _formData['raca'] = animal.raca;
        _formData['descricao'] = animal.descricao;
-       _formData['data_registro'] = animal.data_registro;
+       _formData['data_registro'] = animal.data_registro; 
        _formData['favorito'] = animal.isFavorito;
 
         setState(() {
@@ -83,10 +84,14 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
 
     _formData['img'] = _imagens;
     
+
     Provider.of<AnimaisRepository>(
       context,
       listen: false,
     ).saveAnimal(_formData, user).then((value) {
+      if(_formData["id"] != null){ // Caso seja edição
+        Provider.of<AdocoesRepository>(context, listen: false).attAdocoesByAnimal(_formData, user);
+      }
       Provider.of<UsuarioRepository>(context, listen: false).setUpMeusAnimais();
       Navigator.of(context).pop();
     });
@@ -291,11 +296,6 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                             keyboardType: TextInputType.url,
                             textInputAction: TextInputAction.done,
                             controller: _imageUrlController,
-                            onFieldSubmitted: (_) {
-                              
-                            },
-                            onSaved: (imageUrl) =>
-                            _formData['imageUrl'] = imageUrl ?? '',
                             validator: (_imageUrl) {
                               if (_imagens.isEmpty) {
                                 return 'Registre pelo menos uma imagem!';

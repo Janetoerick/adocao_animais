@@ -129,11 +129,11 @@ class UsuarioRepository with ChangeNotifier {
   }
 
   void setUpMeusAnimais() async {
-    _meus_animais = [];
     var response = await http
                     .get(Uri.parse('${URLrepository}/animais.json')) 
                     .then((value) {
                       Map<String, dynamic> map = json.decode(value.body);
+                      _meus_animais = [];
                       map.forEach((key, value) { 
                         if(map[key]['dono']['login'] == _usuario.login){
                           List<String> imgs = [];
@@ -221,7 +221,7 @@ class UsuarioRepository with ChangeNotifier {
                 "login": usuario.login,
                 "senha": usuario.senha,
               }))
-          .then((value) => print(value.statusCode));
+          .then((value) {});
       return Future.value(true);
     }
     return Future.value(false);
