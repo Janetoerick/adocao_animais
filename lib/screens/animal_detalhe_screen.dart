@@ -1,3 +1,4 @@
+import 'package:adocao_animais/components/alert_login.dart';
 import 'package:adocao_animais/components/favorite_button.dart';
 import 'package:adocao_animais/components/info_animal.dart';
 import 'package:adocao_animais/models/usuario.dart';
@@ -84,18 +85,19 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
               onPressed: () {
                     if(usuario.usuario.login == ''){
                       showDialog(context: context, builder: (BuildContext context) =>
-                          AlertDialog(
-                            
-                            title: const Text('Requer login'),
-                            content: const Text('Para adotar um animal você deve estar logado no sistema...'),
-                            actions: [
-                              TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
-                              TextButton(onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.of(context).pushNamed(AppRoutes.LOGIN);
-                              }, child: const Text('Fazer login'),)
-                            ],
-                          ));
+                        AlertDialog(
+                          title: const Text('Requer login'),
+                          content: Text('Para adotar um animal você deve estar logado no sistema...'),
+                          actions: [
+                            TextButton(onPressed: () => Navigator.pop(context), 
+                              child: const Text('Cancelar', style: TextStyle(color: Colors.redAccent),),),
+                            TextButton(onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.of(context).pushReplacementNamed(AppRoutes.LOGIN);
+                            }, child: const Text('Fazer login'),)
+                          ],
+                        )
+                      );
                     } else {
                       adocoes.addAdocao(animal, usuario.usuario).then((value) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

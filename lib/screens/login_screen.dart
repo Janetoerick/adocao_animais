@@ -47,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Provider.of<AnimaisRepository>(context, listen: false).setUpAnimaisLogin(value.login);
         Provider.of<AdocoesRepository>(context, listen: false).setUpAdocoesAccount(value);
         Navigator.of(context).pop();
+        Navigator.of(context).pushReplacementNamed(AppRoutes.HOME);
       }
     });
   }

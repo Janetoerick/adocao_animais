@@ -1,3 +1,4 @@
+import 'package:adocao_animais/components/alert_login.dart';
 import 'package:adocao_animais/repositories/animais_repository.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:adocao_animais/utils/app_routes.dart';
@@ -28,17 +29,19 @@ class _FavoriteButtonState extends State<FavoriteButton> {
         user.attAnimalFav(widget.animal).then((value) {
           if(!value) {
             showDialog(context: context, builder: (BuildContext context) =>
-            AlertDialog(
-              title: const Text('Requer login'),
-              content: const Text('Para adicionar o animal nos seus favoritos você deve estar logado no sistema...'),
-              actions: [
-                TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
-                TextButton(onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).pushNamed(AppRoutes.LOGIN);
-                }, child: const Text('Fazer login'),)
-              ],
-            ));
+              AlertDialog(
+                title: const Text('Requer login'),
+                content: Text('Para adicionar o animal nos seus favoritos você deve estar logado no sistema...'),
+                actions: [
+                  TextButton(onPressed: () => Navigator.pop(context), 
+                    child: const Text('Cancelar', style: TextStyle(color: Colors.redAccent),),),
+                  TextButton(onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushReplacementNamed(AppRoutes.LOGIN);
+                  }, child: const Text('Fazer login'),)
+                ],
+              )
+            );
           } else {
             animalRep.attFavorito(widget.animal, user.usuario);
           }

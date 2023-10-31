@@ -1,3 +1,4 @@
+import 'package:adocao_animais/components/alert_login.dart';
 import 'package:adocao_animais/repositories/usuario_repository.dart';
 import 'package:adocao_animais/utils/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -32,20 +33,9 @@ class GridOptionsHome extends StatelessWidget {
                   Navigator.of(context).pushNamed(AppRoutes.FORM_ANIMAL);
                 } else {
                   showDialog(context: context, builder: (BuildContext context) =>
-                  AlertDialog(
-                    
-                    title: const Text('Requer login'),
-                    content: const Text('Para cadastrar um pet você deve estar logado no sistema...'),
-                    actions: [
-                      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
-                      TextButton(onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.of(context).pushNamed(AppRoutes.LOGIN);
-                      }, child: const Text('Fazer login'),)
-                    ],
-                  ));
+                    AlertLogin('Para cadastrar um pet você deve estar logado no sistema...')
+                  );
                 }
-                
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -75,18 +65,8 @@ class GridOptionsHome extends StatelessWidget {
                   Navigator.of(context).pushNamed(AppRoutes.MEUS_PETS);
                 } else {
                   showDialog(context: context, builder: (BuildContext context) =>
-                  AlertDialog(
-                    
-                    title: const Text('Requer login'),
-                    content: const Text('Para ver seus pets você deve estar logado no sistema...'),
-                    actions: [
-                      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
-                      TextButton(onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.of(context).pushNamed(AppRoutes.LOGIN);
-                      }, child: const Text('Fazer login'),)
-                    ],
-                  ));
+                    AlertLogin('Para ver seus pets você deve estar logado no sistema...')
+                  );
                 }
               },
               child: Column(
@@ -116,18 +96,8 @@ class GridOptionsHome extends StatelessWidget {
                   Navigator.of(context).pushNamed(AppRoutes.ADOCAO_ALL, arguments: false);
                 } else {
                   showDialog(context: context, builder: (BuildContext context) =>
-                  AlertDialog(
-                    
-                    title: const Text('Requer login'),
-                    content: const Text('Para visulizar suas adoções você deve estar logado no sistema...'),
-                    actions: [
-                      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
-                      TextButton(onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.of(context).pushNamed(AppRoutes.LOGIN);
-                      }, child: const Text('Fazer login'),)
-                    ],
-                  ));
+                    AlertLogin('Para visulizar suas adoções você deve estar logado no sistema...')
+                  );
                 }
                 
               },
@@ -159,18 +129,8 @@ class GridOptionsHome extends StatelessWidget {
                   Navigator.of(context).pushNamed(AppRoutes.MEUS_FAVORITOS);
                 } else {
                   showDialog(context: context, builder: (BuildContext context) =>
-                  AlertDialog(
-                    
-                    title: const Text('Requer login'),
-                    content: const Text('Para visulizar seus favoritos você deve estar logado no sistema...'),
-                    actions: [
-                      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar'),),
-                      TextButton(onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.of(context).pushNamed(AppRoutes.LOGIN);
-                      }, child: const Text('Fazer login'),)
-                    ],
-                  ));
+                    AlertLogin('Para visulizar seus favoritos você deve estar logado no sistema...')
+                  );
                 }
                 
               },
