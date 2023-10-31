@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
           PopupMenuButton(
             child: Row(
                 children: [
-                      Text("${user.usuario.nome}",
+                      Text("${user.usuario.nome.split(' ').first}",
                           style: TextStyle(color: Colors.white)),
                       SizedBox(width: 5,),
                       Icon(Icons.account_circle, color: Colors.white,),
@@ -72,16 +72,18 @@ class HomeScreen extends StatelessWidget {
                         ),
                         onTap: () {
                           Navigator.pop(context);
-                              Provider.of<AdocoesRepository>(context, listen: false).ClearAll();
-                              Provider.of<UsuarioRepository>(
-                                context,
-                                listen: false,
-                              ).logoutUsuario();
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('Sessão finalizada!'),
-                                duration: const Duration(seconds: 1),
-                                )
-                              );
+                          Provider.of<AdocoesRepository>(context, listen: false).ClearAll();
+                          Provider.of<UsuarioRepository>(
+                            context,
+                            listen: false,
+                          ).logoutUsuario();
+
+                          Provider.of<AnimaisRepository>(context, listen: false).setUpAnimais();
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Sessão finalizada!'),
+                            duration: const Duration(seconds: 1),
+                            )
+                          );
                         },
                       ),)
           ]))

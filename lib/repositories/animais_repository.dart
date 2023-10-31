@@ -16,10 +16,10 @@ class AnimaisRepository with ChangeNotifier {
   List<Animal> _animais = []; // animaisData
 
   AnimaisRepository(){
-    _setUpAnimais();
+    setUpAnimais();
   }
 
-  _setUpAnimais() async {
+  setUpAnimais() async {
     final response = await http.get(Uri.parse('$URLrepository/animais.json'));
 
     if (response.statusCode == 200) {

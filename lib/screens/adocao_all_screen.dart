@@ -28,19 +28,20 @@ class _AdocaoAllScreenState extends State<AdocaoAllScreen> {
     List<Adocao> all_adocoes = [];
     
     if(isDono){
-      all_adocoes.addAll(repository.dono_adocoes);
+      all_adocoes = repository.dono_adocoes;
     } else {
-      all_adocoes.addAll(repository.user_adocoes);
+      all_adocoes = repository.user_adocoes;
     }
+
     
     _modifyAdocoes(String filtro){
       if(filtro != 'Todos'){
         adocoes_filter.clear();
         setState(() {
           if(isDono){
-            adocoes_filter.addAll(repository.dono_adocoes.where((element) => element.status == filtro));
+            adocoes_filter = repository.dono_adocoes.where((element) => element.status == filtro).toList();
           } else {
-            adocoes_filter.addAll(repository.user_adocoes.where((element) => element.status == filtro));
+            adocoes_filter = repository.user_adocoes.where((element) => element.status == filtro).toList();
           }
           filter_on = true;  
         });
