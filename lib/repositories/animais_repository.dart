@@ -21,8 +21,8 @@ class AnimaisRepository with ChangeNotifier {
 
   setUpAnimais() async {
     final response = await http.get(Uri.parse('$URLrepository/animais.json'));
-
     if (response.statusCode == 200) {
+      _animais.clear();
       Map<String, dynamic> json = jsonDecode(response.body);
       json.forEach((key, element) {
         _animais.add(convertJsonToAnimal(json[key], key));
