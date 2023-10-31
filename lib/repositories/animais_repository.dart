@@ -204,7 +204,9 @@ class AnimaisRepository with ChangeNotifier {
   }
 
   bool isDonoAnimal(Animal animal){
-    if(_animais.contains(animal)){
+    List<Animal> list_temp = [];
+    list_temp = _animais.where((element) => element.id == animal.id).toList();
+    if(list_temp.length > 0){
       return false;
     }
     return true;
