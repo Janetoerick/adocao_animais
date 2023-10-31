@@ -23,43 +23,56 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
   @override
   Widget build(BuildContext context) {
     
-    final animal = ModalRoute.of(context)?.settings.arguments == null
+    final animalRoute = ModalRoute.of(context)?.settings.arguments == null
         ? animaisData[0] // Tava dando null quando atualizava a página
         : ModalRoute.of(context)!.settings.arguments as Animal;
     
     var usuario = context.watch<UsuarioRepository>();
     var adocoes = context.watch<AdocoesRepository>();
 
+    // Para caso o dono queira editar o animal na pagina de detalhes... (ir as info do animal para tela de edit atualizada)
+    Animal animal;
+    var animalRepository = Provider.of<AnimaisRepository>(context, listen: false); 
+    if(animalRepository.isDonoAnimal(animalRoute)){
+      animal = usuario.findMeuAnimalByAnimal(animalRoute);
+    } else {
+      animal = animalRepository.findByid(animalRoute.id);
+    }
+
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Adote ${animal.nome}!'), 
-        // actions: 
-        // animal.dono.login == usuario.usuario.login ?
-        // [
-        //   IconButton(onPressed: () {
-        //     Navigator.of(context).pushNamed(AppRoutes.FORM_ANIMAL, arguments: animal);
-        //   }, icon: Icon(Icons.edit)),
-        //   IconButton(onPressed: () {
-        //     showDialog(context: context, builder: (BuildContext context) =>
-        //       AlertDialog(
-        //         title: Text('Tem certeza que deseja excluir ${animal.nome} ?'),
-        //         actions: [
-        //           TextButton(onPressed: () => Navigator.pop(context), child: const Text('Não'),),
-        //           TextButton(onPressed: () {
-        //             Provider.of<AnimaisRepository>(context, listen: false).removeAnimal(animal);
-        //             Provider.of<UsuarioRepository>(context, listen: false).setUpMeusAnimais();
-        //             Navigator.pop(context);
-        //             Navigator.pop(context);
-        //           }, child: const Text('Sim'),)
-        //         ],
-        //       )
-        //     );
-        //   }, icon: Icon(Icons.delete)),
-        // ]
-        // : 
-        // []
-        // ,
+        actions: 
+        animal.dono.login == usuario.usuario.login ?
+        [
+          IconButton(onPressed: () {
+            Navigator.of(context).pushNamed(AppRoutes.FORM_ANIMAL, arguments: animal);
+          }, icon: Icon(Icons.edit)),
+          IconButton(onPressed: () {
+            showDialog(context: context, builder: (BuildContext context) =>
+              AlertDialog(
+                title: Text('Tem certeza que deseja excluir ${animal.nome} ?'),
+                actions: [
+                  TextButton(onPressed: () => Navigator.pop(context), child: const Text('Não'),),
+                  TextButton(onPressed: () {
+                    Provider.of<AnimaisRepository>(context, listen: false).removeAnimal(animal);
+                    Provider.of<UsuarioRepository>(context, listen: false).removeMeusAnimais(animal);
+                    Provider.of<AdocoesRepository>(context, listen: false).deleteAdocaoByAnimal(animal);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Pet excluido com sucesso!'),
+                          duration: const Duration(seconds: 1)));
+                  }, child: const Text('Sim'),)
+                ],
+              )
+            );
+          }, icon: Icon(Icons.delete)),
+        ]
+        : 
+        []
+        ,
       ),
       body: InfoAnimal(animal),
       bottomSheet: 

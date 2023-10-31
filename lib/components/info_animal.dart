@@ -41,8 +41,10 @@ class _InfoAnimalState extends State<InfoAnimal> {
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<UsuarioRepository>(context, listen: false).usuario;
-    Animal animal = Provider.of<AnimaisRepository>(context, listen: false).findByid(widget.animal.id);
+    var user = Provider.of<UsuarioRepository>(context, listen: false);
+
+    Animal animal = widget.animal;
+
     var adocoes = Provider.of<AdocoesRepository>(context, listen: false);
     return SizedBox(
             height: MediaQuery.of(context).size.height * 0.85,
@@ -144,7 +146,7 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                 ]
                               ),
                             ),
-                            user.login != animal.dono.login ?
+                            user.usuario.login != animal.dono.login ?
                             FavoriteButton(
                               animal: animal,
                               size: 40,
@@ -238,14 +240,14 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                 Expanded(
                                   child: Container(
                                     child: Text(
-                                      animal.dono.login == user.login || adocoes.inUserAdocoes(animal, user.login)?
-                                      user.email
+                                      animal.dono.login == user.usuario.login || adocoes.inUserAdocoes(animal, user.usuario.login)?
+                                      user.usuario.email
                                       :
                                       'Para saber o email de contato, entre em processo de adoção', 
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: 
-                                        animal.dono.login == user.login || adocoes.inUserAdocoes(animal, user.login)?
+                                        animal.dono.login == user.usuario.login || adocoes.inUserAdocoes(animal, user.usuario.login)?
                                         Colors.black
                                         :
                                         Theme.of(context).colorScheme.secondary),)),
@@ -269,14 +271,14 @@ class _InfoAnimalState extends State<InfoAnimal> {
                                 Expanded(
                                   child: Container(
                                     child: Text(
-                                      animal.dono.login == user.login || adocoes.inUserAdocoes(animal, user.login)?
-                                      user.telefone
+                                      animal.dono.login == user.usuario.login || adocoes.inUserAdocoes(animal, user.usuario.login)?
+                                      user.usuario.telefone
                                       :
                                       'Para saber o telefone de contato, entre em processo de adoção', 
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: 
-                                        animal.dono.login == user.login || adocoes.inUserAdocoes(animal, user.login)?
+                                        animal.dono.login == user.usuario.login || adocoes.inUserAdocoes(animal, user.usuario.login)?
                                         Colors.black
                                         :
                                           Theme.of(context).colorScheme.secondary),)),

@@ -152,42 +152,19 @@ class AnimalIcon extends StatelessWidget {
                                             TextButton(onPressed: () => Navigator.pop(context), child: const Text('Não'),),
                                             TextButton(
                                               onPressed: () {
-                                                Provider.of<UsuarioRepository>(context, listen: false).removeMeusAnimais(animal);
                                                 Provider.of<AnimaisRepository>(context, listen: false).removeAnimal(animal);
-
+                                                Provider.of<UsuarioRepository>(context, listen: false).removeMeusAnimais(animal);
                                                 Provider.of<AdocoesRepository>(context, listen: false).deleteAdocaoByAnimal(animal);
                                                 Navigator.pop(context);
-                                                final snackBarConfrim = SnackBar(
-                                                  content: const Text(
-                                                      'Pet exlucido com sucesso!'),
+                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                  content: Text('Pet excluido com sucesso!'),
+                                                  duration: const Duration(seconds: 1))
                                                 );
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(snackBarConfrim);
                                               }, 
                                               child: const Text('Sim'),)
                                           ],
                                         )
                                       );
-                                      final snackBar = SnackBar(
-                                        content:
-                                            const Text('Tem certeza que deseja excluir?'),
-                                        action: SnackBarAction(
-                                          label: 'Sim',
-                                          onPressed: () {
-                                            Provider.of<UsuarioRepository>(context, listen: false).removeMeusAnimais(animal);
-                                            Provider.of<AnimaisRepository>(context, listen: false).removeAnimal(animal);
-
-                                            Provider.of<AdocoesRepository>(context, listen: false).deleteAdocaoByAnimal(animal);
-                                            final snackBarConfrim = SnackBar(
-                                              content: const Text(
-                                                  'Pet exlucido com sucesso!'),
-                                            );
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(snackBarConfrim);
-                                          },
-                                        ),
-                                      );
-                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                     },
                                   ),
                                 ),

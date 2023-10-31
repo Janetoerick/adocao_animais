@@ -86,7 +86,7 @@ class UsuarioRepository with ChangeNotifier {
                           login: map[key]['dono']['login'], 
                           senha: map[key]['dono']['senha']);
 
-                        if(map[key]['dono']['login'] == usuario.login){
+                        if(map[key]['dono']['login'] == _usuario.login){
                           
                             
                           _meus_animais.add( Animal(
@@ -105,7 +105,7 @@ class UsuarioRepository with ChangeNotifier {
                             isFavorito: favorites)
                           );
                         }
-                        if(favorites.contains(usuario.login)){
+                        if(favorites.contains(_usuario.login)){
                             
                           _animaisFav.add( Animal(
                             id: key,
@@ -135,12 +135,19 @@ class UsuarioRepository with ChangeNotifier {
                     .then((value) {
                       Map<String, dynamic> map = json.decode(value.body);
                       map.forEach((key, value) { 
-                        if(map[key]['dono']['login'] == usuario.login){
+                        if(map[key]['dono']['login'] == _usuario.login){
                           List<String> imgs = [];
                           map[key]['img'].map((e) {
                             imgs.add(e);
                           }).toList();
-                            
+
+                          List<String> favorites = [];
+                          if(map[key]['isFavorito'] != null){
+                              map[key]['isFavorito'].map((e) {
+                              favorites.add(e);
+                            }).toList();
+                          }
+                          
                           _meus_animais.add( Animal(
                             id: key,
                             dono: _usuario,
@@ -154,10 +161,9 @@ class UsuarioRepository with ChangeNotifier {
                             raca: map[key]['raca'],
                             descricao: map[key]['descricao'],
                             data_registro: map[key]['data_registro'],
-                            isFavorito: map[key]['isFavorito'])
-                          );
+                            isFavorito: favorites)
+                          );                     
                         }
-                        
                       });
                     });
       notifyListeners();
@@ -178,6 +184,11 @@ class UsuarioRepository with ChangeNotifier {
   void removeMeusAnimais(Animal animal){
     _meus_animais.remove(animal);
     notifyListeners();
+  }
+
+  Animal findMeuAnimalByAnimal(Animal animal){
+    List<Animal> result = _meus_animais.where((element) => element.id == animal.id).toList();
+    return result[0];
   }
 
   Future<void> logoutUsuario(){
@@ -249,25 +260,3 @@ class UsuarioRepository with ChangeNotifier {
   }
 
 }
-
-  // Future<Usuario> findByLogin(String login) async {
-  //   Usuario result = Usuario(nome: '', email: '', telefone: '', cpf: '', login: '', senha: '');
-  //   final response = await http
-  //       .get(Uri.parse(
-  //           '${URLrepository}users.json?orderBy="login"&equalTo="${login}"&print=pretty'))
-  //       .then((value) {
-  //     if (value.body.length > 10) {
-  //       Map<String, dynamic> map = json.decode(value.body);
-  //       map.forEach((key, value) { 
-  //         result = Usuario(
-  //           nome: map[key]['nome'], 
-  //           email: map[key]['email'], 
-  //           telefone: map[key]['telefone'], 
-  //           cpf: map[key]['cpf'], 
-  //           login: login, 
-  //           senha: map[key]['senha']);
-  //       });
-  //     }
-  //   });
-  //   return Future.value(result);
-  // }

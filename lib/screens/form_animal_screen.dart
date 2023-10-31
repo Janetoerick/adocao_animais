@@ -376,13 +376,9 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
         child: ElevatedButton(
           onPressed: () {
             _submitForm();
-            final snackBarConfrim = SnackBar(
-              content: const Text(
-                  'Salvo com sucesso!'),
-                  duration: Duration(milliseconds: 900),
-            );
-            ScaffoldMessenger.of(context)
-                .showSnackBar(snackBarConfrim);
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Salvo com sucesso!'),
+            duration: const Duration(seconds: 1)));
           }, 
           child: Text('Salvar', style: TextStyle(fontSize: 20),),
           )

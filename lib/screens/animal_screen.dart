@@ -75,16 +75,19 @@ class _AnimalPageState extends State<AnimalPage> {
             width: double.infinity,
             height: double.infinity,
             child: !filter_on
-                ? ListaAnimais(_total_animals, false)
+                ? 
+                  !_total_animals.isEmpty
+                  ? ListaAnimais(_total_animals, false)
+                  : Center(
+                    child: DefaultView(
+                        'Não há pets registrados no momento...'),
+                  )
                 : !_animais_filter.isEmpty
                     ? ListaAnimais(_animais_filter, false)
-                    : Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Center(
-                          child: DefaultView(
-                              'Não há ${filter}s registrados no momento...'),
-                        ),
-                      ),
+                    : Center(
+                      child: DefaultView(
+                          'Não há ${filter}s registrados no momento...'),
+                    ),
           ))
         ],
       ),

@@ -25,36 +25,55 @@ class AnimaisRepository with ChangeNotifier {
     if (response.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(response.body);
       json.forEach((key, element) {
-        List<String> imagens = [];
-        json[key]['img'].forEach((e) {
-          imagens.add(e);
-        });
-
-        Usuario user_temp = Usuario(nome: json[key]['dono']['nome'], email: json[key]['dono']['email'], telefone: json[key]['dono']['telefone'], 
-        cpf: json[key]['dono']['cpf'], login: json[key]['dono']['login'], senha: json[key]['dono']['senha']);
-        List<String> favorites = [];
-        if(json[key]['isFavorito'] != null){
-            json[key]['isFavorito'].map((e) {
-            favorites.add(e);
-          }).toList();
-        }
-        _animais.add(Animal(
-            id: key,
-            dono: user_temp,
-            novo: json[key]['novo'],
-            especie: json[key]['especie'],
-            nome: json[key]['nome'],
-            porte: json[key]['porte'],
-            sexo: json[key]['sexo'],
-            idade: json[key]['idade'],
-            img: imagens,
-            raca: json[key]['raca'],
-            descricao: json[key]['descricao'],
-            data_registro: json[key]['data_registro'],
-            isFavorito: favorites));
+        _animais.add(convertJsonToAnimal(json[key], key));
       });
     }
     notifyListeners();
+  }
+
+  void setUpAnimaisLogin(String login) async {
+    _animais.clear();
+    final response = await http.get(Uri.parse('$URLrepository/animais.json'));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> json = jsonDecode(response.body);
+      json.forEach((key, element) {
+        if(json[key]['dono']['login'] != login){
+          _animais.add(convertJsonToAnimal(json[key], key));
+        }
+      });
+    }
+    notifyListeners();
+  }
+
+  Animal convertJsonToAnimal(Map<String, dynamic> json, String key){
+    List<String> imagens = [];
+    json['img'].forEach((e) {
+      imagens.add(e);
+    });
+
+    Usuario user_temp = Usuario(nome: json['dono']['nome'], email: json['dono']['email'], telefone: json['dono']['telefone'], 
+    cpf: json['dono']['cpf'], login: json['dono']['login'], senha: json['dono']['senha']);
+    List<String> favorites = [];
+    if(json['isFavorito'] != null){
+        json['isFavorito'].map((e) {
+        favorites.add(e);
+      }).toList();
+    }
+    return Animal(
+        id: key,
+        dono: user_temp,
+        novo: json['novo'],
+        especie: json['especie'],
+        nome: json['nome'],
+        porte: json['porte'],
+        sexo: json['sexo'],
+        idade: json['idade'],
+        img: imagens,
+        raca: json['raca'],
+        descricao: json['descricao'],
+        data_registro: json['data_registro'],
+        isFavorito: favorites);
   }
 
   List<Animal> get animais {
@@ -87,23 +106,23 @@ class AnimaisRepository with ChangeNotifier {
           "isFavorito": animal.isFavorito,
         }));
     return future.then((response) {
-      final id = jsonDecode(response.body)['name'];
-      _animais.add(Animal(
-        id: id,
-        dono: animal.dono,
-        novo: false,
-        especie: animal.especie,
-        nome: animal.nome,
-        porte: animal.porte,
-        sexo: animal.sexo,
-        idade: animal.idade,
-        img: animal.img,
-        raca: animal.raca,
-        descricao: animal.descricao,
-        data_registro: animal.data_registro,
-        isFavorito: animal.isFavorito
-        ));
-      notifyListeners();
+      // final id = jsonDecode(response.body)['name'];
+      // _animais.add(Animal(
+      //   id: id,
+      //   dono: animal.dono,
+      //   novo: false,
+      //   especie: animal.especie,
+      //   nome: animal.nome,
+      //   porte: animal.porte,
+      //   sexo: animal.sexo,
+      //   idade: animal.idade,
+      //   img: animal.img,
+      //   raca: animal.raca,
+      //   descricao: animal.descricao,
+      //   data_registro: animal.data_registro,
+      //   isFavorito: animal.isFavorito
+      // ));
+      // notifyListeners();
     });
   }
 
@@ -135,12 +154,6 @@ class AnimaisRepository with ChangeNotifier {
 
 
   Future<void> updateAnimal(Animal animal) async {
-    int index = _animais.indexWhere((p) => p.id == animal.id);
-
-    var temp = _animais.where((element) => element.id == animal.id);
-    if (index >= 0) {
-      _animais[index] = animal;
-      notifyListeners();
 
       Map<String, dynamic> user_map = {};
       user_map["nome"] = animal.dono.nome;
@@ -168,29 +181,33 @@ class AnimaisRepository with ChangeNotifier {
           headers: {
             "Accept": "application/json"
           }).then((response) => print(response.statusCode));
-    }
     return Future.value();
   }
 
   Future<void> removeAnimal(Animal animal) async {
-    int index = _animais.indexWhere((p) => p.id == animal.id);
 
-    if (index >= 0) {
-      _animais.removeWhere((p) => p.id == animal.id);
-      notifyListeners();
-      final future = http.delete(
-        Uri.parse('${URLrepository}/animais/${animal.id}.json'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      ).then((response) => print(response.statusCode));
-    }
+    final future = await http.delete(
+      Uri.parse('${URLrepository}/animais/${animal.id}.json'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ).then((response) => print(response.statusCode));
+
     return Future.value();
   }
 
   Animal findByid(String id){
-    List<Animal> result = _animais.where((element) => element.id == id).toList();
+    List<Animal> result = [];
+    result = _animais.where((element) => element.id == id).toList();
+    
     return result[0];
+  }
+
+  bool isDonoAnimal(Animal animal){
+    if(_animais.contains(animal)){
+      return false;
+    }
+    return true;
   }
 
   Future<void> attFavorito(Animal animal, Usuario user) {
