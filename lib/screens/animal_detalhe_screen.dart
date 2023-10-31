@@ -82,6 +82,13 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
             !adocoes.inUserAdocoes(animal, usuario.usuario.login) // Usuario já esta em processo de adocao desse animal
             ?
             ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  )
+                )
+              ),
               onPressed: () {
                     if(usuario.usuario.login == ''){
                       showDialog(context: context, builder: (BuildContext context) =>
@@ -120,6 +127,13 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
             )
           :
             ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  )
+                )
+              ),
               onPressed: () {
                       var adocao = Provider.of<AdocoesRepository>(context, listen: false).findByAnimal(animal);
                       Navigator.of(context).pushNamed(AppRoutes.ADOCAO_DETAIL, arguments: adocao[0]);
@@ -138,6 +152,13 @@ class _AnimalDetalheScreenState extends State<AnimalDetalheScreen> {
           // Quem entrou na página adicionou o animal
           :
           ElevatedButton(
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0),
+                )
+              )
+            ),
             onPressed: () {
               Navigator.of(context).pushNamed(AppRoutes.ADOCAO_UNIQUE, arguments: animal);
             }, 

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:adocao_animais/screens/login_screen.dart';
 import 'package:adocao_animais/screens/cadastro_screen.dart';
 import 'package:adocao_animais/models/usuario.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../components/default_view.dart';
@@ -27,7 +28,13 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: [
-            Text("Adote Petz ", style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              "Adote Petz ", 
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: GoogleFonts.robotoSlab().fontFamily
+              )
+            ),
             Icon(Icons.pets)
           ],
         ),
@@ -120,17 +127,20 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Column(
                       children: [
-                        Text('Que tal adotar?',
+                        Text('Que tal adotar ?',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 24,
-                                fontWeight: FontWeight.bold)),
+                                fontWeight: FontWeight.bold,
+                                fontFamily: GoogleFonts.satisfy().fontFamily
+                                )),
                         Text(
                           'Diz que sim',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
+                            fontFamily: GoogleFonts.satisfy().fontFamily
                           ),
                         ),
                       ],

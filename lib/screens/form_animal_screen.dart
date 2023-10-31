@@ -401,6 +401,13 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
         height: 50,
         width: double.infinity,
         child: ElevatedButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0),
+              )
+            )
+          ),
           onPressed: () {
             _submitForm();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(

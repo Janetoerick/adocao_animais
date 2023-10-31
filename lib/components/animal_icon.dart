@@ -6,6 +6,7 @@ import 'package:adocao_animais/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:adocao_animais/models/animal.dart';
 import 'package:adocao_animais/screens/animal_detalhe_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class AnimalIcon extends StatelessWidget {

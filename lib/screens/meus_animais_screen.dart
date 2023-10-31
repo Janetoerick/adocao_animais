@@ -44,6 +44,13 @@ class _MeusAnimaisScreenState extends State<MeusAnimaisScreen> {
         height: MediaQuery.of(context).size.height * 0.055,
         width: double.infinity,
         child: ElevatedButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0),
+              )
+            )
+          ),
           onPressed: () {
             Navigator.of(context).pushNamed(AppRoutes.ADOCAO_ALL, arguments: true);
           }, 

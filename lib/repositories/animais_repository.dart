@@ -130,6 +130,9 @@ class AnimaisRepository with ChangeNotifier {
     bool hasId = data['id'] != null;
     bool hasDate = data['data_registro'] != null;
 
+    List<String> favorites = [];
+    favorites.addAll(data['favorito'] != null ? data['favorito'] as List<String> : []);
+
     final animal = Animal(
         id: hasId ? data['id'] as String : Random().nextDouble().toString(),
         dono: user,
@@ -143,7 +146,7 @@ class AnimaisRepository with ChangeNotifier {
         raca: data['raca'].toString(),
         descricao: data['descricao'].toString(),
         data_registro: hasDate ? data['data_registro'].toString() : DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        isFavorito: [],
+        isFavorito: favorites,
     );
     if (hasId) {
       return updateAnimal(animal);
