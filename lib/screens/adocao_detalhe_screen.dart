@@ -40,7 +40,7 @@ class _AdocaoScreenState extends State<AdocaoDetalheScreen> {
       appBar: AppBar(
         title: Text('Processo de adoção'),
         actions: [
-          !isDono ?
+          !isDono  && adocao.status != 'aprovado' ?
           IconButton(
             onPressed: () => showDialog(
               context: context,

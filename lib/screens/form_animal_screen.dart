@@ -342,21 +342,27 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                           padding: EdgeInsets.only(left: 10),
                           child: Container(
                             height: 100,
-                            width: 100,
-                            child: Stack(children: [
+                            width: 135,
+                            child: Row(children: [
                               Image.network(_imagens[index], width: 100, height: 100, fit: BoxFit.fill,),
-                              Positioned(
-                                top: 0,
-                                right: 0,
-                                child: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _imagens.remove(_imagens[index]);  
-                                    });
-                                  }, 
-                                  icon: Icon(Icons.remove_circle)
-                                )
-                              )
+                              Expanded(
+                                child: Container(
+                                  height: double.infinity,
+                                  alignment: Alignment.centerLeft,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+                                    color: Theme.of(context).colorScheme.secondary
+                                  ),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _imagens.remove(_imagens[index]);  
+                                      });
+                                    }, 
+                                    icon: Icon(Icons.remove_circle, color: Colors.white,)
+                                  )
+                                ),
+                              ),
                             ])),
                           );
                       })
