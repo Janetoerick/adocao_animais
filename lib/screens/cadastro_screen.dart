@@ -80,6 +80,9 @@ class _CadastroScreenState extends State<CadastroScreen> {
                           if (value == null || value == '') {
                             return 'Campo obrigatório';
                           }
+                          if(value.toString().length < 4){
+                            return 'Necessário pelo menos 4 caracteres';
+                          }
                         },
                   ),
                   SizedBox(
@@ -122,6 +125,9 @@ class _CadastroScreenState extends State<CadastroScreen> {
                           if (value == null || value == '') {
                             return 'Campo obrigatório';
                           }
+                          if(value.toString().length < 14){
+                            return 'Telefone inválido';
+                          }
                         },
                   ),
                   SizedBox(
@@ -138,6 +144,9 @@ class _CadastroScreenState extends State<CadastroScreen> {
                           if (value == null || value == '') {
                             return 'Campo obrigatório';
                           }
+                          if(value.toString().length < 14){
+                            return 'CPF inválido';
+                          }
                         },
                   ),
                   SizedBox(
@@ -153,6 +162,9 @@ class _CadastroScreenState extends State<CadastroScreen> {
                           } else if(value != _senhaConfirm.text){
                             return 'Senhas diferentes';
                           }
+                          if(value.toString().length < 3){
+                            return 'Senha muito curta';
+                          }
                         },
                   ),
                   SizedBox(
@@ -167,6 +179,9 @@ class _CadastroScreenState extends State<CadastroScreen> {
                             return 'Campo obrigatório';
                           } else if (value != _senha.text){
                             return 'Senhas diferentes';
+                          }
+                          if(value.toString().length < 3){
+                            return 'Senha muito curta';
                           }
                         },
                   ),
