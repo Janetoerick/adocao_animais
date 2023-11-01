@@ -49,6 +49,10 @@ class _CadastroScreenState extends State<CadastroScreen> {
      .then((value) {
       if(value){
         Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Cadastro realizado com sucesso!'),
+          duration: const Duration(seconds: 1)
+        ));
       } else {
         setState(() {
           error_login = 'Este login já está em uso';  

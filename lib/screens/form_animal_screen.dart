@@ -94,6 +94,10 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
       }
       Provider.of<UsuarioRepository>(context, listen: false).setUpMeusAnimais();
       Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Salvo com sucesso!'),
+        duration: const Duration(seconds: 1)
+      ));
     });
   }
 
@@ -353,14 +357,15 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                                   if (loadingProgress == null) {
                                     return child;
                                   }
-                                  return Container(
-                                    width: 150,
-                                    child: Center(
-                                      child: CircularProgressIndicator(
-                                        value: loadingProgress.expectedTotalBytes != null
-                                        ? loadingProgress.cumulativeBytesLoaded / 
-                                          loadingProgress.expectedTotalBytes! 
-                                        : null,
+                                  return Expanded(
+                                    child: Container(
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          value: loadingProgress.expectedTotalBytes != null
+                                          ? loadingProgress.cumulativeBytesLoaded / 
+                                            loadingProgress.expectedTotalBytes! 
+                                          : null,
+                                        ),
                                       ),
                                     ),
                                   );
@@ -410,9 +415,6 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
           ),
           onPressed: () {
             _submitForm();
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Salvo com sucesso!'),
-            duration: const Duration(seconds: 1)));
           }, 
           child: Text('Salvar', style: TextStyle(fontSize: 20),),
           )
