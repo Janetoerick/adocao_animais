@@ -81,7 +81,12 @@ class AdocaoIcon extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(adocao.usuario.nome, 
+                            Text(
+                              isDono 
+                              ?
+                              adocao.usuario.nome 
+                              :
+                              adocao.animal.dono.nome, 
                               style: TextStyle(
                                 fontSize: 16, 
                                 color: Theme.of(context).colorScheme.primary, 
@@ -104,7 +109,12 @@ class AdocaoIcon extends StatelessWidget {
                               children: [
                                 Icon(Icons.smartphone, size: 20,),
                                 SizedBox(width: 10,),
-                                Text(adocao.usuario.telefone),
+                                Text(
+                                  isDono ?
+                                  adocao.usuario.telefone
+                                  :
+                                  adocao.animal.dono.telefone,
+                                ),
                               ],
                             ),
                           ],
