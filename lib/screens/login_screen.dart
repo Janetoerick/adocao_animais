@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String error_login = '';
 
-  _onSubmitLogin(){
+  _onSubmitLogin() {
     error_login = '';
     final isValid = _formKey.currentState?.validate() ?? false;
 
@@ -34,18 +34,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
     _formKey.currentState?.save();
 
-    Provider.of<UsuarioRepository>(
-      context,
-      listen: false
-    ).loginUsuario(_loginController.text, _senhaController.text)
-    .then((value) {
-      if(value.login == ''){
+    Provider.of<UsuarioRepository>(context, listen: false)
+        .loginUsuario(_loginController.text, _senhaController.text)
+        .then((value) {
+      if (value.login == '') {
         setState(() {
-          error_login = 'login ou senha incorretos';  
+          error_login = 'login ou senha incorretos';
         });
       } else {
-        Provider.of<AnimaisRepository>(context, listen: false).setUpAnimaisLogin(value.login);
-        Provider.of<AdocoesRepository>(context, listen: false).setUpAdocoesAccount(value);
+        Provider.of<AnimaisRepository>(context, listen: false)
+            .setUpAnimaisLogin(value.login);
+        Provider.of<AdocoesRepository>(context, listen: false)
+            .setUpAdocoesAccount(value);
         Navigator.of(context).pop();
         Navigator.of(context).pushReplacementNamed(AppRoutes.HOME);
       }
@@ -69,17 +69,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Icon(Icons.account_circle, size: 200, color: Theme.of(context).colorScheme.secondary,),
+                  Icon(
+                    Icons.account_circle,
+                    size: 200,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                   // Image.asset('lib/assets/coracao_patas.png', width: 200, height: 200, color: Theme.of(context).colorScheme.secondary,),
                   TextFormField(
-                    
-                    controller: _loginController, // Captura o valor do campo de login
+                    controller:
+                        _loginController, // Captura o valor do campo de login
                     decoration: InputDecoration(
                       labelText: 'Login',
                       icon: Icon(Icons.person),
                     ),
                     validator: (value) {
-                      if(value == null || value == ''){
+                      if (value == null || value == '') {
                         return 'Campo obrigatório!';
                       }
                     },
@@ -88,14 +92,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 10,
                   ),
                   TextFormField(
-                    controller: _senhaController, // Captura o valor do campo de senha
+                    controller:
+                        _senhaController, // Captura o valor do campo de senha
                     decoration: InputDecoration(
                       labelText: 'Senha',
                       icon: Icon(Icons.lock),
                     ),
                     obscureText: true,
                     validator: (value) {
-                      if(value == null || value == ''){
+                      if (value == null || value == '') {
                         return 'Campo obrigatório!';
                       }
                     },
@@ -109,20 +114,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {
                         _onSubmitLogin();
                       },
-                      child: Text('Entrar', style: TextStyle(fontSize: 20),),
+                      child: Text(
+                        'Entrar',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                   ),
                   Container(
                     height: 30,
                     alignment: Alignment.center,
-                    child: Text(error_login, style: TextStyle(color: Colors.red),),
+                    child: Text(
+                      error_login,
+                      style: TextStyle(color: Colors.red),
+                    ),
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutes.CADASTRO_USER
-                      );
+                      Navigator.pushNamed(context, AppRoutes.CADASTRO_USER);
                     },
                     child: Text('Criar uma conta'),
                   ),

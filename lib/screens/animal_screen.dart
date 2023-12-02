@@ -29,7 +29,7 @@ class _AnimalPageState extends State<AnimalPage> {
   }
 
   _novo_filtro(String especie) {
-    if(especie != ''){
+    if (especie != '') {
       filter_on = true;
     } else {
       _remove_filter();
@@ -37,11 +37,13 @@ class _AnimalPageState extends State<AnimalPage> {
     }
     _animais_filter = [];
 
-    final _total_animals = Provider.of<AnimaisRepository>(context, listen: false).animais;
+    final _total_animals =
+        Provider.of<AnimaisRepository>(context, listen: false).animais;
     setState(() {
       if (especie != '') {
         filter = especie;
-        _animais_filter.addAll(_total_animals.where((e) => e.especie == especie));
+        _animais_filter
+            .addAll(_total_animals.where((e) => e.especie == especie));
       } else {
         filter_on = false;
       }
@@ -58,7 +60,8 @@ class _AnimalPageState extends State<AnimalPage> {
 
   @override
   Widget build(BuildContext context) {
-    final _total_animals = Provider.of<AnimaisRepository>(context, listen: false).animais;
+    final _total_animals =
+        Provider.of<AnimaisRepository>(context, listen: false).animais;
 
     return Scaffold(
         appBar: AppBar(
@@ -67,46 +70,43 @@ class _AnimalPageState extends State<AnimalPage> {
           backgroundColor: Theme.of(context).colorScheme.secondary,
         ),
         body: Padding(
-      padding: EdgeInsets.all(10),
-      child: Column(
-        children: [
-          Expanded(
-              child: SizedBox(
-            width: double.infinity,
-            height: double.infinity,
-            child: !filter_on
-                ? 
-                  !_total_animals.isEmpty
-                  ? ListaAnimais(_total_animals, false)
-                  : Center(
-                    child: DefaultView(
-                        'Não há pets registrados no momento...'),
-                  )
-                : !_animais_filter.isEmpty
-                    ? ListaAnimais(_animais_filter, false)
-                    : Center(
-                      child: DefaultView(
-                          'Não há ${filter}s registrados no momento...'),
-                    ),
-          ))
-        ],
-      ),
-    ),
-    floatingActionButton: ElevatedButton(
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Expanded(
+                  child: SizedBox(
+                width: double.infinity,
+                height: double.infinity,
+                child: !filter_on
+                    ? !_total_animals.isEmpty
+                        ? ListaAnimais(_total_animals, false)
+                        : Center(
+                            child: DefaultView(
+                                'Não há pets registrados no momento...'),
+                          )
+                    : !_animais_filter.isEmpty
+                        ? ListaAnimais(_animais_filter, false)
+                        : Center(
+                            child: DefaultView(
+                                'Não há ${filter}s registrados no momento...'),
+                          ),
+              ))
+            ],
+          ),
+        ),
+        floatingActionButton: ElevatedButton(
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50.0),
-          )
-        )
-      ),
-      onPressed: () => _openTaskFilterModal(context),
-      child: Container(
-        height: 60,
-        width: 25,
-        alignment: Alignment.center,
-        child: Icon(Icons.filter_list),
-    ),
-    ));
+          ))),
+          onPressed: () => _openTaskFilterModal(context),
+          child: Container(
+            height: 60,
+            width: 25,
+            alignment: Alignment.center,
+            child: Icon(Icons.filter_list),
+          ),
+        ));
   }
 }

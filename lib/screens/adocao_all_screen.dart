@@ -15,7 +15,6 @@ class AdocaoAllScreen extends StatefulWidget {
 }
 
 class _AdocaoAllScreenState extends State<AdocaoAllScreen> {
-  
   bool filter_on = false;
   List<Adocao> adocoes_filter = [];
 
@@ -26,41 +25,48 @@ class _AdocaoAllScreenState extends State<AdocaoAllScreen> {
     var repository = context.watch<AdocoesRepository>();
 
     List<Adocao> all_adocoes = [];
-    
-    if(isDono){
+
+    if (isDono) {
       all_adocoes = repository.dono_adocoes;
     } else {
       all_adocoes = repository.user_adocoes;
     }
 
-    
-    _modifyAdocoes(String filtro){
-      if(filtro != 'Todos'){
+    _modifyAdocoes(String filtro) {
+      if (filtro != 'Todos') {
         adocoes_filter.clear();
         setState(() {
-          if(isDono){
-            adocoes_filter = repository.dono_adocoes.where((element) => element.status == filtro).toList();
+          if (isDono) {
+            adocoes_filter = repository.dono_adocoes
+                .where((element) => element.status == filtro)
+                .toList();
           } else {
-            adocoes_filter = repository.user_adocoes.where((element) => element.status == filtro).toList();
+            adocoes_filter = repository.user_adocoes
+                .where((element) => element.status == filtro)
+                .toList();
           }
-          filter_on = true;  
+          filter_on = true;
         });
       } else {
         setState(() {
-          filter_on = false;  
+          filter_on = false;
         });
       }
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Gerenciar adoções'),),
+      appBar: AppBar(
+        title: Text('Gerenciar adoções'),
+      ),
       body: Column(
         children: [
           FiltroAdocoes(_modifyAdocoes),
-          Expanded(child: 
-          filter_on 
-          ? ListaAdocoesAll(filter_on, isDono, adocoes_filter, _modifyAdocoes)
-          : ListaAdocoesAll(filter_on, isDono, all_adocoes, _modifyAdocoes),
+          Expanded(
+            child: filter_on
+                ? ListaAdocoesAll(
+                    filter_on, isDono, adocoes_filter, _modifyAdocoes)
+                : ListaAdocoesAll(
+                    filter_on, isDono, all_adocoes, _modifyAdocoes),
           ),
         ],
       ),

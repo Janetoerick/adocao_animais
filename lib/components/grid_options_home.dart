@@ -27,26 +27,35 @@ class GridOptionsHome extends StatelessWidget {
           ),
           child: SizedBox.expand(
             child: ElevatedButton(
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white)),
               onPressed: () {
-                if(user.usuario.login != ''){
+                if (user.usuario.login != '') {
                   Navigator.of(context).pushNamed(AppRoutes.FORM_ANIMAL);
                 } else {
-                  showDialog(context: context, builder: (BuildContext context) =>
-                    AlertLogin('Para cadastrar um pet você deve estar logado no sistema...')
-                  );
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertLogin(
+                          'Para cadastrar um pet você deve estar logado no sistema...'));
                 }
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset('lib/assets/pet_add.png', width: 50, height: 50, color: Theme.of(context).colorScheme.secondary,),
-                  Text('Cadastrar pet para adoção', 
-                  style: TextStyle(
+                  Image.asset(
+                    'lib/assets/pet_add.png',
+                    width: 50,
+                    height: 50,
                     color: Theme.of(context).colorScheme.secondary,
-                    fontWeight: FontWeight.bold), 
-                  textAlign: TextAlign.center,),
+                  ),
+                  Text(
+                    'Cadastrar pet para adoção',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
                 ],
               ),
             ),
@@ -59,25 +68,33 @@ class GridOptionsHome extends StatelessWidget {
           ),
           child: SizedBox.expand(
             child: ElevatedButton(
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white)),
               onPressed: () {
-                if(user.usuario.login != ''){
+                if (user.usuario.login != '') {
                   Navigator.of(context).pushNamed(AppRoutes.MEUS_PETS);
                 } else {
-                  showDialog(context: context, builder: (BuildContext context) =>
-                    AlertLogin('Para ver seus pets você deve estar logado no sistema...')
-                  );
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertLogin(
+                          'Para ver seus pets você deve estar logado no sistema...'));
                 }
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.pets, color: Theme.of(context).colorScheme.secondary, size: 55,),
-                  Text('Meus pets', 
-                  style: TextStyle(
+                  Icon(
+                    Icons.pets,
                     color: Theme.of(context).colorScheme.secondary,
-                    fontWeight: FontWeight.bold), 
-                  textAlign: TextAlign.center,),
+                    size: 55,
+                  ),
+                  Text(
+                    'Meus pets',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
                 ],
               ),
             ),
@@ -90,27 +107,36 @@ class GridOptionsHome extends StatelessWidget {
           ),
           child: SizedBox.expand(
             child: ElevatedButton(
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white)),
               onPressed: () {
-                if(user.usuario.login != ''){
-                  Navigator.of(context).pushNamed(AppRoutes.ADOCAO_ALL, arguments: false);
+                if (user.usuario.login != '') {
+                  Navigator.of(context)
+                      .pushNamed(AppRoutes.ADOCAO_ALL, arguments: false);
                 } else {
-                  showDialog(context: context, builder: (BuildContext context) =>
-                    AlertLogin('Para visulizar suas adoções você deve estar logado no sistema...')
-                  );
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertLogin(
+                          'Para visulizar suas adoções você deve estar logado no sistema...'));
                 }
-                
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset('lib/assets/icon_adocao.png', width: 50, height: 50, color: Theme.of(context).colorScheme.secondary,),
-                  Text('Minhas adoções', 
-                  style: TextStyle(
+                  Image.asset(
+                    'lib/assets/icon_adocao.png',
+                    width: 50,
+                    height: 50,
                     color: Theme.of(context).colorScheme.secondary,
-                    fontWeight: FontWeight.bold), 
-                  textAlign: TextAlign.center,),
+                  ),
+                  Text(
+                    'Minhas adoções',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
                 ],
               ),
             ),
@@ -123,27 +149,34 @@ class GridOptionsHome extends StatelessWidget {
           ),
           child: SizedBox.expand(
             child: ElevatedButton(
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white)),
               onPressed: () {
-                if(user.usuario.login != ''){
+                if (user.usuario.login != '') {
                   Navigator.of(context).pushNamed(AppRoutes.MEUS_FAVORITOS);
                 } else {
-                  showDialog(context: context, builder: (BuildContext context) =>
-                    AlertLogin('Para visulizar seus favoritos você deve estar logado no sistema...')
-                  );
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertLogin(
+                          'Para visulizar seus favoritos você deve estar logado no sistema...'));
                 }
-                
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(Icons.favorite, color: Theme.of(context).colorScheme.secondary, size: 55,),
-                  Text('Meus favoritos', 
-                  style: TextStyle(
+                  Icon(
+                    Icons.favorite,
                     color: Theme.of(context).colorScheme.secondary,
-                    fontWeight: FontWeight.bold), 
-                  textAlign: TextAlign.center,),
+                    size: 55,
+                  ),
+                  Text(
+                    'Meus favoritos',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
                 ],
               ),
             ),

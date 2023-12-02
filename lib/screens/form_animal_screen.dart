@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:adocao_animais/models/animal.dart';
 import 'package:adocao_animais/models/usuario.dart';
 import 'package:adocao_animais/repositories/adocoes_repository.dart';
@@ -7,6 +9,7 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FormAnimalScreen extends StatefulWidget {
   const FormAnimalScreen({super.key});
@@ -27,7 +30,12 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
 
   final List<String> _portes = <String>['Pequeno', 'Médio', 'Grande'];
   final List<String> _sexos = <String>['Macho', 'Fêmea'];
-  final List<String> _especies = <String>['Cachorro', 'Gato', 'Coelho', 'Papagaio'];
+  final List<String> _especies = <String>[
+    'Cachorro',
+    'Gato',
+    'Coelho',
+    'Papagaio'
+  ];
 
   bool isValidImageUrl(String url) {
     bool isValidUrl = Uri.tryParse(url)?.hasAbsolutePath ?? false;
@@ -38,7 +46,7 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
 
@@ -54,16 +62,16 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
         _formData['id'] = animal.id;
         _formData['dono'] = animal.dono;
         _formData['novo'] = animal.novo;
-       _formData['especie'] = animal.especie;
-       _formData['nome'] = animal.nome;
-       _formData['porte'] = animal.porte;
-       _formData['sexo'] = animal.sexo;
-       _formData['idade'] = animal.idade;
-       _formData['img'] = animal.img;
-       _formData['raca'] = animal.raca;
-       _formData['descricao'] = animal.descricao;
-       _formData['data_registro'] = animal.data_registro; 
-       _formData['favorito'] = animal.isFavorito;
+        _formData['especie'] = animal.especie;
+        _formData['nome'] = animal.nome;
+        _formData['porte'] = animal.porte;
+        _formData['sexo'] = animal.sexo;
+        _formData['idade'] = animal.idade;
+        _formData['img'] = animal.img;
+        _formData['raca'] = animal.raca;
+        _formData['descricao'] = animal.descricao;
+        _formData['data_registro'] = animal.data_registro;
+        _formData['favorito'] = animal.isFavorito;
 
         setState(() {
           _imagens.addAll(animal.img);
@@ -72,33 +80,75 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
     }
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     final isValid = _formKey.currentState?.validate() ?? false;
 
     if (!isValid) {
       return;
     }
 
+    // upload da imagem para o Firebase
+    if (_imageFile != null) {
+      for (int i = 0; i < _imagens.length; i++) {
+        if (!_imagens[i].startsWith('http')) {
+          File imageFile = File(_imagens[i]);
+          String imageUrl = await uploadImageToFirebaseStorage(imageFile);
+          _imagens[i] = imageUrl;
+        }
+      }
+    }
+
     _formKey.currentState?.save();
     var user = Provider.of<UsuarioRepository>(context, listen: false).usuario;
 
     _formData['img'] = _imagens;
-    
 
     Provider.of<AnimaisRepository>(
       context,
       listen: false,
     ).saveAnimal(_formData, user).then((value) {
-      if(_formData["id"] != null){ // Caso seja edição
-        Provider.of<AdocoesRepository>(context, listen: false).attAdocoesByAnimal(_formData, user);
+      if (_formData["id"] != null) {
+        // Caso seja edição
+        Provider.of<AdocoesRepository>(context, listen: false)
+            .attAdocoesByAnimal(_formData, user);
       }
       Provider.of<UsuarioRepository>(context, listen: false).setUpMeusAnimais();
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Salvo com sucesso!'),
-        duration: const Duration(seconds: 1)
-      ));
+          content: Text('Salvo com sucesso!'),
+          duration: const Duration(seconds: 1)));
     });
+  }
+
+  Future<String> uploadImageToFirebaseStorage(File imageFile) async {
+    try {
+      final String fileName = DateTime.now()
+          .millisecondsSinceEpoch
+          .toString(); // Aqui eu coloquei a hora... podemos ver como colocar o nome de cada animal depois
+      final Reference storageReference =
+          FirebaseStorage.instance.ref().child('animais/$fileName.jpg');
+
+      final UploadTask uploadTask = storageReference.putFile(imageFile);
+      final TaskSnapshot taskSnapshot = await uploadTask;
+
+      final String imageUrl = await taskSnapshot.ref.getDownloadURL();
+      return imageUrl;
+    } catch (error) {
+      print('Erro ao fazer upload da imagem: $error');
+      return ''; // Retorna uma string vazia em caso de erro
+    }
+  }
+
+  File? _imageFile;
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().getImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
   }
 
   @override
@@ -113,7 +163,8 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              TextFormField(                                                                     // NOME
+              TextFormField(
+                // NOME
                 initialValue: _formData['nome']?.toString(),
                 decoration: InputDecoration(
                   labelText: 'Nome',
@@ -125,12 +176,13 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                 },
                 onSaved: (nome) => _formData['nome'] = nome ?? '',
                 validator: (nome) {
-                  if(nome == null || nome == ''){
+                  if (nome == null || nome == '') {
                     return 'Campo obrigatório';
                   }
                 },
               ),
-              TextFormField(                                                                     // RAÇA
+              TextFormField(
+                // RAÇA
                 initialValue: _formData['raca']?.toString(),
                 decoration: InputDecoration(
                   labelText: 'Raça',
@@ -139,12 +191,13 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                 focusNode: _idadeFocus,
                 onSaved: (raca) => _formData['raca'] = raca ?? '',
                 validator: (raca) {
-                  if(raca == null || raca == ''){
+                  if (raca == null || raca == '') {
                     return 'Campo obrigatório';
                   }
                 },
               ),
-              TextFormField(                                                                     // IDADE
+              TextFormField(
+                // IDADE
                 initialValue: _formData['idade']?.toString(),
                 decoration: InputDecoration(
                   labelText: 'Idade (Ex.: 2 anos e 1 mes)',
@@ -152,18 +205,18 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                 textInputAction: TextInputAction.next,
                 onSaved: (idade) => _formData['idade'] = idade ?? '',
                 validator: (idade) {
-                  if(idade == null || idade == ''){
+                  if (idade == null || idade == '') {
                     return 'Campo obrigatório';
                   }
                 },
               ),
-
-              DropdownButton(                                                                     // ESPECIE
-              hint: Text('Espécie'),
-              padding: EdgeInsets.only(top: 20),
+              DropdownButton(
+                // ESPECIE
+                hint: Text('Espécie'),
+                padding: EdgeInsets.only(top: 20),
                 isExpanded: true,
                 value: _formData['especie']?.toString(),
-                onChanged: (String? value){
+                onChanged: (String? value) {
                   setState(() {
                     _formData['especie'] = value!;
                   });
@@ -174,8 +227,9 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                     child: Text(value),
                   );
                 }).toList(),
-                ),
-              TextFormField(                                                                     // DESCRICAO
+              ),
+              TextFormField(
+                // DESCRICAO
                 initialValue: _formData['descricao']?.toString(),
                 decoration: InputDecoration(
                   labelText: 'Descrição',
@@ -185,107 +239,121 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_idadeFocus);
                 },
-                onSaved: (descricao) => _formData['descricao'] = descricao ?? '',
+                onSaved: (descricao) =>
+                    _formData['descricao'] = descricao ?? '',
                 validator: (descricao) {
-                  if(descricao == null || descricao == ''){
+                  if (descricao == null || descricao == '') {
                     return 'Campo obrigatório';
                   }
                 },
               ),
-              Container(                                                                          // SEXO
+              Container(
+                // SEXO
                 height: 100,
                 padding: EdgeInsets.only(top: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Sexo', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                    Text(
+                      'Sexo',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
                     Container(
                       height: 60,
                       padding: EdgeInsets.only(top: 10),
                       child: GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: _sexos.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        mainAxisExtent: 50,
-                      ), 
-                      itemBuilder: (_, int index) {
-                        return Card(
-                          child: ElevatedButton(
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(
-                              _formData['sexo'] == _sexos[index] 
-                            ? Theme.of(context).colorScheme.secondary
-                            : Colors.white
-                            )),
-                            onPressed: () {
-                              setState(() {
-                                _formData['sexo'] = _sexos[index];  
-                              });
-                            },
-                            child: Center(
-                              child: Text(
-                                _sexos[index],
-                                style: TextStyle(
-                                  color: _formData['sexo'] == _sexos[index] 
-                                      ? Colors.white 
-                                      : Colors.black 
-                                ),
-                              )
-                            ),
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: _sexos.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            mainAxisExtent: 50,
                           ),
-                        );
-                      }),
-                    )  
+                          itemBuilder: (_, int index) {
+                            return Card(
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        _formData['sexo'] == _sexos[index]
+                                            ? Theme.of(context)
+                                                .colorScheme
+                                                .secondary
+                                            : Colors.white)),
+                                onPressed: () {
+                                  setState(() {
+                                    _formData['sexo'] = _sexos[index];
+                                  });
+                                },
+                                child: Center(
+                                    child: Text(
+                                  _sexos[index],
+                                  style: TextStyle(
+                                      color: _formData['sexo'] == _sexos[index]
+                                          ? Colors.white
+                                          : Colors.black),
+                                )),
+                              ),
+                            );
+                          }),
+                    )
                   ],
                 ),
               ),
-              Container(                                                                          // PORTE
+              Container(
+                // PORTE
                 height: 100,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Porte', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                    Text(
+                      'Porte',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
                     Container(
                       height: 60,
                       padding: EdgeInsets.only(top: 10),
                       child: GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: _portes.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        mainAxisExtent: 50,
-                      ), 
-                      itemBuilder: (_, int index) {
-                        return Card(
-                          child: ElevatedButton(
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(
-                              _formData['porte'] == _portes[index] 
-                            ? Theme.of(context).colorScheme.secondary
-                            : Colors.white
-                            )),
-                            onPressed: () {
-                              setState(() {
-                                _formData['porte'] = _portes[index];  
-                              });
-                            },
-                            child: Center(
-                              child: Text(
-                                _portes[index],
-                                style: TextStyle(
-                                  color: _formData['porte'] == _portes[index] 
-                                      ? Colors.white 
-                                      : Colors.black 
-                                ),
-                              )
-                            ),
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: _portes.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            mainAxisExtent: 50,
                           ),
-                        );
-                      }),
-                    )  
+                          itemBuilder: (_, int index) {
+                            return Card(
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        _formData['porte'] == _portes[index]
+                                            ? Theme.of(context)
+                                                .colorScheme
+                                                .secondary
+                                            : Colors.white)),
+                                onPressed: () {
+                                  setState(() {
+                                    _formData['porte'] = _portes[index];
+                                  });
+                                },
+                                child: Center(
+                                    child: Text(
+                                  _portes[index],
+                                  style: TextStyle(
+                                      color:
+                                          _formData['porte'] == _portes[index]
+                                              ? Colors.white
+                                              : Colors.black),
+                                )),
+                              ),
+                            );
+                          }),
+                    )
                   ],
                 ),
               ),
@@ -294,105 +362,139 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
                 children: [
                   Row(
                     children: [
+                      // Botão da câmera
                       Expanded(
-                        child: TextFormField(
-                            decoration: InputDecoration(labelText: 'Url da Imagem'),
-                            keyboardType: TextInputType.url,
-                            textInputAction: TextInputAction.done,
-                            controller: _imageUrlController,
-                            validator: (_imageUrl) {
-                              if (_imagens.isEmpty) {
-                                return 'Registre pelo menos uma imagem!';
-                              } else if (_imagens.length > 5){
-                                return 'Você só pode cadastrar no máximo 5 imagens!';
-                              }
-                            
-                              return null;
-                            },
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            _pickImage(ImageSource.camera);
+                          },
+                          icon: Icon(Icons.camera),
+                          label: Text('Câmera'),
                         ),
                       ),
-                      IconButton(onPressed: () {
-                        if(isValidImageUrl(_imageUrlController.text)){
-                                setState(() {
-                                  _imagens.add(_imageUrlController.text);
-                                  _imageUrlController.clear();  
-                                });
-                              }
-                      }, icon: Icon(Icons.add))
+                      // Botão da galeria
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            _pickImage(ImageSource.gallery);
+                          },
+                          icon: Icon(Icons.photo),
+                          label: Text('Galeria'),
+                        ),
+                      ),
+                      // Expanded(
+                      //   child: TextFormField(
+                      //     decoration:
+                      //         InputDecoration(labelText: 'Url da Imagem'),
+                      //     keyboardType: TextInputType.url,
+                      //     textInputAction: TextInputAction.done,
+                      //     controller: _imageUrlController,
+                      //     validator: (_imageUrl) {
+                      //       if (_imagens.isEmpty) {
+                      //         return 'Registre pelo menos uma imagem!';
+                      //       } else if (_imagens.length > 5) {
+                      //         return 'Você só pode cadastrar no máximo 5 imagens!';
+                      //       }
+
+                      //       return null;
+                      //     },
+                      //   ),
+                      // ),
+                      // IconButton(
+                      //     onPressed: () {
+                      //       if (isValidImageUrl(_imageUrlController.text)) {
+                      //         setState(() {
+                      //           _imagens.add(_imageUrlController.text);
+                      //           _imageUrlController.clear();
+                      //         });
+                      //       }
+                      //     },
+                      //     icon: Icon(Icons.add))
                     ],
                   ),
-                  
                   Container(
-                    height: 100,
-                    width: double.infinity,
-                    padding: EdgeInsets.only(top: 10),
-                    child: 
-                    _imagens.isEmpty ?
-                    Container(
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 216, 216, 216),
-                        borderRadius: BorderRadius.circular(20)
-                      ),
-                      child: Icon(Icons.add_photo_alternate_rounded),
-                    )
-
-                    :
-                    ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _imagens.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Container(
-                            height: 100,
-                            width: 135,
-                            child: Row(children: [
-                              Image.network(
-                                _imagens[index], 
-                                width: 100, 
-                                height: 100, 
-                                fit: BoxFit.fill,
-                                loadingBuilder: ((context, child, loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    return child;
-                                  }
-                                  return Expanded(
-                                    child: Container(
-                                      child: Center(
-                                        child: CircularProgressIndicator(
-                                          value: loadingProgress.expectedTotalBytes != null
-                                          ? loadingProgress.cumulativeBytesLoaded / 
-                                            loadingProgress.expectedTotalBytes! 
-                                          : null,
+                      height: 100,
+                      width: double.infinity,
+                      padding: EdgeInsets.only(top: 10),
+                      child: _imagens.isEmpty
+                          ? Container(
+                              width: 100,
+                              decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(255, 216, 216, 216),
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Icon(Icons.add_photo_alternate_rounded),
+                            )
+                          : ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: _imagens.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Container(
+                                      height: 100,
+                                      width: 135,
+                                      child: Row(children: [
+                                        Image.network(
+                                          _imagens[index],
+                                          width: 100,
+                                          height: 100,
+                                          fit: BoxFit.fill,
+                                          loadingBuilder: ((context, child,
+                                              loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return Expanded(
+                                              child: Container(
+                                                child: Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    value: loadingProgress
+                                                                .expectedTotalBytes !=
+                                                            null
+                                                        ? loadingProgress
+                                                                .cumulativeBytesLoaded /
+                                                            loadingProgress
+                                                                .expectedTotalBytes!
+                                                        : null,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }),
                                         ),
-                                      ),
-                                    ),
-                                  );
-                                }),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  height: double.infinity,
-                                  alignment: Alignment.centerLeft,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
-                                    color: Theme.of(context).colorScheme.secondary
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _imagens.remove(_imagens[index]);  
-                                      });
-                                    }, 
-                                    icon: Icon(Icons.remove_circle, color: Colors.white,)
-                                  )
-                                ),
-                              ),
-                            ])),
-                          );
-                      })
-                  ),
+                                        Expanded(
+                                          child: Container(
+                                              height: double.infinity,
+                                              alignment: Alignment.centerLeft,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  20),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  20)),
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary),
+                                              child: IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _imagens.remove(
+                                                          _imagens[index]);
+                                                    });
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.remove_circle,
+                                                    color: Colors.white,
+                                                  ))),
+                                        ),
+                                      ])),
+                                );
+                              })),
                 ],
               ),
               SizedBox(
@@ -403,22 +505,22 @@ class _FormAnimalScreenState extends State<FormAnimalScreen> {
         ),
       ),
       bottomSheet: Container(
-        height: 50,
-        width: double.infinity,
-        child: ElevatedButton(
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0),
-              )
-            )
-          ),
-          onPressed: () {
-            _submitForm();
-          }, 
-          child: Text('Salvar', style: TextStyle(fontSize: 20),),
-          )
-        ),
+          height: 50,
+          width: double.infinity,
+          child: ElevatedButton(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ))),
+            onPressed: () {
+              _submitForm();
+            },
+            child: Text(
+              'Salvar',
+              style: TextStyle(fontSize: 20),
+            ),
+          )),
     );
   }
 }

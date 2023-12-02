@@ -8,16 +8,23 @@ class AlertLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-
       title: const Text('Requer login'),
       content: Text(text),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), 
-          child: const Text('Cancelar', style: TextStyle(color: Colors.redAccent),),),
-        TextButton(onPressed: () {
-          Navigator.pop(context);
-          Navigator.of(context).pushNamed(AppRoutes.LOGIN);
-        }, child: const Text('Fazer login'),)
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text(
+            'Cancelar',
+            style: TextStyle(color: Colors.redAccent),
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.of(context).pushNamed(AppRoutes.LOGIN);
+          },
+          child: const Text('Fazer login'),
+        )
       ],
     );
   }

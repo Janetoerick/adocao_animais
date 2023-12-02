@@ -12,13 +12,12 @@ class ListaAnimais extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ListView.builder(
-    padding: const EdgeInsets.all(8),
-    itemCount: animais.length,
-    itemBuilder: (ctx, index) {
-      return AnimalIcon(animais[index], gerenciar);
-    },
-        );
+      padding: const EdgeInsets.all(8),
+      itemCount: animais.length,
+      itemBuilder: (ctx, index) {
+        return AnimalIcon(animais[index], gerenciar);
+      },
+    );
   }
 }

@@ -23,30 +23,42 @@ class _FavoriteButtonState extends State<FavoriteButton> {
     var animalRep = context.watch<AnimaisRepository>();
 
     return IconButton(
-      icon: Icon(user.isFavorito(widget.animal) ? Icons.favorite : Icons.favorite_border, size: widget.size,),
+      icon: Icon(
+        user.isFavorito(widget.animal) ? Icons.favorite : Icons.favorite_border,
+        size: widget.size,
+      ),
       color: user.isFavorito(widget.animal) ? Colors.red : null,
       onPressed: () {
         user.attAnimalFav(widget.animal).then((value) {
-          if(!value) {
-            showDialog(context: context, builder: (BuildContext context) =>
-              AlertDialog(
-                title: const Text('Requer login'),
-                content: Text('Para adicionar o animal nos seus favoritos você deve estar logado no sistema...'),
-                actions: [
-                  TextButton(onPressed: () => Navigator.pop(context), 
-                    child: const Text('Cancelar', style: TextStyle(color: Colors.redAccent),),),
-                  TextButton(onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).pushReplacementNamed(AppRoutes.LOGIN);
-                  }, child: const Text('Fazer login'),)
-                ],
-              )
-            );
+          if (!value) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Requer login'),
+                      content: Text(
+                          'Para adicionar o animal nos seus favoritos você deve estar logado no sistema...'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text(
+                            'Cancelar',
+                            style: TextStyle(color: Colors.redAccent),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.of(context)
+                                .pushReplacementNamed(AppRoutes.LOGIN);
+                          },
+                          child: const Text('Fazer login'),
+                        )
+                      ],
+                    ));
           } else {
             animalRep.attFavorito(widget.animal, user.usuario);
           }
         });
-        
       },
     );
   }

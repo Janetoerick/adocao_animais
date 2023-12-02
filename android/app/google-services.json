@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "972090606363",
+    "firebase_url": "https://adocao-animais-default-rtdb.firebaseio.com",
+    "project_id": "adocao-animais",
+    "storage_bucket": "adocao-animais.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972090606363:android:ffe2ff0fac77ffdffac9be",
+        "android_client_info": {
+          "package_name": "com.imd.adocao_animais"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaSQJ1OAbEukPiCmJbqd03ZsbtF5AE2Bc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

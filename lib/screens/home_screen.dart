@@ -28,13 +28,10 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: [
-            Text(
-              "Adote Petz ", 
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontFamily: GoogleFonts.robotoSlab().fontFamily
-              )
-            ),
+            Text("Adote Petz ",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: GoogleFonts.robotoSlab().fontFamily)),
             Icon(Icons.pets)
           ],
         ),
@@ -42,60 +39,68 @@ class HomeScreen extends StatelessWidget {
         actions: [
           // Botão de acesso à tela de login
           //
-          
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: 
-            (user.usuario.login == '') ?
-            TextButton(
-              onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    AppRoutes.LOGIN,
-                  );
-              },
-              child: Text("Fazer login", style: TextStyle(color: Colors.white)),
-            )
-            :
-          PopupMenuButton(
-            child: Row(
-                children: [
-                      Text("${user.usuario.nome.split(' ').first}",
-                          style: TextStyle(color: Colors.white)),
-                      SizedBox(width: 5,),
-                      Icon(Icons.account_circle, color: Colors.white,),
-                ],
-              ),
-            itemBuilder: ((context) => [
-            PopupMenuItem(child: ListTile(
-                        title: Row(
-                          children: [
-                            Icon(Icons.logout),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text('Logout'),
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                          Provider.of<AdocoesRepository>(context, listen: false).ClearAll();
-                          Provider.of<UsuarioRepository>(
-                            context,
-                            listen: false,
-                          ).logoutUsuario();
 
-                          Provider.of<AnimaisRepository>(context, listen: false).setUpAnimais();
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('Sessão finalizada!'),
-                            duration: const Duration(seconds: 1),
+          Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: (user.usuario.login == '')
+                  ? TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.LOGIN,
+                        );
+                      },
+                      child: Text("Fazer login",
+                          style: TextStyle(color: Colors.white)),
+                    )
+                  : PopupMenuButton(
+                      child: Row(
+                        children: [
+                          Text("${user.usuario.nome.split(' ').first}",
+                              style: TextStyle(color: Colors.white)),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(
+                            Icons.account_circle,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                      itemBuilder: ((context) => [
+                            PopupMenuItem(
+                              child: ListTile(
+                                title: Row(
+                                  children: [
+                                    Icon(Icons.logout),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 10),
+                                      child: Text('Logout'),
+                                    ),
+                                  ],
+                                ),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Provider.of<AdocoesRepository>(context,
+                                          listen: false)
+                                      .ClearAll();
+                                  Provider.of<UsuarioRepository>(
+                                    context,
+                                    listen: false,
+                                  ).logoutUsuario();
+
+                                  Provider.of<AnimaisRepository>(context,
+                                          listen: false)
+                                      .setUpAnimais();
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text('Sessão finalizada!'),
+                                    duration: const Duration(seconds: 1),
+                                  ));
+                                },
+                              ),
                             )
-                          );
-                        },
-                      ),)
-          ]))
-          )
-          ,
+                          ]))),
           // Botão de acesso à tela de cadastro
           // TextButton(
           //   onPressed: () {
@@ -132,16 +137,14 @@ class HomeScreen extends StatelessWidget {
                                 color: Colors.white,
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: GoogleFonts.satisfy().fontFamily
-                                )),
+                                fontFamily: GoogleFonts.satisfy().fontFamily)),
                         Text(
                           'Diz que sim',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: GoogleFonts.satisfy().fontFamily
-                          ),
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: GoogleFonts.satisfy().fontFamily),
                         ),
                       ],
                     ),
@@ -157,14 +160,12 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: const Color.fromARGB(255, 238, 238, 238)
-                ),
-                height: 280,
-                child: const GridOptionsHome()
-              ),
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: const Color.fromARGB(255, 238, 238, 238)),
+                  height: 280,
+                  child: const GridOptionsHome()),
             ),
             // Container(
             //   padding: EdgeInsets.only(top: 10),

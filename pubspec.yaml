@@ -13,6 +13,9 @@ dependencies:
   http: ^0.13.5
   brasil_fields: ^1.14.0
   google_fonts: ^4.0.1
+  image_picker: ^0.8.4+2
+  firebase_storage: ^11.5.3
+  firebase_core: ^2.24.0
 
 dev_dependencies:
   flutter_test:
@@ -23,16 +26,18 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-   - lib/assets/dog_and_cat.png
-   - lib/assets/patas.png
-   - lib/assets/coracao_patas.png
-   - lib/assets/icon_cachorro.png
-   - lib/assets/icon_gato.png
-   - lib/assets/icon_coelho.png
-   - lib/assets/icon_papagaio.png
-   - lib/assets/pet_add.png
-   - lib/assets/gato_1.png
-   - lib/assets/icon_adocao.png
+    - lib/assets/dog_and_cat.png
+    - lib/assets/patas.png
+    - lib/assets/coracao_patas.png
+    - lib/assets/icon_cachorro.png
+    - lib/assets/icon_gato.png
+    - lib/assets/icon_coelho.png
+    - lib/assets/icon_papagaio.png
+    - lib/assets/pet_add.png
+    - lib/assets/gato_1.png
+    - lib/assets/icon_adocao.png
+  #  - images/a_dot_burr.jpeg
+  #  - images/a_dot_ham.jpeg
   # fonts:
   #   - family: Schyler
   #     fonts:

@@ -27,10 +27,10 @@ class TelaAnimaisFavoritados extends StatelessWidget {
               ),
             )
           : Consumer<UsuarioRepository>(
-            builder: (context, usuario, child) {
-              return ListaAnimais(user.animaisFav, false);
-            },
-          ),
+              builder: (context, usuario, child) {
+                return ListaAnimais(user.animaisFav, false);
+              },
+            ),
     );
   }
 }

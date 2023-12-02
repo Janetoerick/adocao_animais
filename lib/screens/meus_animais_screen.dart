@@ -23,40 +23,43 @@ class _MeusAnimaisScreenState extends State<MeusAnimaisScreen> {
       appBar: AppBar(
         title: Text('Meus Pets'),
         actions: [
-          IconButton(onPressed: () {
-            Navigator.of(context).pushNamed(AppRoutes.FORM_ANIMAL);
-          }, icon: Icon(Icons.add))
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.FORM_ANIMAL);
+              },
+              icon: Icon(Icons.add))
         ],
       ),
       body: Container(
-        height: MediaQuery.of(context).size.height * 0.85,
-        child: 
-        animais.isEmpty ?
-        Container(alignment: Alignment.center,child: DefaultView('Você não tem animais cadastrado no momento...'))
-        :
-        ListaAnimais(animais, true)
-      ),
-      bottomSheet: 
-      animais.isEmpty ?
-      Container(height: 0,)
-      :
-      Container(
-        height: MediaQuery.of(context).size.height * 0.055,
-        width: double.infinity,
-        child: ElevatedButton(
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0),
-              )
+          height: MediaQuery.of(context).size.height * 0.85,
+          child: animais.isEmpty
+              ? Container(
+                  alignment: Alignment.center,
+                  child: DefaultView(
+                      'Você não tem animais cadastrado no momento...'))
+              : ListaAnimais(animais, true)),
+      bottomSheet: animais.isEmpty
+          ? Container(
+              height: 0,
             )
-          ),
-          onPressed: () {
-            Navigator.of(context).pushNamed(AppRoutes.ADOCAO_ALL, arguments: true);
-          }, 
-          child: Text('Gerenciar processos de adoção', style: TextStyle(fontSize: 18),)),
-      ),
-
+          : Container(
+              height: MediaQuery.of(context).size.height * 0.055,
+              width: double.infinity,
+              child: ElevatedButton(
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ))),
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(AppRoutes.ADOCAO_ALL, arguments: true);
+                  },
+                  child: Text(
+                    'Gerenciar processos de adoção',
+                    style: TextStyle(fontSize: 18),
+                  )),
+            ),
     );
   }
 }
